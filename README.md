@@ -9,7 +9,7 @@ Feel free to explore the individual application directories to learn more about 
 To install any of the applications included in this repository, please follow these steps:
 
 1. Clone the repository in your Odoo folder.
-2. Edit the odoo.conf. Add the repository path to your addons_path in odoo.conf
+2. Add the repository path to your addons_path in odoo.conf file.
 
 ```
 [options]
