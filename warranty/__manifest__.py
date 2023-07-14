@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 {
     "name": "Warranty",
     "version": "16.0.1.0",
@@ -5,8 +7,11 @@
     "depends": ["base"],
     "data": [
         "security/ir.model.access.csv",
+        "views/request_for_warranty_views.xml",
+        "views/warranty_menu_views.xml",
     ],
     "installable": True,
     "application": True,
     "license": "LGPL-3",
+    "author": "Advaith B G",
 }

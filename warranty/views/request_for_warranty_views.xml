@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Views for out Request For Warranty page. -->
+<odoo>
+    <record id="request_for_warranty_action" model="ir.actions.act_window">
+        <field name="name">Request for Warranties</field>
+        <field name="res_model">request.for.warranty</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>
