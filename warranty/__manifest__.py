@@ -7,6 +7,7 @@
     "depends": ["base"],
     "data": [
         "security/ir.model.access.csv",
+        "data/warranty_sequence.xml",
         "views/request_for_warranty_views.xml",
         "views/warranty_type_views.xml",
         "views/warranty_menu_views.xml",

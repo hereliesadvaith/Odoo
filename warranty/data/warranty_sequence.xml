@@ -1,0 +1,11 @@
+<odoo>
+<!--  Sequence number for our request for quotation    -->
+    <data noupdate="0">
+        <record id="warranty_sequence" model="ir.sequence">
+            <field name="name">Warranty Sequence</field>
+            <field name="code">warranty.sequence</field>
+            <field name="prefix">RFW</field>
+            <field name="padding">3</field>
+        </record>
+    </data>
+</odoo>
