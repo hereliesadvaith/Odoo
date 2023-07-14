@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Views for out Warranty Type page. -->
+<odoo>
+    <record id="warranty_type_action" model="ir.actions.act_window">
+        <field name="name">Warranty Type</field>
+        <field name="res_model">warranty.type</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

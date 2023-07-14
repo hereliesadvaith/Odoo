@@ -8,6 +8,7 @@
     "data": [
         "security/ir.model.access.csv",
         "views/request_for_warranty_views.xml",
+        "views/warranty_type_views.xml",
         "views/warranty_menu_views.xml",
     ],
     "installable": True,
