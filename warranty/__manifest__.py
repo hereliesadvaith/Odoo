@@ -3,6 +3,7 @@
 {
     "name": "Warranty",
     "version": "16.0.1.0",
+    "category": "Services",
     "summary": "Requesting Warranty",
     "depends": ["base", "account", "stock"],
     "data": [
