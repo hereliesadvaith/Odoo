@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Views for out Warranty Type page. -->
 <odoo>
+    <record id="warranty_type_view_tree" model="ir.ui.view">
+        <field name="name">warranty.type.view.tree</field>
+        <field name="model">warranty.type</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
     <record id="warranty_type_action" model="ir.actions.act_window">
         <field name="name">Warranty Type</field>
         <field name="res_model">warranty.type</field>
