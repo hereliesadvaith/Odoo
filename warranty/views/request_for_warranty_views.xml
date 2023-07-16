@@ -20,10 +20,10 @@
                     </div>
                     <group>
                         <group>
-                            <field name="invoice_id" options="{'no_create': True, 'no_create_edit':True}"/>
-                            <field name="product_id" options="{'no_create': True, 'no_create_edit':True}"/>
-                            <field name="lot_number_id" options="{'no_create': True, 'no_create_edit':True}"/>
-                            <field name="request_date"/>
+                            <field name="invoice_id" options="{'no_create': True, 'no_create_edit':True}" attrs="{'readonly':[('state','in', ['to_approve', 'approved', 'cancelled'])]}"/>
+                            <field name="product_id" options="{'no_create': True, 'no_create_edit':True}" attrs="{'readonly':[('state','in', ['to_approve', 'approved', 'cancelled'])]}"/>
+                            <field name="lot_number_id" options="{'no_create': True, 'no_create_edit':True}" attrs="{'readonly':[('state','in', ['to_approve', 'approved', 'cancelled'])]}"/>
+                            <field name="request_date" attrs="{'readonly':[('state','in', ['to_approve', 'approved', 'cancelled'])]}"/>
                         </group>
                         <group>
                             <field name="customer_id"/>
