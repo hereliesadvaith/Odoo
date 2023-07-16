@@ -13,7 +13,7 @@ To install any of the applications included in this repository, please follow th
 
 ```
 [options]
-; Is This The Password That Allows Database Operations:
+; This password is used as master password in odoo.
 admin_passwd = admin
 db_host = localhost
 db_port = 5432

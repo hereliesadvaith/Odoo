@@ -11,7 +11,7 @@
         "data/warranty_sequence.xml",
         "views/request_for_warranty_views.xml",
         "views/warranty_type_views.xml",
-        "views/warranty_menu_views.xml",
+        "views/warranty_menus.xml",
     ],
     "installable": True,
     "application": True,

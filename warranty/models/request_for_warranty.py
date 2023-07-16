@@ -20,7 +20,8 @@ class RequestForWarranty(models.Model):
             ("to_approve", "To Approve"),
             ("approved", "Approved"),
             ("cancelled", "Cancelled"),
-        ]
+        ],
+        default="draft",
     )
     invoice_id = fields.Many2one(
         "account.move",
@@ -37,8 +38,12 @@ class RequestForWarranty(models.Model):
     purchase_date = fields.Date(
         string="Puchase Date", related="invoice_id.invoice_date"
     )
-    warranty_type_id = fields.Many2one("warranty.type", string="Warranty Type")
-    warranty_period = fields.Integer(string="Warranty Period(Days)")
+    warranty_type_id = fields.Many2one(
+        "warranty.type", string="Warranty Type", related="product_id.warranty_type_id"
+    )
+    warranty_period = fields.Integer(
+        string="Warranty Period(Days)", related="product_id.warranty_period"
+    )
 
     @api.model
     def create(self, vals):
