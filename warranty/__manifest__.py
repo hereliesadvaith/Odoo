@@ -4,7 +4,7 @@
     "name": "Warranty",
     "version": "16.0.1.0",
     "summary": "Requesting Warranty",
-    "depends": ["base"],
+    "depends": ["base", "account", "stock"],
     "data": [
         "security/ir.model.access.csv",
         "data/warranty_sequence.xml",

@@ -14,6 +14,30 @@ class RequestForWarranty(models.Model):
     name = fields.Char(
         required=True, readonly=True, index=True, default=lambda self: _("New")
     )
+    state = fields.Selection(
+        selection=[
+            ("draft", "Draft"),
+            ("to_approve", "To Approve"),
+            ("approved", "Approved"),
+            ("cancelled", "Cancelled"),
+        ]
+    )
+    invoice_id = fields.Many2one(
+        "account.move",
+        string="Invoice",
+        required=True,
+        domain=[("state", "=", "posted"), ("name", "like", "INV")],
+    )
+    product_id = fields.Many2one("product.product", string="Product", requried=True)
+    lot_number_id = fields.Many2one("stock.lot", string="Lot/Serial Number")
+    request_date = fields.Date(default=fields.Date.today())
+    customer_id = fields.Many2one(
+        "res.partner", string="Customer", related="invoice_id.partner_id"
+    )
+    purchase_date = fields.Date(
+        string="Puchase Date", related="invoice_id.invoice_date"
+    )
+    warranty_type_id = fields.Many2one("warranty.type", string="Warranty Type")
 
     @api.model
     def create(self, vals):
@@ -26,5 +50,3 @@ class RequestForWarranty(models.Model):
             ) or _("New")
             result = super(RequestForWarranty, self).create(vals)
             return result
-
-    warranty_type_id = fields.Many2one("warranty.type")
