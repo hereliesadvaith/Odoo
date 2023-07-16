@@ -7,6 +7,9 @@
         <field name="arch" type="xml">
             <form>
                 <header>
+                    <button name="action_confirm" type="object" string="Confirm" class="oe_highlight" states="draft"/>
+                    <button name="action_approve" type="object" string="Approve" class="oe_highlight" states="to_approve"/>
+                    <button name="action_cancel" type="object" string="Cancel" states="to_approve,draft"/>
                     <field name="state" widget="statusbar"/>
                 </header>
                 <sheet>
@@ -27,6 +30,7 @@
                             <field name="purchase_date"/>
                             <field name="warranty_type_id"/>
                             <field name="warranty_period"/>
+                            <field name="warranty_expire_date"/>
                         </group>
                     </group>
                 </sheet>

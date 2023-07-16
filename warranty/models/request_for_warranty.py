@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
+from datetime import timedelta
 from odoo import api, fields, models, _
+from odoo.exceptions import UserError
 
 
 class RequestForWarranty(models.Model):
@@ -44,6 +46,56 @@ class RequestForWarranty(models.Model):
     warranty_period = fields.Integer(
         string="Warranty Period(Days)", related="product_id.warranty_period"
     )
+    warranty_expire_date = fields.Date(
+        string="Warranty Expire Date", compute="_compute_warranty_expire_date"
+    )
+
+    # Compute functions
+
+    @api.depends("purchase_date", "warranty_period")
+    def _compute_warranty_expire_date(self):
+        """
+        To compute the warranty expiration date
+        """
+        for record in self:
+            if record.warranty_period and record.purchase_date:
+                record.warranty_expire_date = record.purchase_date + timedelta(
+                    days=record.warranty_period
+                )
+            else:
+                record.warranty_expire_date = False
+
+    # Onchange functions
+
+    @api.onchange("invoice_id")
+    def _onchange_invoice_id(self):
+        """
+        Used to make dynamic domain for product_id.
+        """
+        self.product_id = False
+        self.lot_number_id = False
+        if self.invoice_id:
+            domain_list = [
+                record.product_id.id for record in self.invoice_id.invoice_line_ids
+            ]
+            domain = [("id", "in", domain_list)]
+        else:
+            domain = []
+        return {"domain": {"product_id": domain}}
+
+    @api.onchange("product_id")
+    def _onchange_product_id(self):
+        """
+        Used to make dynamic domain for lot_number.
+        """
+        self.lot_number_id = False
+        if self.product_id:
+            domain = [("product_id", "=", self.product_id.name)]
+        else:
+            domain = []
+        return {"domain": {"lot_number_id": domain}}
+
+    # CRUD methods
 
     @api.model
     def create(self, vals):
@@ -56,3 +108,29 @@ class RequestForWarranty(models.Model):
             ) or _("New")
             result = super(RequestForWarranty, self).create(vals)
             return result
+
+    # Action mehtods
+
+    def action_confirm(self):
+        """
+        To check if the product have a warranty and confirm Request for warranty
+        """
+        self.ensure_one()
+        if self.product_id.has_warranty:
+            self.state = "to_approve"
+        else:
+            raise UserError("Product doesn't have a warranty")
+
+    def action_cancel(self):
+        """
+        To cancel request for warranty
+        """
+        self.ensure_one()
+        self.state = "cancelled"
+
+    def action_approve(self):
+        """
+        To approve request for warranty
+        """
+        self.ensure_one()
+        self.state = "approved"
