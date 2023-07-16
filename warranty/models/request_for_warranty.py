@@ -28,7 +28,7 @@ class RequestForWarranty(models.Model):
         required=True,
         domain=[("state", "=", "posted"), ("name", "like", "INV")],
     )
-    product_id = fields.Many2one("product.product", string="Product", requried=True)
+    product_id = fields.Many2one("product.product", string="Product", required=True)
     lot_number_id = fields.Many2one("stock.lot", string="Lot/Serial Number")
     request_date = fields.Date(default=fields.Date.today())
     customer_id = fields.Many2one(
@@ -38,6 +38,7 @@ class RequestForWarranty(models.Model):
         string="Puchase Date", related="invoice_id.invoice_date"
     )
     warranty_type_id = fields.Many2one("warranty.type", string="Warranty Type")
+    warranty_period = fields.Integer(string="Warranty Period(Days)")
 
     @api.model
     def create(self, vals):
