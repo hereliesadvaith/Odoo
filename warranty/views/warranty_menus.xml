@@ -5,8 +5,5 @@
         <menuitem id="warranties_menu" name="Warranties">
             <menuitem id="request_for_warranty_menu" action="request_for_warranty_action"/>
         </menuitem>
-        <menuitem id="settings_menu" name="Settings">
-            <menuitem id="warranty_type_menu" action="warranty_type_action"/>
-        </menuitem>
     </menuitem>
 </odoo>

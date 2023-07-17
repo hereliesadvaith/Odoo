@@ -20,10 +20,10 @@
                     </div>
                     <group>
                         <group>
-                            <field name="invoice_id" options="{'no_create': True, 'no_create_edit':True}" attrs="{'readonly':[('state','in', ['to_approve', 'approved', 'cancelled'])]}"/>
-                            <field name="product_id" options="{'no_create': True, 'no_create_edit':True}" attrs="{'readonly':[('state','in', ['to_approve', 'approved', 'cancelled'])]}"/>
-                            <field name="lot_number_id" options="{'no_create': True, 'no_create_edit':True}" attrs="{'readonly':[('state','in', ['to_approve', 'approved', 'cancelled'])]}"/>
-                            <field name="request_date" attrs="{'readonly':[('state','in', ['to_approve', 'approved', 'cancelled'])]}"/>
+                            <field name="invoice_id" options="{'no_create': True, 'no_create_edit':True}" attrs="{'readonly':[('state', '!=', 'draft')]}"/>
+                            <field name="product_id" options="{'no_create': True, 'no_create_edit':True}" attrs="{'readonly':[('state', '!=', 'draft')]}"/>
+                            <field name="lot_number_id" options="{'no_create': True, 'no_create_edit':True}" attrs="{'readonly':[('state', '!=', 'draft')]}"/>
+                            <field name="request_date" attrs="{'readonly':[('state', '!=', 'draft')]}"/>
                         </group>
                         <group>
                             <field name="customer_id"/>
