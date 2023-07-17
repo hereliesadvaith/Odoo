@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- To create security groups. -->
 <odoo>
-    <record id="warranty_access" model="res.groups">
-        <field name="name">Warranty Access</field>
-        <field name="category_id" ref="base.module_category_usability"/>
+    <record id="warranty_manager_access" model="res.groups">
+        <field name="name">Warranty Manager Access</field>
+    </record>
+    <record id="warranty_user_access" model="res.groups">
+        <field name="name">Warranty User Access</field>
     </record>
 </odoo>

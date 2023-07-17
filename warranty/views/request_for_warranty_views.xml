@@ -8,8 +8,8 @@
             <form>
                 <header>
                     <button name="action_confirm" type="object" string="Confirm" class="oe_highlight" states="draft"/>
-                    <button name="action_approve" type="object" string="Approve" class="oe_highlight" states="to_approve" groups="warranty.warranty_access"/>
-                    <button name="action_cancel" type="object" string="Cancel" states="to_approve,draft"/>
+                    <button name="action_approve" type="object" string="Approve" class="oe_highlight" states="to_approve" groups="warranty.warranty_manager_access"/>
+                    <button name="action_cancel" type="object" string="Cancel" states="to_approve" groups="warranty.warranty_manager_access"/>
                     <field name="state" widget="statusbar"/>
                 </header>
                 <sheet>
