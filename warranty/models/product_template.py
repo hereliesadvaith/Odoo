@@ -10,5 +10,9 @@ class ProductsTemplate(models.Model):
     _inherit = "product.template"
 
     has_warranty = fields.Boolean(string="Has Warranty")
-    warranty_type_id = fields.Many2one("warranty.type", string="Warranty Type")
-    warranty_period = fields.Integer(string="Warranty Period(Days)")
+    warranty_type = fields.Selection(string="Warranty Type", selection=[
+        ('service_warranty', 'Service Warranty'),
+        ('replacement_warranty', 'Replacement Warranty'),
+    ], required=True)
+    warranty_period = fields.Integer(string="Warranty Period(Days)",
+                                     required=True)

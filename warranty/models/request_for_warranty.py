@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from datetime import timedelta
 from odoo import api, fields, models, _
-from odoo.exceptions import UserError
+from odoo.tools import date_utils
 
 
 class RequestForWarranty(models.Model):
@@ -31,18 +30,21 @@ class RequestForWarranty(models.Model):
         required=True,
         domain=[("state", "=", "posted"), ("name", "like", "INV")],
     )
-    product_id = fields.Many2one("product.product", string="Product", required=True)
+    product_id = fields.Many2one(
+        "product.product", string="Product", required=True)
     lot_number_id = fields.Many2one("stock.lot", string="Lot/Serial Number")
     request_date = fields.Date(default=fields.Date.today())
     customer_id = fields.Many2one(
         "res.partner", string="Customer", related="invoice_id.partner_id"
     )
     purchase_date = fields.Date(
-        string="Puchase Date", related="invoice_id.invoice_date"
+        string="Purchase Date", related="invoice_id.invoice_date"
     )
-    warranty_type_id = fields.Many2one(
-        "warranty.type", string="Warranty Type", related="product_id.warranty_type_id"
-    )
+    warranty_type = fields.Selection(string="Warranty Type", selection=[
+        ('service_warranty', 'Service Warranty'),
+        ('replacement_warranty', 'Replacement Warranty'),
+    ],
+                                     related="product_id.warranty_type")
     warranty_period = fields.Integer(
         string="Warranty Period(Days)", related="product_id.warranty_period"
     )
@@ -59,9 +61,9 @@ class RequestForWarranty(models.Model):
         """
         for record in self:
             if record.warranty_period and record.purchase_date:
-                record.warranty_expire_date = record.purchase_date + timedelta(
-                    days=record.warranty_period
-                )
+                record.warranty_expire_date = date_utils.add(
+                                                  record.purchase_date,
+                                                  days=record.warranty_period)
             else:
                 record.warranty_expire_date = False
 
@@ -76,9 +78,10 @@ class RequestForWarranty(models.Model):
         self.lot_number_id = False
         if self.invoice_id:
             domain_list = [
-                record.product_id.id for record in self.invoice_id.invoice_line_ids
+                record.product_id.id for record in
+                self.invoice_id.invoice_line_ids
             ]
-            domain = [("id", "in", domain_list)]
+            domain = [("id", "in", domain_list), ("has_warranty", "=", True)]
         else:
             domain = []
         return {"domain": {"product_id": domain}}
@@ -90,7 +93,7 @@ class RequestForWarranty(models.Model):
         """
         self.lot_number_id = False
         if self.product_id:
-            domain = [("product_id", "=", self.product_id.name)]
+            domain = [("product_id", "=", self.product_id.id)]
         else:
             domain = []
         return {"domain": {"lot_number_id": domain}}
@@ -106,20 +109,17 @@ class RequestForWarranty(models.Model):
             vals["name"] = self.env["ir.sequence"].next_by_code(
                 "warranty.sequence"
             ) or _("New")
-            result = super(RequestForWarranty, self).create(vals)
-            return result
+        result = super(RequestForWarranty, self).create(vals)
+        return result
 
-    # Action mehtods
+    # Action methods
 
     def action_confirm(self):
         """
         To check if the product have a warranty and confirm Request for warranty
         """
         self.ensure_one()
-        if self.product_id.has_warranty:
-            self.state = "to_approve"
-        else:
-            raise UserError("Product doesn't have a warranty")
+        self.state = "to_approve"
 
     def action_cancel(self):
         """

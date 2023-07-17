@@ -22,7 +22,7 @@
             <notebook position="inside">
                 <page name="Warranty" attrs="{'invisible': [('has_warranty', '=', False)]}">
                     <group>
-                        <field name="warranty_type_id" label="Warranty Type"/>
+                        <field name="warranty_type" label="Warranty Type"/>
                         <field name="warranty_period" label="Warranty Period"/>
                     </group>
                 </page>
