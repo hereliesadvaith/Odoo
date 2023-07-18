@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <!--  Menu for Warranty application    -->
-    <menuitem id="warranty_root_menu" name="Warranty">
-        <menuitem id="warranties_menu" name="Warranties">
-            <menuitem id="request_for_warranty_menu" action="request_for_warranty_action"/>
-        </menuitem>
-    </menuitem>
+    <menuitem id="warranty_root_menu" name="Warranty" sequence="1"/>
+    <menuitem id="warranties_menu" name="Warranties" parent="warranty_root_menu" sequence="1"/>
+    <menuitem id="request_for_warranty_menu" action="request_for_warranty_action" parent="warranties_menu" sequence="1"/>
 </odoo>

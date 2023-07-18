@@ -5,6 +5,9 @@
     "version": "16.0.1.0",
     "category": "Services",
     "summary": "Requesting Warranty",
+    "description": """
+    This module is used to send requests to vendors for the warranty.
+    """,
     "depends": ["base", "account", "stock"],
     "data": [
         "security/ir.model.access.csv",
