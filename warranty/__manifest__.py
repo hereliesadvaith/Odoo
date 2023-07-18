@@ -10,6 +10,7 @@
         "security/ir.model.access.csv",
         "security/warranty_security.xml",
         "data/warranty_sequence.xml",
+        "data/warranty_location.xml",
         "views/request_for_warranty_views.xml",
         "views/product_template_views.xml",
         "views/warranty_menus.xml",

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Views for Request For Warranty page. -->
 <odoo>
+    <!-- Form views for requests for warranty page. -->
     <record id="request_for_warranty_view_form" model="ir.ui.view">
         <field name="name">request.for.warranty.view.form</field>
         <field name="model">request.for.warranty</field>
@@ -37,6 +37,7 @@
             </form>
         </field>
     </record>
+    <!-- Tree views for requests for warranty page. -->
     <record id="request_for_warranty_view_tree" model="ir.ui.view">
         <field name="name">request.for.warranty.view.tree</field>
         <field name="model">request.for.warranty</field>
@@ -49,6 +50,7 @@
             </tree>
         </field>
     </record>
+    <!-- Action for request for warranty page -->
     <record id="request_for_warranty_action" model="ir.actions.act_window">
         <field name="name">Request for Warranties</field>
         <field name="res_model">request.for.warranty</field>
