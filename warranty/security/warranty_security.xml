@@ -7,11 +7,11 @@
         <field name="sequence">45</field>
     </record>
     <record id="warranty_user_access" model="res.groups">
-        <field name="name">Warranty User Access</field>
+        <field name="name">User</field>
         <field name="category_id" ref="module_category_warranty"/>
     </record>
     <record id="warranty_manager_access" model="res.groups">
-        <field name="name">Warranty Manager Access</field>
+        <field name="name">Manager</field>
         <field name="category_id" ref="module_category_warranty"/>
         <field name="implied_ids" eval="[(4, ref('warranty_user_access'))]"/>
     </record>
