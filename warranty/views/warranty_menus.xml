@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--  Menu for our Warranty application    -->
+<!--  Menu for Warranty application    -->
 <odoo>
     <menuitem id="warranty_root_menu" name="Warranty">
         <menuitem id="warranties_menu" name="Warranties">

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Inherit views for out product page. -->
+<!-- Inherit views for product page. -->
 <odoo>
     <record id="product_template_form_view" model="ir.ui.view">
         <field name="name">product.template.form.inherit.warranty</field>
