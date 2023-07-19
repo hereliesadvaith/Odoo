@@ -13,8 +13,11 @@ class RequestForWarranty(models.Model):
     _description = "Request For Warranty"
 
     name = fields.Char(
-        required=True, readonly=True, index=True, default=lambda self: _("New"),
-        copy=False
+        required=True,
+        readonly=True,
+        index=True,
+        default=lambda self: _("New"),
+        copy=False,
     )
     state = fields.Selection(
         selection=[
@@ -33,8 +36,7 @@ class RequestForWarranty(models.Model):
         required=True,
         domain=[("state", "=", "posted"), ("name", "like", "INV")],
     )
-    product_id = fields.Many2one(
-        "product.product", string="Product", required=True)
+    product_id = fields.Many2one("product.product", string="Product", required=True)
     lot_number_id = fields.Many2one("stock.lot", string="Lot/Serial Number")
     request_date = fields.Date(default=fields.Date.today())
     customer_id = fields.Many2one(
@@ -43,11 +45,14 @@ class RequestForWarranty(models.Model):
     purchase_date = fields.Date(
         string="Purchase Date", related="invoice_id.invoice_date"
     )
-    warranty_type = fields.Selection(string="Warranty Type", selection=[
-        ('service_warranty', 'Service Warranty'),
-        ('replacement_warranty', 'Replacement Warranty'),
-    ],
-                                     related="product_id.warranty_type")
+    warranty_type = fields.Selection(
+        string="Warranty Type",
+        selection=[
+            ("service_warranty", "Service Warranty"),
+            ("replacement_warranty", "Replacement Warranty"),
+        ],
+        related="product_id.warranty_type",
+    )
     warranty_period = fields.Integer(
         string="Warranty Period(Days)", related="product_id.warranty_period"
     )
@@ -65,8 +70,8 @@ class RequestForWarranty(models.Model):
         for record in self:
             if record.warranty_period and record.purchase_date:
                 record.warranty_expire_date = date_utils.add(
-                                                  record.purchase_date,
-                                                  days=record.warranty_period)
+                    record.purchase_date, days=record.warranty_period
+                )
             else:
                 record.warranty_expire_date = False
 
@@ -81,8 +86,7 @@ class RequestForWarranty(models.Model):
         self.lot_number_id = False
         if self.invoice_id:
             domain_list = [
-                record.product_id.id for record in
-                self.invoice_id.invoice_line_ids
+                record.product_id.id for record in self.invoice_id.invoice_line_ids
             ]
             domain = [("id", "in", domain_list), ("has_warranty", "=", True)]
         else:
@@ -115,34 +119,74 @@ class RequestForWarranty(models.Model):
         result = super(RequestForWarranty, self).create(vals)
         return result
 
-    def transfer(self):
+    def transfer_from_customer(self):
         """
         Used to create a transfer in stock picking.
         """
-        customer_location = self.env.ref('stock.stock_location_customers').id
-        warranty_location = self.env.ref('warranty.warranty_location').id
-        picking_type = self.env.ref('stock.picking_type_in').id
+        customer_location = self.env.ref("stock.stock_location_customers").id
+        warranty_location = self.env.ref("warranty.warranty_location").id
+        picking_type = self.env.ref("stock.picking_type_in").id
         partner = self.customer_id.id
         origin = self.invoice_id.name
         uom_id = self.product_id.uom_id.id
         lot_id = self.lot_number_id.id
         product_id = self.product_id.id
-        self.env['stock.picking'].create({
-            'location_id': customer_location,
-            'location_dest_id': warranty_location,
-            'picking_type_id': picking_type,
-            'partner_id': partner,
-            'origin': origin
-        })
-        last_id = self.env['stock.picking'].search([], order='id desc')[0].id
-        self.env['stock.move.line'].create({
-            'picking_id': last_id,
-            'product_id': product_id,
-            'product_uom_id': uom_id,
-            'lot_id': lot_id,
-            'location_id': customer_location,
-            'location_dest_id': warranty_location
-        })
+        self.env["stock.picking"].create(
+            {
+                "location_id": customer_location,
+                "location_dest_id": warranty_location,
+                "picking_type_id": picking_type,
+                "partner_id": partner,
+                "origin": origin,
+            }
+        )
+        last_id = self.env["stock.picking"].search([], order="id desc")[0].id
+        self.env["stock.move.line"].create(
+            {
+                "picking_id": last_id,
+                "product_id": product_id,
+                "product_uom_id": uom_id,
+                "lot_id": lot_id,
+                "location_id": customer_location,
+                "location_dest_id": warranty_location,
+            }
+        )
+
+    def transfer_to_customer(self):
+        """
+        To create a delivery transfer to customer.
+        """
+        if self.product_id.warranty_type == "service_warranty":
+            warranty_location = self.env.ref("warranty.warranty_location").id
+        else:
+            warranty_location = self.env.ref("stock.stock_location_stock").id
+        customer_location = self.env.ref("stock.stock_location_customers").id
+        picking_type = self.env.ref("stock.picking_type_out").id
+        partner = self.customer_id.id
+        origin = self.invoice_id.name
+        uom_id = self.product_id.uom_id.id
+        lot_id = self.lot_number_id.id
+        product_id = self.product_id.id
+        self.env["stock.picking"].create(
+            {
+                "location_id": warranty_location,
+                "location_dest_id": customer_location,
+                "picking_type_id": picking_type,
+                "partner_id": partner,
+                "origin": origin,
+            }
+        )
+        last_id = self.env["stock.picking"].search([], order="id desc")[0].id
+        self.env["stock.move.line"].create(
+            {
+                "picking_id": last_id,
+                "product_id": product_id,
+                "product_uom_id": uom_id,
+                "lot_id": lot_id,
+                "location_id": warranty_location,
+                "location_dest_id": customer_location,
+            }
+        )
 
     # Action methods
 
@@ -170,36 +214,12 @@ class RequestForWarranty(models.Model):
         To approve request for warranty
         """
         self.ensure_one()
+        self.transfer_from_customer()
         self.state = "approved"
 
     def action_return(self):
         """
         To create a delivery transfer to customer.
         """
-        if self.product_id.warranty_type == "service_warranty":
-            warranty_location = self.env.ref('warranty.warranty_location').id
-        else:
-            warranty_location = self.env.ref('stock.stock_location_stock').id
-        customer_location = self.env.ref('stock.stock_location_customers').id
-        picking_type = self.env.ref('stock.picking_type_out').id
-        partner = self.customer_id.id
-        origin = self.invoice_id.name
-        uom_id = self.product_id.uom_id.id
-        lot_id = self.lot_number_id.id
-        product_id = self.product_id.id
-        self.env['stock.picking'].create({
-            'location_id': warranty_location,
-            'location_dest_id': customer_location,
-            'picking_type_id': picking_type,
-            'partner_id': partner,
-            'origin': origin
-        })
-        last_id = self.env['stock.picking'].search([], order='id desc')[0].id
-        self.env['stock.move.line'].create({
-            'picking_id': last_id,
-            'product_id': product_id,
-            'product_uom_id': uom_id,
-            'lot_id': lot_id,
-            'location_id': warranty_location,
-            'location_dest_id': customer_location
-        })
+        self.ensure_one()
+        self.transfer_to_customer()
