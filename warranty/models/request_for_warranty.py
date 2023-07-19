@@ -13,13 +13,16 @@ class RequestForWarranty(models.Model):
     _description = "Request For Warranty"
 
     name = fields.Char(
-        required=True, readonly=True, index=True, default=lambda self: _("New")
+        required=True, readonly=True, index=True, default=lambda self: _("New"),
+        copy=False
     )
     state = fields.Selection(
         selection=[
             ("draft", "Draft"),
             ("to_approve", "To Approve"),
             ("approved", "Approved"),
+            ("received", "Product Received"),
+            ("done", "Done"),
             ("cancelled", "Cancelled"),
         ],
         default="draft",
@@ -112,6 +115,35 @@ class RequestForWarranty(models.Model):
         result = super(RequestForWarranty, self).create(vals)
         return result
 
+    def transfer(self):
+        """
+        Used to create a transfer in stock picking.
+        """
+        customer_location = self.env.ref('stock.stock_location_customers').id
+        warranty_location = self.env.ref('warranty.warranty_location').id
+        picking_type = self.env.ref('stock.picking_type_in').id
+        partner = self.customer_id.id
+        origin = self.invoice_id.name
+        uom_id = self.product_id.uom_id.id
+        lot_id = self.lot_number_id.id
+        product_id = self.product_id.id
+        self.env['stock.picking'].create({
+            'location_id': customer_location,
+            'location_dest_id': warranty_location,
+            'picking_type_id': picking_type,
+            'partner_id': partner,
+            'origin': origin
+        })
+        last_id = self.env['stock.picking'].search([], order='id desc')[0].id
+        self.env['stock.move.line'].create({
+            'picking_id': last_id,
+            'product_id': product_id,
+            'product_uom_id': uom_id,
+            'lot_id': lot_id,
+            'location_id': customer_location,
+            'location_dest_id': warranty_location
+        })
+
     # Action methods
 
     def action_confirm(self):
@@ -120,6 +152,11 @@ class RequestForWarranty(models.Model):
         """
         self.ensure_one()
         self.state = "to_approve"
+        # locations = self.env["stock.location"].search([])
+        # for i in locations:
+        #     print(i.get_metadata()[0].get('xmlid'))
+        # warranty_location = self.env.ref('stock.stock_location_stock').id
+        # print(warranty_location)
 
     def action_cancel(self):
         """
@@ -134,3 +171,35 @@ class RequestForWarranty(models.Model):
         """
         self.ensure_one()
         self.state = "approved"
+
+    def action_return(self):
+        """
+        To create a delivery transfer to customer.
+        """
+        if self.product_id.warranty_type == "service_warranty":
+            warranty_location = self.env.ref('warranty.warranty_location').id
+        else:
+            warranty_location = self.env.ref('stock.stock_location_stock').id
+        customer_location = self.env.ref('stock.stock_location_customers').id
+        picking_type = self.env.ref('stock.picking_type_out').id
+        partner = self.customer_id.id
+        origin = self.invoice_id.name
+        uom_id = self.product_id.uom_id.id
+        lot_id = self.lot_number_id.id
+        product_id = self.product_id.id
+        self.env['stock.picking'].create({
+            'location_id': warranty_location,
+            'location_dest_id': customer_location,
+            'picking_type_id': picking_type,
+            'partner_id': partner,
+            'origin': origin
+        })
+        last_id = self.env['stock.picking'].search([], order='id desc')[0].id
+        self.env['stock.move.line'].create({
+            'picking_id': last_id,
+            'product_id': product_id,
+            'product_uom_id': uom_id,
+            'lot_id': lot_id,
+            'location_id': warranty_location,
+            'location_dest_id': customer_location
+        })

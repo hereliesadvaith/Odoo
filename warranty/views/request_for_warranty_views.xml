@@ -9,12 +9,13 @@
                 <header>
                     <button name="action_confirm" type="object" string="Confirm" class="oe_highlight" states="draft"/>
                     <button name="action_approve" type="object" string="Approve" class="oe_highlight" states="to_approve" groups="warranty.warranty_manager_access"/>
-                    <button name="action_cancel" type="object" string="Cancel" states="to_approve" groups="warranty.warranty_manager_access"/>
-                    <field name="state" widget="statusbar"/>
+                    <button name="action_return" type="object" class="oe_highlight" string="Return Product" states="approved"/>
+                    <button name="action_cancel" type="object" string="Cancel" states="to_approve,approved" groups="warranty.warranty_manager_access"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,to_approve,approved"/>
                 </header>
                 <sheet>
-                    <div>
-                        <h1 class="oe_title">
+                    <div class="oe_title">
+                        <h1>
                             <field name="name"/>
                         </h1>
                     </div>
