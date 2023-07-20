@@ -16,6 +16,7 @@
         "data/warranty_location.xml",
         "views/request_for_warranty_views.xml",
         "views/product_template_views.xml",
+        "views/account_move_views.xml",
         "views/warranty_menus.xml",
     ],
     "installable": True,

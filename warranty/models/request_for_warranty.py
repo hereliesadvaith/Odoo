@@ -59,6 +59,7 @@ class RequestForWarranty(models.Model):
     warranty_expire_date = fields.Date(
         string="Warranty Expire Date", compute="_compute_warranty_expire_date"
     )
+    delivery_count = fields.Integer(string="Delivery Count", default=0)
 
     # Compute functions
 
@@ -127,7 +128,7 @@ class RequestForWarranty(models.Model):
         warranty_location = self.env.ref("warranty.warranty_location").id
         picking_type = self.env.ref("stock.picking_type_in").id
         partner = self.customer_id.id
-        origin = self.invoice_id.name
+        origin = self.name
         uom_id = self.product_id.uom_id.id
         lot_id = self.lot_number_id.id
         product_id = self.product_id.id
@@ -140,17 +141,23 @@ class RequestForWarranty(models.Model):
                 "origin": origin,
             }
         )
-        last_id = self.env["stock.picking"].search([], order="id desc")[0].id
+        pick_last_id = self.env["stock.picking"].search([], order="id desc")[0]
         self.env["stock.move.line"].create(
             {
-                "picking_id": last_id,
+                "picking_id": pick_last_id.id,
                 "product_id": product_id,
                 "product_uom_id": uom_id,
                 "lot_id": lot_id,
                 "location_id": customer_location,
                 "location_dest_id": warranty_location,
+                "reserved_uom_qty": 1,
             }
         )
+        move_last_id = self.env["stock.move"].search([], order="id desc")[0]
+        move_last_id.write({
+            "product_uom_qty": 1,
+        })
+        pick_last_id.state = 'assigned'
 
     def transfer_to_customer(self):
         """
@@ -163,7 +170,7 @@ class RequestForWarranty(models.Model):
         customer_location = self.env.ref("stock.stock_location_customers").id
         picking_type = self.env.ref("stock.picking_type_out").id
         partner = self.customer_id.id
-        origin = self.invoice_id.name
+        origin = self.name
         uom_id = self.product_id.uom_id.id
         lot_id = self.lot_number_id.id
         product_id = self.product_id.id
@@ -176,10 +183,10 @@ class RequestForWarranty(models.Model):
                 "origin": origin,
             }
         )
-        last_id = self.env["stock.picking"].search([], order="id desc")[0].id
+        pick_last_id = self.env["stock.picking"].search([], order="id desc")[0]
         self.env["stock.move.line"].create(
             {
-                "picking_id": last_id,
+                "picking_id": pick_last_id.id,
                 "product_id": product_id,
                 "product_uom_id": uom_id,
                 "lot_id": lot_id,
@@ -187,6 +194,11 @@ class RequestForWarranty(models.Model):
                 "location_dest_id": customer_location,
             }
         )
+        move_last_id = self.env["stock.move"].search([], order="id desc")[0]
+        move_last_id.write({
+            "product_uom_qty": 1,
+        })
+        pick_last_id.state = 'assigned'
 
     # Action methods
 
@@ -216,6 +228,7 @@ class RequestForWarranty(models.Model):
         self.ensure_one()
         self.transfer_from_customer()
         self.state = "approved"
+        self.delivery_count += 1
 
     def action_return(self):
         """
@@ -223,3 +236,18 @@ class RequestForWarranty(models.Model):
         """
         self.ensure_one()
         self.transfer_to_customer()
+        self.delivery_count += 1
+
+    def action_view_delivery(self):
+        """
+        To see the stock moves related to warranty.
+        """
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Transfers',
+            'view_mode': 'tree,form',
+            'res_model': 'stock.picking',
+            'context': "{'create': False}",
+            'domain': [('origin', '=', self.name)]
+        }

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Inherit views for invoice page notebook -->
+    <record id="view_move_form" model="ir.ui.view">
+        <field name="name">account.move.form.inherit.warranty</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <notebook position="inside">
+                <page name="Warranty Info">
+                    <field name="warranty_ids" widget="Many2many" nolabel="1"/>
+                </page>
+            </notebook>
+        </field>
+    </record>
+</odoo>

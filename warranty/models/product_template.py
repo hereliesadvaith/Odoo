@@ -19,4 +19,5 @@ class ProductsTemplate(models.Model):
         ],
         required=True,
     )
-    warranty_period = fields.Integer(string="Warranty Period(Days)", required=True)
+    warranty_period = fields.Integer(string="Warranty Period(Days)",
+                                     required=True)
