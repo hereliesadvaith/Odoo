@@ -154,10 +154,12 @@ class RequestForWarranty(models.Model):
             }
         )
         move_last_id = self.env["stock.move"].search([], order="id desc")[0]
-        move_last_id.write({
-            "product_uom_qty": 1,
-        })
-        pick_last_id.state = 'assigned'
+        move_last_id.write(
+            {
+                "product_uom_qty": 1,
+            }
+        )
+        pick_last_id.state = "assigned"
 
     def transfer_to_customer(self):
         """
@@ -195,14 +197,16 @@ class RequestForWarranty(models.Model):
             }
         )
         move_last_id = self.env["stock.move"].search([], order="id desc")[0]
-        move_last_id.write({
-            "product_uom_qty": 1,
-        })
-        pick_last_id.state = 'assigned'
+        move_last_id.write(
+            {
+                "product_uom_qty": 1,
+            }
+        )
+        pick_last_id.state = "assigned"
 
     # Action methods
 
-    def action_confirm(self):
+    def action_to_approve(self):
         """
         To check if the product have a warranty and confirm Request for warranty
         """
@@ -221,7 +225,7 @@ class RequestForWarranty(models.Model):
         self.ensure_one()
         self.state = "cancelled"
 
-    def action_approve(self):
+    def action_confirm(self):
         """
         To approve request for warranty
         """
@@ -238,16 +242,16 @@ class RequestForWarranty(models.Model):
         self.transfer_to_customer()
         self.delivery_count += 1
 
-    def action_view_delivery(self):
+    def action_view_stock_moves(self):
         """
         To see the stock moves related to warranty.
         """
         self.ensure_one()
         return {
-            'type': 'ir.actions.act_window',
-            'name': 'Transfers',
-            'view_mode': 'tree,form',
-            'res_model': 'stock.picking',
-            'context': "{'create': False}",
-            'domain': [('origin', '=', self.name)]
+            "type": "ir.actions.act_window",
+            "name": "Transfers",
+            "view_mode": "tree,form",
+            "res_model": "stock.picking",
+            "context": "{'create': False}",
+            "domain": [("origin", "=", self.name)],
         }
