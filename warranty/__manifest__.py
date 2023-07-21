@@ -22,5 +22,5 @@
     "installable": True,
     "application": True,
     "license": "LGPL-3",
-    "author": "Advaith B G",
+    "author": "Advaith",
 }
