@@ -10,6 +10,7 @@ class RequestForWarranty(models.Model):
     """
 
     _name = "request.for.warranty"
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = "Request For Warranty"
 
     name = fields.Char(
@@ -41,7 +42,8 @@ class RequestForWarranty(models.Model):
     lot_number_id = fields.Many2one("stock.lot", string="Lot/Serial Number")
     request_date = fields.Date(default=fields.Date.today())
     customer_id = fields.Many2one(
-        "res.partner", string="Customer", related="invoice_id.partner_id"
+        "res.partner", string="Customer", related="invoice_id.partner_id",
+        tracking=True
     )
     purchase_date = fields.Date(
         string="Purchase Date", related="invoice_id.invoice_date"
