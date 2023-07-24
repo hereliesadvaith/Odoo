@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Inherit views for customer creation page -->
+    <record id="view_partner_form" model="ir.ui.view">
+        <field name="name">base.partner.form.inherit.associate.products</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='category_id']" position="after">
+                <field name="associated_product_ids" widget="many2many_tags"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
