@@ -8,8 +8,8 @@
                 <form string="Auto Purchase">
                     <sheet>
                         <group>
-                            <field name="name"/>
-                            <field name="note"/>
+                            <field name="quantity"/>
+                            <field name="price"/>
                         </group>
                     </sheet>
                 </form>

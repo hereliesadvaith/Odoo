@@ -10,5 +10,5 @@ class AutoPurchase(models.TransientModel):
     _name = "auto.purchase"
     _description = "Auto Purchase"
 
-    name = fields.Char(string="Name")
-    note = fields.Text(string="Notes")
+    quantity = fields.Integer(string="Qty", default=1)
+    price = fields.Integer(string="Price")
