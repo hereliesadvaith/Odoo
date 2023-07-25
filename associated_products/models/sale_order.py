@@ -49,3 +49,4 @@ class SaleOrder(models.Model):
                     self.update({
                         'order_line': [(fields.Command.unlink(record.id))]
                     })
+            self._product_id_old.clear()
