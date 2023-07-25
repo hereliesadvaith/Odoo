@@ -9,10 +9,11 @@
     This module lets you create purchase order from product view 
     with one button click.
     """,
-    "depends": ["base", "sale", "stock"],
+    "depends": ["base", "purchase", "stock"],
     "data": [
         "security/ir.model.access.csv",
         "views/product_template_views.xml",
+        "wizard/auto_purchase_views.xml",
     ],
     "installable": True,
     "license": "LGPL-3",

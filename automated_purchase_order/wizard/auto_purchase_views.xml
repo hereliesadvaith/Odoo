@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="auto_purchase_view_form" model="ir.ui.view">
+            <field name="name">Auto Purchase</field>
+            <field name="model">auto.purchase</field>
+            <field name="arch" type="xml">
+                <form string="Auto Purchase">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="note"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>
