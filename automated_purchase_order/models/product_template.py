@@ -34,12 +34,15 @@ class ProductsTemplate(models.Model):
                     else False,
             }
         }
+
+
 class ProductProduct(models.Model):
     """
     To add fields in product model.
     """
 
     _inherit = "product.product"
+
     def action_automate_po(self):
         """
         To open the wizard.
