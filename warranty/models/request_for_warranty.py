@@ -14,9 +14,7 @@ class RequestForWarranty(models.Model):
     _description = "Request For Warranty"
 
     name = fields.Char(
-        required=True,
         readonly=True,
-        index=True,
         default=lambda self: _("New"),
         copy=False,
     )

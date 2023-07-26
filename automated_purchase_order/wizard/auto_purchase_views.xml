@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
+
         <record id="auto_purchase_view_form" model="ir.ui.view">
             <field name="name">Auto Purchase</field>
             <field name="model">auto.purchase</field>
@@ -8,9 +9,15 @@
                 <form string="Auto Purchase">
                     <sheet>
                         <group>
+                            <field name="product_id"/>
                             <field name="quantity"/>
+                            <field name="vendor"/>
                             <field name="price"/>
                         </group>
+                        <footer>
+                            <button name="action_confirm" string="Confirm" type="object" class="btn-primary"/>
+                            <button string="Discard" special="cancel" type="object"/>
+                        </footer>
                     </sheet>
                 </form>
             </field>

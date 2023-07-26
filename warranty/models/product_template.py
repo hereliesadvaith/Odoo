@@ -16,8 +16,5 @@ class ProductsTemplate(models.Model):
         selection=[
             ("service_warranty", "Service Warranty"),
             ("replacement_warranty", "Replacement Warranty"),
-        ],
-        required=True,
-    )
-    warranty_period = fields.Integer(string="Warranty Period(Days)",
-                                     required=True)
+        ])
+    warranty_period = fields.Integer(string="Warranty Period(Days)")
