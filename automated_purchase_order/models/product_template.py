@@ -8,7 +8,7 @@ class ProductsTemplate(models.Model):
     To add fields to product template model.
     """
 
-    _inherit = "product.template"
+    _inherit = ["product.template"]
 
     # Action Methods
 
@@ -28,9 +28,37 @@ class ProductsTemplate(models.Model):
             'context': {
                 'default_product_id': product_id.id,
                 'default_price':
-                    (self.seller_ids)[0].price if self.seller_ids else False,
+                    self.seller_ids[0].price if self.seller_ids else False,
                 'default_vendor':
-                    (self.seller_ids)[0].partner_id.id if self.seller_ids
+                    self.seller_ids[0].partner_id.id if self.seller_ids
+                    else False,
+            }
+        }
+class ProductProduct(models.Model):
+    """
+    To add fields in product model.
+    """
+
+    _inherit = "product.product"
+    def action_automate_po(self):
+        """
+        To open the wizard.
+        """
+        product_id = self.env["product.product"].search([
+            ("id", "=", self.id)
+        ])
+        return {
+            'type': 'ir.actions.act_window',
+            'res_model': 'auto.purchase',
+            'name': 'Auto Purchase',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {
+                'default_product_id': product_id.id,
+                'default_price':
+                    self.seller_ids[0].price if self.seller_ids else False,
+                'default_vendor':
+                    self.seller_ids[0].partner_id.id if self.seller_ids
                     else False,
             }
         }

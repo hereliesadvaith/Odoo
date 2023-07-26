@@ -29,21 +29,23 @@ class AutoPurchase(models.TransientModel):
             ('partner_id', '=', self.vendor.id),
         ], order="id desc", limit=1)
         if purchase_order:
-            self.env["purchase.order.line"].create({
-                "product_id": self.product_id.id,
-                "order_id": purchase_order.id,
-                "product_qty": self.quantity,
-                "price_unit": self.price
+            purchase_order.update({
+                "order_line": [(fields.Command.create({
+                    "product_id": self.product_id.id,
+                    "product_qty": self.quantity,
+                    "price_unit": self.price
+                }))],
             })
             purchase_order.button_confirm()
         else:
             new_purchase_order = self.env["purchase.order"].create({
                 "partner_id": self.vendor.id
             })
-            self.env["purchase.order.line"].create({
-                "product_id": self.product_id.id,
-                "order_id": new_purchase_order.id,
-                "product_qty": self.quantity,
-                "price_unit": self.price
+            new_purchase_order.update({
+                "order_line": [(fields.Command.create({
+                    "product_id": self.product_id.id,
+                    "product_qty": self.quantity,
+                    "price_unit": self.price
+                }))],
             })
             new_purchase_order.button_confirm()
