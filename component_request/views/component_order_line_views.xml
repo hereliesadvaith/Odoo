@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="component_order_line_view_tree" model="ir.ui.view">
+        <field name="name">component.order.line.view.tree</field>
+        <field name="model">component.order.line</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom">
+                <field name="order_id" />
+                <field name="product_id"/>
+                <field name="quantity"/>
+                <field name="transfer_type"/>
+            </tree>
+        </field>
+    </record>
+    <record id="component_order_line_action" model="ir.actions.act_window">
+        <field name="name">Component Order Line</field>
+        <field name="res_model">component.order.line</field>
+        <field name="view_mode">tree</field>
+    </record>
+</odoo>
