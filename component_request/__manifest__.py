@@ -12,8 +12,10 @@
     "depends": ["base", "purchase", "stock"],
     "data": [
         "security/ir.model.access.csv",
+        "security/component_request_security.xml",
         "views/component_request_views.xml",
         "views/component_order_line_views.xml",
+        "data/component_request_sequence.xml",
     ],
     "installable": True,
     "license": "LGPL-3",
