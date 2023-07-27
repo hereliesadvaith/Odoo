@@ -20,6 +20,12 @@ class SaleOrder(models.Model):
         """
         To add records in order lines.
         """
+        for record in self.order_line:
+            if record.product_id.id in self._product_id_old:
+                self.update({
+                    'order_line': [(fields.Command.unlink(record.id))]
+                })
+        self._product_id_old.clear()
         if self.partner_id.associated_product_ids:
             if self.associated_products:
                 for product in self.partner_id.associated_product_ids:
@@ -43,10 +49,3 @@ class SaleOrder(models.Model):
                         self.update({
                             'order_line': [(fields.Command.unlink(record.id))]
                         })
-        else:
-            for record in self.order_line:
-                if record.product_id.id in self._product_id_old:
-                    self.update({
-                        'order_line': [(fields.Command.unlink(record.id))]
-                    })
-            self._product_id_old.clear()

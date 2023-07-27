@@ -45,11 +45,8 @@ class ProductProduct(models.Model):
 
     def action_automate_po(self):
         """
-        To open the wizard.
+        To open the wizard on button click.
         """
-        product_id = self.env["product.product"].search([
-            ("id", "=", self.id)
-        ])
         return {
             'type': 'ir.actions.act_window',
             'res_model': 'auto.purchase',
@@ -57,7 +54,7 @@ class ProductProduct(models.Model):
             'view_mode': 'form',
             'target': 'new',
             'context': {
-                'default_product_id': product_id.id,
+                'default_product_id': self.id,
                 'default_price':
                     self.seller_ids[0].price if self.seller_ids else False,
                 'default_vendor':
