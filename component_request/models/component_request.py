@@ -60,7 +60,23 @@ class ComponentRequest(models.Model):
                         }))],
                     })
             else:
-                pass
+                stock_picking = self.env["stock.picking"].create({
+                    'location_id': record.source_location.id,
+                    'location_dest_id': record.destination_location.id,
+                    'picking_type_id': self.env["stock.picking.type"].search(
+                        [('sequence_code', '=', 'INT')]
+                    ).id,
+                    'origin': self.name,
+                })
+                self.env["stock.move"].create({
+                    'product_id': record.product_id.id,
+                    'location_id': record.source_location.id,
+                    'location_dest_id': record.destination_location.id,
+                    'picking_id': stock_picking.id,
+                    'name': record.product_id.name,
+                    'product_uom_qty': record.quantity
+                })
+                stock_picking.action_confirm()
 
     # Action Methods
 
