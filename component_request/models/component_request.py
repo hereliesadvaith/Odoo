@@ -17,8 +17,17 @@ class ComponentRequest(models.Model):
     )
     user_id = fields.Many2one("res.users", string="Responsible")
     order_line_ids = fields.One2many("component.order.line", "order_id")
+    state = fields.Selection(
+        selection=[
+            ("draft", "Draft"),
+            ("to_approve", "To Approve"),
+            ("approved", "Approved"),
+            ("cancelled", "Cancelled")
+        ],
+        default="draft",
+    )
 
-    # CRUD methods
+    # CRUD Methods
 
     @api.model
     def create(self, vals):
@@ -31,3 +40,48 @@ class ComponentRequest(models.Model):
             ) or _("New")
         result = super(ComponentRequest, self).create(vals)
         return result
+
+    def create_rfq(self):
+        """
+        Used to create rfq for different vendors
+        """
+        for record in self.order_line_ids:
+            if record.transfer_type == "purchase":
+                for rec in record.product_id.seller_ids:
+                    print(rec.partner_id.id)
+                    purchase_order = self.env["purchase.order"].create({
+                        "partner_id": rec.partner_id.id,
+                    })
+                    purchase_order.update({
+                        "order_line": [(fields.Command.create({
+                            "product_id": record.product_id.id,
+                            "product_qty": record.quantity,
+                            "price_unit": rec.price
+                        }))],
+                    })
+            else:
+                pass
+
+    # Action Methods
+
+    def action_to_approve(self):
+        """
+        Used to set draft to to_approve state
+        """
+        self.ensure_one()
+        self.state = 'to_approve'
+
+    def action_confirm(self):
+        """
+        Used to confirm the component request.
+        """
+        self.ensure_one()
+        self.create_rfq()
+        self.state = "approved"
+
+    def action_cancel(self):
+        """
+        Used to reject the component request.
+        """
+        self.ensure_one()
+        self.state = 'cancelled'

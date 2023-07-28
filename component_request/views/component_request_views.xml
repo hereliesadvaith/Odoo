@@ -1,11 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- Form views for requests for warranty page. -->
+    <!-- Form views for component request page. -->
     <record id="component_request_view_form" model="ir.ui.view">
         <field name="name">component.request.view.form</field>
         <field name="model">component.request</field>
         <field name="arch" type="xml">
             <form>
+                <header>
+                    <button name="action_to_approve" type="object" string="To Approve"
+                        class="oe_highlight" states="draft" />
+                    <button name="action_confirm" type="object" string="Confirm"
+                        class="oe_highlight" states="to_approve"
+                            groups="component_request.component_request_manager_access"/>
+                    <button name="action_cancel" type="object" string="Cancel"
+                        states="to_approve"
+                    groups="component_request.component_request_head_access"/>
+                    <field name="state" widget="statusbar"
+                        statusbar_visible="draft,to_approve,approved"/>
+                </header>
                <sheet>
                    <group>
                        <field name="name"/>
@@ -20,6 +32,7 @@
             </form>
         </field>
     </record>
+    <!--  component request tree view  -->
     <record id="component_request_view_tree" model="ir.ui.view">
         <field name="name">component.request.view.tree</field>
         <field name="model">component.request</field>
@@ -27,14 +40,17 @@
             <tree>
                 <field name="name" />
                 <field name="user_id"/>
+                <field name="state"/>
             </tree>
         </field>
     </record>
+    <!--  To set component request action -->
     <record id="component_request_action" model="ir.actions.act_window">
         <field name="name">Component Request</field>
         <field name="res_model">component.request</field>
         <field name="view_mode">tree,form</field>
     </record>
+    <!-- To add menu in purchase module   -->
     <menuitem id="menu_component_request"
               name="Components Request"
               action="component_request_action"
