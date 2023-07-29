@@ -68,13 +68,14 @@ class ComponentRequest(models.Model):
                     ).id,
                     'origin': self.name,
                 })
-                self.env["stock.move"].create({
-                    'product_id': record.product_id.id,
-                    'location_id': record.source_location.id,
-                    'location_dest_id': record.destination_location.id,
-                    'picking_id': stock_picking.id,
-                    'name': record.product_id.name,
-                    'product_uom_qty': record.quantity
+                stock_picking.update({
+                    "move_ids": [(fields.Command.create({
+                        'product_id': record.product_id.id,
+                        'location_id': record.source_location.id,
+                        'location_dest_id': record.destination_location.id,
+                        'name': record.product_id.name,
+                        'product_uom_qty': record.quantity
+                    }))],
                 })
                 stock_picking.action_confirm()
 
