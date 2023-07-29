@@ -9,8 +9,8 @@
                 <field name="product_id"/>
                 <field name="quantity"/>
                 <field name="transfer_type"/>
-                <field name="source_location"/>
-                <field name="destination_location"/>
+                <field name="source_location" attrs="{'invisible': [('transfer_type', '!=', 'internal')]}"/>
+                <field name="destination_location" attrs="{'invisible': [('transfer_type', '!=', 'internal')]}"/>
             </tree>
         </field>
     </record>

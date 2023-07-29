@@ -18,6 +18,7 @@ class ComponentOrderLine(models.Model):
                                      selection=[
                                          ("purchase", "Purchase Order"),
                                          ("internal", "Internal Transfer")
-                                     ])
+                                     ],
+                                     required=True)
     source_location = fields.Many2one("stock.location")
     destination_location = fields.Many2one("stock.location")
