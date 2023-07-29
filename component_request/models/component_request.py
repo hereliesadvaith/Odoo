@@ -74,7 +74,7 @@ class ComponentRequest(models.Model):
                         'location_id': record.source_location.id,
                         'location_dest_id': record.destination_location.id,
                         'name': record.product_id.name,
-                        'product_uom_qty': record.quantity
+                        'product_uom_qty': record.quantity,
                     }))],
                 })
                 stock_picking.action_confirm()
