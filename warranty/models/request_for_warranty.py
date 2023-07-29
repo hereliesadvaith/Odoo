@@ -17,6 +17,7 @@ class RequestForWarranty(models.Model):
         readonly=True,
         default=lambda self: _("New"),
         copy=False,
+        help="Sequence number of request"
     )
     state = fields.Selection(
         selection=[
@@ -28,23 +29,28 @@ class RequestForWarranty(models.Model):
             ("cancelled", "Cancelled"),
         ],
         default="draft",
+        help="Status of the request"
     )
     invoice_id = fields.Many2one(
         "account.move",
         string="Invoice",
         required=True,
         domain=[("state", "=", "posted"), ("name", "like", "INV")],
+        help="Invoice number"
     )
     product_id = fields.Many2one(
-        "product.product", string="Product", required=True)
-    lot_number_id = fields.Many2one("stock.lot", string="Lot/Serial Number")
-    request_date = fields.Date(default=fields.Date.today())
+        "product.product", string="Product", required=True, help="Product")
+    lot_number_id = fields.Many2one(
+        "stock.lot", string="Lot/Serial Number", help="Lot or Serial number of the product")
+    request_date = fields.Date(
+        default=fields.Date.today(), help="Date of the request")
     customer_id = fields.Many2one(
         "res.partner", string="Customer", related="invoice_id.partner_id",
-        tracking=True
+        tracking=True,
+        help="Customer"
     )
     purchase_date = fields.Date(
-        string="Purchase Date", related="invoice_id.invoice_date"
+        string="Purchase Date", related="invoice_id.invoice_date", help="Purchased date"
     )
     warranty_type = fields.Selection(
         string="Warranty Type",
@@ -53,14 +59,17 @@ class RequestForWarranty(models.Model):
             ("replacement_warranty", "Replacement Warranty"),
         ],
         related="product_id.warranty_type",
+        help="Type of warranty"
     )
     warranty_period = fields.Integer(
-        string="Warranty Period(Days)", related="product_id.warranty_period"
+        string="Warranty Period(Days)", related="product_id.warranty_period",
+        help="Valid period for warranty"
     )
     warranty_expire_date = fields.Date(
-        string="Warranty Expire Date", compute="_compute_warranty_expire_date"
+        string="Warranty Expire Date", compute="_compute_warranty_expire_date", help="Expiration date of warranty"
     )
-    delivery_count = fields.Integer(string="Delivery Count", default=0)
+    delivery_count = fields.Integer(
+        string="Delivery Count", default=0, help="Number of stock moves")
 
     # Compute functions
 

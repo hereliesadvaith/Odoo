@@ -14,8 +14,10 @@ class ComponentRequest(models.Model):
         readonly=True,
         default=lambda self: _("New"),
         copy=False,
+        help="Sequence number"
     )
-    user_id = fields.Many2one("res.users", string="Responsible")
+    user_id = fields.Many2one(
+        "res.users", string="Responsible", help="Person responsible for the request")
     order_line_ids = fields.One2many("component.order.line", "order_id")
     state = fields.Selection(
         selection=[
@@ -25,6 +27,7 @@ class ComponentRequest(models.Model):
             ("cancelled", "Cancelled")
         ],
         default="draft",
+        help="Status of the request"
     )
 
     # CRUD Methods

@@ -12,13 +12,16 @@ class ComponentOrderLine(models.Model):
     _description = "Component Order Line"
 
     order_id = fields.Many2one('component.request', string='Order Reference')
-    product_id = fields.Many2one("product.product", string="Product")
-    quantity = fields.Integer(string="Quantity")
+    product_id = fields.Many2one(
+        "product.product", string="Product", help="Product")
+    quantity = fields.Integer(string="Quantity", help="Quantity")
     transfer_type = fields.Selection(string="Transfer Type",
                                      selection=[
                                          ("purchase", "Purchase Order"),
                                          ("internal", "Internal Transfer")
                                      ],
-                                     required=True)
-    source_location = fields.Many2one("stock.location")
-    destination_location = fields.Many2one("stock.location")
+                                     required=True, help="Transfer type")
+    source_location = fields.Many2one(
+        "stock.location", help="Source location of product")
+    destination_location = fields.Many2one(
+        "stock.location", help="Destination location of product")

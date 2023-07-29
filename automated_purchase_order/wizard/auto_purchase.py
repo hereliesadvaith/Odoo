@@ -11,10 +11,11 @@ class AutoPurchase(models.TransientModel):
     _description = "Auto Purchase"
 
     product_id = fields.Many2one("product.product", string="Product",
-                                 readonly=True)
-    quantity = fields.Integer(string="Quantity", default=1)
-    price = fields.Integer(string="Price", required=True)
-    vendor = fields.Many2one("res.partner", string="Vendor", required=True)
+                                 readonly=True, help="Product")
+    quantity = fields.Integer(string="Quantity", default=1, help="Quantity")
+    price = fields.Integer(string="Price", required=True, help="Unit price")
+    vendor = fields.Many2one(
+        "res.partner", string="Vendor", required=True, help="Vendor")
 
     # seller_ids = fields.One2many('product.supplierinfo', 'product_tmpl_id')
 

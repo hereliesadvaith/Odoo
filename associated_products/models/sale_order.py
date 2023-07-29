@@ -10,7 +10,8 @@ class SaleOrder(models.Model):
 
     _inherit = "sale.order"
 
-    associated_products = fields.Boolean(string="Associated Products")
+    associated_products = fields.Boolean(
+        string="Associated Products", help="Check to add associated products")
     _product_id_old = []
 
     # Onchange functions
