@@ -9,3 +9,6 @@ class ProductsTemplate(models.Model):
     """
 
     _inherit = "product.template"
+
+    manufacture_ok = fields.Boolean(
+        string="Can be Manufactured", help="Check product can be manufactured")
