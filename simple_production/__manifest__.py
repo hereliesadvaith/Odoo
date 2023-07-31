@@ -11,7 +11,9 @@
     "depends": ["base", "product", "purchase", "stock"],
     "data": [
         "security/ir.model.access.csv",
+        "data/simple_production_sequence.xml",
         "views/product_template_views.xml",
+        "views/simple_production_views.xml",
     ],
     "installable": True,
     "license": "LGPL-3",

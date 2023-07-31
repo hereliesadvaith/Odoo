@@ -17,7 +17,8 @@ class ComponentRequest(models.Model):
         help="Sequence number"
     )
     user_id = fields.Many2one(
-        "res.users", string="Responsible", help="Person responsible for the request")
+        "res.users", string="Responsible", help="Person responsible for the "
+                                                "request")
     order_line_ids = fields.One2many("component.order.line", "order_id")
     state = fields.Selection(
         selection=[

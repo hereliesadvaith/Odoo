@@ -41,7 +41,8 @@ class RequestForWarranty(models.Model):
     product_id = fields.Many2one(
         "product.product", string="Product", required=True, help="Product")
     lot_number_id = fields.Many2one(
-        "stock.lot", string="Lot/Serial Number", help="Lot or Serial number of the product")
+        "stock.lot", string="Lot/Serial Number", help="Lot or Serial number "
+                                                      "of the product")
     request_date = fields.Date(
         default=fields.Date.today(), help="Date of the request")
     customer_id = fields.Many2one(
@@ -50,7 +51,8 @@ class RequestForWarranty(models.Model):
         help="Customer"
     )
     purchase_date = fields.Date(
-        string="Purchase Date", related="invoice_id.invoice_date", help="Purchased date"
+        string="Purchase Date", related="invoice_id.invoice_date",
+        help="Purchased date"
     )
     warranty_type = fields.Selection(
         string="Warranty Type",
@@ -66,7 +68,8 @@ class RequestForWarranty(models.Model):
         help="Valid period for warranty"
     )
     warranty_expire_date = fields.Date(
-        string="Warranty Expire Date", compute="_compute_warranty_expire_date", help="Expiration date of warranty"
+        string="Warranty Expire Date", compute="_compute_warranty_expire_date",
+        help="Expiration date of warranty"
     )
     delivery_count = fields.Integer(
         string="Delivery Count", default=0, help="Number of stock moves")

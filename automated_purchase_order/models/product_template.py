@@ -43,6 +43,8 @@ class ProductProduct(models.Model):
 
     _inherit = "product.product"
 
+    # Action Methods
+
     def action_automate_po(self):
         """
         To open the wizard on button click.

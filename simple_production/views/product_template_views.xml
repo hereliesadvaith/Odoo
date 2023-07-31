@@ -7,11 +7,29 @@
         <field name="inherit_id" ref="product.product_template_form_view"/>
         <field name="arch" type="xml">
             <div name="options" position="inside">
-                <span class="d-inline-block">
-                    <field name="manufacture_ok"/>
+                <span class="d-inline-block" >
+                    <field name="manufacture_ok" />
                     <label for="manufacture_ok"/>
                 </span>
             </div>
+        </field>
+    </record>
+    <!-- Inherit views for product page notebook -->
+    <record id="view_template_property_form" model="ir.ui.view">
+        <field name="name">product.template.form.inherit.simple.production</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="stock.view_template_property_form"/>
+        <field name="arch" type="xml">
+            <notebook position="inside">
+                <page name="Components" attrs="{'invisible': [('manufacture_ok', '=', False)]}">
+                    <field name="component_ids" nolabel="1">
+                        <tree editable="bottom">
+                            <field name="product_id"/>
+                            <field name="quantity"/>
+                        </tree>
+                    </field>
+                </page>
+            </notebook>
         </field>
     </record>
 </odoo>
