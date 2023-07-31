@@ -20,11 +20,9 @@ class SimpleProduction(models.Model):
     quantity = fields.Integer(string="Quantity", default=1)
     component_ids = fields.One2many("required.component",
                                     "simple_production_id",
-                                    related="product_id.component_ids",
                                     readonly=False)
     state = fields.Selection([('draft', 'Draft'), ('post', 'Post'),
-                              ('done', 'Done'), ('cancelled', 'Cancelled')]
-                             , default="draft")
+                              ('done', 'Done'), ('cancelled', 'Cancelled')], default="draft")
 
     # CRUD Methods
 
@@ -42,12 +40,21 @@ class SimpleProduction(models.Model):
 
     # Onchange Methods
 
-    @api.onchange("quantity")
-    def _onchange_quantity(self):
+    @api.onchange("quantity", "product_id")
+    def onchange_quantity(self):
         """
         Used to change the component's quantity.
         """
-        pass
+        self.update({
+            "component_ids": [(fields.Command.clear())],
+        })
+        for record in self.product_id.component_ids:
+            self.update({
+                "component_ids": [(fields.Command.create({
+                    "product_id": record.product_id.id,
+                    "quantity": self.quantity * record.quantity,
+                }))],
+            })
 
     # Action Methods
 
