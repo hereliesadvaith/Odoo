@@ -16,13 +16,18 @@ class SimpleProduction(models.Model):
         copy=False,
         help="Sequence number"
     )
-    product_id = fields.Many2one("product.product", string="Product")
+    product_id = fields.Many2one("product.product", string="Product",
+                                 domain=[("manufacture_ok", "=", True)],
+                                 required=True)
     quantity = fields.Integer(string="Quantity", default=1)
     component_ids = fields.One2many("required.component",
                                     "simple_production_id",
                                     readonly=False)
     state = fields.Selection([('draft', 'Draft'), ('post', 'Post'),
-                              ('done', 'Done'), ('cancelled', 'Cancelled')], default="draft")
+                              ('done', 'Done'), ('cancelled', 'Cancelled')],
+                             default="draft")
+    delivery_count = fields.Integer(
+        string="Delivery Count", default=0, help="Number of stock moves")
 
     # CRUD Methods
 
@@ -56,6 +61,31 @@ class SimpleProduction(models.Model):
                 }))],
             })
 
+    def transfer(self, location_id, location_dest_id):
+        """
+        To transfer components to production location
+        """
+        stock_picking = self.env["stock.picking"].create({
+            'location_id': location_id,
+            'location_dest_id': location_dest_id,
+            'picking_type_id': self.env["stock.picking.type"].search(
+                [('sequence_code', '=', 'INT')]
+            ).id,
+            'origin': self.name,
+        })
+        for record in self.component_ids:
+            stock_picking.update({
+                "move_ids": [(fields.Command.create({
+                    'product_id': record.product_id.id,
+                    'location_id': location_id,
+                    'location_dest_id': location_dest_id,
+                    'name': record.product_id.name,
+                    'quantity_done': record.quantity,
+                }))],
+            })
+        stock_picking.action_confirm()
+        stock_picking.button_validate()
+
     # Action Methods
 
     def action_confirm(self):
@@ -63,7 +93,12 @@ class SimpleProduction(models.Model):
         Used to set draft to to_approve state
         """
         self.ensure_one()
+        location_id = self.env.ref("stock.stock_location_stock").id
+        location_dest_id = (
+            self.env.ref("simple_production.production_location").id)
+        self.transfer(location_id, location_dest_id)
         self.state = 'post'
+        self.delivery_count += 1
 
     def action_done(self):
         """
@@ -71,6 +106,46 @@ class SimpleProduction(models.Model):
         """
         self.ensure_one()
         self.state = "done"
+        location_dest_id = self.env.ref("stock.stock_location_stock").id
+        location_id = (
+            self.env.ref("simple_production.production_location").id)
+        stock_picking = self.env["stock.picking"].create({
+            'location_id': location_id,
+            'location_dest_id': location_dest_id,
+            'picking_type_id': self.env["stock.picking.type"].search(
+                [('sequence_code', '=', 'INT')]
+            ).id,
+            'origin': self.name,
+        })
+        stock_picking.update({
+            "move_ids": [(fields.Command.create({
+                'product_id': self.product_id.id,
+                'location_id': location_id,
+                'location_dest_id': location_dest_id,
+                'name': self.product_id.name,
+                'quantity_done': self.quantity,
+            }))],
+        })
+        stock_picking.action_confirm()
+        stock_picking.button_validate()
+        product = self.env["stock.quant"].search([
+            ("location_id", "=", location_id),
+            ("product_id", "=", self.product_id.id)
+        ])
+        product.update({
+            "inventory_quantity": product.quantity + self.quantity
+        })
+        product.action_apply_inventory()
+        for record in self.component_ids:
+            component_id = self.env["stock.quant"].search([
+                ("location_id", "=", location_id),
+                ("product_id", "=", record.product_id.id)
+            ])
+            component_id.update({
+                "inventory_quantity": component_id.quantity - record.quantity
+            })
+            component_id.action_apply_inventory()
+        self.delivery_count += 1
 
     def action_cancel(self):
         """
@@ -78,3 +153,17 @@ class SimpleProduction(models.Model):
         """
         self.ensure_one()
         self.state = 'cancelled'
+
+    def action_view_stock_moves(self):
+        """
+        To see the stock moves related to production.
+        """
+        self.ensure_one()
+        return {
+            "type": "ir.actions.act_window",
+            "name": "Transfers",
+            "view_mode": "tree,form",
+            "res_model": "stock.picking",
+            "context": "{'create': False}",
+            "domain": [("origin", "=", self.name)],
+        }

@@ -14,3 +14,5 @@ class RequiredComponent(models.Model):
     simple_production_id = fields.Many2one("simple.production")
     product_id = fields.Many2one("product.product")
     quantity = fields.Integer()
+    source_location = fields.Many2one("stock.location",
+                                      string="Source Location")

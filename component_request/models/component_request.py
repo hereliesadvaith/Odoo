@@ -52,7 +52,6 @@ class ComponentRequest(models.Model):
         for record in self.order_line_ids:
             if record.transfer_type == "purchase":
                 for rec in record.product_id.seller_ids:
-                    print(rec.partner_id.id)
                     purchase_order = self.env["purchase.order"].create({
                         "partner_id": rec.partner_id.id,
                     })
