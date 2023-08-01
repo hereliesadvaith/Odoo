@@ -11,8 +11,8 @@ class RequiredComponent(models.Model):
 
     product_tmpl_id = fields.Many2one("product.template")
     simple_production_id = fields.Many2one("simple.production")
-    product_id = fields.Many2one("product.product")
-    quantity = fields.Integer(string="Quantity")
+    product_id = fields.Many2one("product.product", help="Product")
+    quantity = fields.Integer(string="Quantity", help="Quantity")
     source_location_id = fields.Many2one("stock.location",
-                                      string="Source Location")
-    
+                                         string="Source Location",
+                                         help="Source location")

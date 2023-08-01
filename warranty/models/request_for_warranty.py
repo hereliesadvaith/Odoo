@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 from odoo import api, fields, models, _
 from odoo.tools import date_utils
 
@@ -8,7 +7,6 @@ class RequestForWarranty(models.Model):
     """
     This class is used to make the model of our Request For Warranty page
     """
-
     _name = "request.for.warranty"
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = "Request For Warranty"

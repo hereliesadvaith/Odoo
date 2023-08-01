@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 from odoo import models
 
 
@@ -7,7 +6,6 @@ class ProductsTemplate(models.Model):
     """
     To add fields to product template model.
     """
-
     _inherit = ["product.template"]
 
     # Action Methods
@@ -40,7 +38,6 @@ class ProductProduct(models.Model):
     """
     To add fields in product model.
     """
-
     _inherit = "product.product"
 
     # Action Methods

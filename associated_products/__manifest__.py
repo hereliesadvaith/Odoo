@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 {
     "name": "Associated Products",
     "version": "16.0.1.0",

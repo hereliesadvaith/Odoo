@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 from odoo import fields, models
 
 
@@ -11,7 +10,8 @@ class ComponentOrderLine(models.Model):
     _name = "component.order.line"
     _description = "Component Order Line"
 
-    order_id = fields.Many2one('component.request', string='Order Reference')
+    order_id = fields.Many2one('component.request', string='Order Reference',
+                               help="Order")
     product_id = fields.Many2one(
         "product.product", string="Product", help="Product")
     quantity = fields.Integer(string="Quantity", help="Quantity")

@@ -1,18 +1,17 @@
 # -*- coding: utf-8 -*-
-
 from odoo import api, fields, models
+
+_product_id_old = []
 
 
 class SaleOrder(models.Model):
     """
     To add fields in invoice page.
     """
-
     _inherit = "sale.order"
 
     associated_products = fields.Boolean(
         string="Associated Products", help="Check to add associated products")
-    _product_id_old = []
 
     # Onchange functions
 
