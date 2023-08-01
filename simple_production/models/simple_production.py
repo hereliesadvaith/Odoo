@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 from odoo import api, fields, models, _
 
 
@@ -16,18 +15,23 @@ class SimpleProduction(models.Model):
         copy=False,
         help="Sequence number"
     )
-    product_id = fields.Many2one("product.product", string="Product",
+    product_id = fields.Many2one("product.product",
+                                 string="Product",
                                  domain=[("manufacture_ok", "=", True)],
-                                 required=True)
+                                 required=True,
+                                 help="Product")
     quantity = fields.Integer(string="Quantity", default=1)
     component_ids = fields.One2many("required.component",
                                     "simple_production_id",
                                     readonly=False)
     state = fields.Selection([('draft', 'Draft'), ('post', 'Post'),
                               ('done', 'Done'), ('cancelled', 'Cancelled')],
-                             default="draft")
+                             default="draft", help="status")
     delivery_count = fields.Integer(
         string="Delivery Count", default=0, help="Number of stock moves")
+    storage_location_id = fields.Many2one("stock.location",
+                                          string="Storage Location",
+                                          help="Where to store the product")
 
     # CRUD Methods
 
@@ -61,48 +65,44 @@ class SimpleProduction(models.Model):
                 }))],
             })
 
-    def transfer(self, location_id, location_dest_id):
-        """
-        To transfer components to production location
-        """
-        stock_picking = self.env["stock.picking"].create({
-            'location_id': location_id,
-            'location_dest_id': location_dest_id,
-            'picking_type_id': self.env["stock.picking.type"].search(
-                [('sequence_code', '=', 'INT')]
-            ).id,
-            'origin': self.name,
-        })
-        for record in self.component_ids:
-            stock_picking.update({
-                "move_ids": [(fields.Command.create({
-                    'product_id': record.product_id.id,
-                    'location_id': location_id,
-                    'location_dest_id': location_dest_id,
-                    'name': record.product_id.name,
-                    'quantity_done': record.quantity,
-                }))],
-            })
-        stock_picking.action_confirm()
-        stock_picking.button_validate()
-
     # Action Methods
 
     def action_confirm(self):
         """
-        Used to set draft to to_approve state
+        Used to set draft to to_approve state and transfer components
         """
         self.ensure_one()
         location_id = self.env.ref("stock.stock_location_stock").id
         location_dest_id = (
             self.env.ref("simple_production.production_location").id)
-        self.transfer(location_id, location_dest_id)
+        for record in self.component_ids:
+            stock_picking = self.env["stock.picking"].create({
+                'location_id': record.source_location_id.id
+                if record.source_location_id else location_id,
+                'location_dest_id': location_dest_id,
+                'picking_type_id': self.env["stock.picking.type"].search(
+                    [('sequence_code', '=', 'INT')]
+                ).id,
+                'origin': self.name,
+            })
+            stock_picking.update({
+                "move_ids": [(fields.Command.create({
+                    'product_id': record.product_id.id,
+                    'location_id': record.source_location_id.id
+                    if record.source_location_id else location_id,
+                    'location_dest_id': location_dest_id,
+                    'name': record.product_id.name,
+                    'quantity_done': record.quantity,
+                }))],
+            })
+            stock_picking.action_confirm()
+            stock_picking.button_validate()
+            self.delivery_count += 1
         self.state = 'post'
-        self.delivery_count += 1
 
     def action_done(self):
         """
-        Used to confirm the component request.
+        Used to transfer manufactured product.
         """
         self.ensure_one()
         self.state = "done"
@@ -111,7 +111,8 @@ class SimpleProduction(models.Model):
             self.env.ref("simple_production.production_location").id)
         stock_picking = self.env["stock.picking"].create({
             'location_id': location_id,
-            'location_dest_id': location_dest_id,
+            'location_dest_id': self.storage_location_id.id
+            if self.storage_location_id else location_dest_id,
             'picking_type_id': self.env["stock.picking.type"].search(
                 [('sequence_code', '=', 'INT')]
             ).id,
@@ -121,7 +122,8 @@ class SimpleProduction(models.Model):
             "move_ids": [(fields.Command.create({
                 'product_id': self.product_id.id,
                 'location_id': location_id,
-                'location_dest_id': location_dest_id,
+                'location_dest_id': self.storage_location_id.id
+                if self.storage_location_id else location_dest_id,
                 'name': self.product_id.name,
                 'quantity_done': self.quantity,
             }))],

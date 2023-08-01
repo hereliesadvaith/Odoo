@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <data>
+    <data noupdate="1">
         <!--  For creating a manufacturing location    -->
         <record model="stock.location" id="production_location">
             <field name="name">Manufacturing</field>

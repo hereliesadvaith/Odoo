@@ -29,8 +29,11 @@
                        </h1>
                    </div>
                    <group>
-                       <field name="product_id"/>
-                       <field name="quantity"/>
+                       <group>
+                           <field name="product_id"/>
+                           <field name="quantity"/>
+                           <field name="storage_location_id"/>
+                       </group>
                    </group>
                <notebook>
                        <page name="Components">
@@ -38,7 +41,7 @@
                                <tree editable="bottom">
                                    <field name="product_id"/>
                                    <field name="quantity"/>
-                                   <field name="source_location"/>
+                                   <field name="source_location_id"/>
                                </tree>
                            </field>
                        </page>

@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 {
     "name": "Simple Production",
     "version": "16.0.1.0",
