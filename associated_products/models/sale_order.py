@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from odoo import api, fields, models
 
-_product_id_old = []
 
 
 class SaleOrder(models.Model):
@@ -12,6 +11,7 @@ class SaleOrder(models.Model):
 
     associated_products = fields.Boolean(
         string="Associated Products", help="Check to add associated products")
+    _product_id_old = []
 
     # Onchange functions
 

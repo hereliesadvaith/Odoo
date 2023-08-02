@@ -53,6 +53,7 @@ class ComponentRequest(models.Model):
                 for rec in record.product_id.seller_ids:
                     purchase_order = self.env["purchase.order"].create({
                         "partner_id": rec.partner_id.id,
+                        "origin": self.name
                     })
                     purchase_order.update({
                         "order_line": [(fields.Command.create({
