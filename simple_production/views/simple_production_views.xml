@@ -72,7 +72,7 @@
     <menuitem id="menu_simple_production"
               name="Simple Production"
               action="simple_production_action"
-              parent="purchase.menu_procurement_management"
+              parent="stock.menu_stock_inventory_control"
               sequence="8"
     />
 </odoo>

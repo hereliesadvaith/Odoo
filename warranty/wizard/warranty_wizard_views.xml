@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Auto purchase page form view -->
+        <record id="warranty_wizard_view_form" model="ir.ui.view">
+            <field name="name">Warranty Wizard</field>
+            <field name="model">warranty.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Warranty">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="product_ids" widget="many2many_tags"/>
+                                <field name="partner_id"/>
+                                <field name="warranty_id"/>
+                            </group>
+                            <group>
+                                <field name="start_date"/>
+                                <field name="end_date"/>
+                            </group>
+                        </group>
+                        <footer>
+                            <button name="action_confirm" string="Confirm" type="object" class="btn-primary"/>
+                            <button string="Discard" special="cancel" type="object"/>
+                        </footer>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <!-- Action for warranty wizard -->
+        <record id="warranty_wizard_action" model="ir.actions.act_window">
+            <field name="name">Warranty Report</field>
+            <field name="res_model">warranty.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+    </data>
+</odoo>
