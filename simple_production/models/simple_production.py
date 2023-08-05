@@ -80,9 +80,7 @@ class SimpleProduction(models.Model):
                 'location_id': record.source_location_id.id
                 if record.source_location_id else location_id,
                 'location_dest_id': location_dest_id,
-                'picking_type_id': self.env["stock.picking.type"].search(
-                    [('sequence_code', '=', 'INT')]
-                ).id,
+                'picking_type_id': self.env.ref("stock.picking_type_in").id,
                 'origin': self.name,
             })
             stock_picking.update({

@@ -21,6 +21,6 @@ class WarrantyReport(models.TransientModel):
 
     def action_confirm(self):
         """
-        To get the report
+        To print the pdf report the report
         """
         pass

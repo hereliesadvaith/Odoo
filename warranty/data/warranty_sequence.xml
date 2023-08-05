@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <data noupdate="0">
+    <data noupdate="1">
         <!--  Sequence number for our request for warranty    -->
         <record id="warranty_sequence" model="ir.sequence">
             <field name="name">Warranty Sequence</field>
