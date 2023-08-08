@@ -19,18 +19,30 @@
                                 <th name="th_product" class="text-left">
                                     <span>Product</span>
                                 </th>
+                                <th name="th_product" class="text-left">
+                                    <span>State</span>
+                                </th>
+                                <th name="th_product" class="text-left">
+                                    <span>Request Date</span>
+                                </th>
                             </tr>
                         </thead>
                         <t t-foreach="warranties" t-as="line">
                             <tr>
                                 <td>
-                                    <t t-esc="line['name']"/>
+                                    <t t-esc="line['warranty']"/>
                                 </td>
                                 <td>
-                                    <t t-esc="line['customer_id'][1]"/>
+                                    <t t-esc="line['partner']"/>
                                 </td>
                                 <td>
-                                    <t t-esc="line['product_id'][1]"/>
+                                    <t t-esc="line['product']['en_US']"/>
+                                </td>
+                                <td>
+                                    <t t-esc="line['state']"/>
+                                </td>
+                                <td>
+                                    <t t-esc="line['request_date']"/>
                                 </td>
                             </tr>
                         </t>
