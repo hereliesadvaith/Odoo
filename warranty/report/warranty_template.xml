@@ -5,48 +5,170 @@
         <t t-call="web.html_container">
             <t t-call="web.external_layout">
                 <div class="page">
-                    <h1>Product Warranty Report</h1>
+                    <h1 class="text-center">Product Warranty Report</h1>
                     <br/>
-                    <table class="table table-bordered mt32">
-                        <thead>
-                            <tr>
-                                <th name="th_reference" class="text-left">
-                                    <span>Reference</span>
-                                </th>
-                                <th name="th_partner" class="text-left">
-                                    <span>Customer</span>
-                                </th>
-                                <th name="th_product" class="text-left">
-                                    <span>Product</span>
-                                </th>
-                                <th name="th_product" class="text-left">
-                                    <span>State</span>
-                                </th>
-                                <th name="th_product" class="text-left">
-                                    <span>Request Date</span>
-                                </th>
-                            </tr>
-                        </thead>
-                        <t t-foreach="warranties" t-as="line">
-                            <tr>
-                                <td>
-                                    <t t-esc="line['warranty']"/>
-                                </td>
-                                <td>
-                                    <t t-esc="line['partner']"/>
-                                </td>
-                                <td>
-                                    <t t-esc="line['product']['en_US']"/>
-                                </td>
-                                <td>
-                                    <t t-esc="line['state']"/>
-                                </td>
-                                <td>
-                                    <t t-esc="line['request_date']"/>
-                                </td>
-                            </tr>
+                    <t t-if="partner == True">
+                        <h5>Customer: <span t-esc="warranties[0]['partner']"/></h5>
+                        <br/>
+                        <t t-if="products == False">
+                            <table class="table table-bordered mt32">
+                                <thead>
+                                    <tr>
+                                        <th name="th_reference" class="text-left">
+                                            <span>Reference</span>
+                                        </th>
+                                        <th name="th_product" class="text-left">
+                                            <span>Product</span>
+                                        </th>
+                                        <th name="th_product" class="text-left">
+                                            <span>State</span>
+                                        </th>
+                                        <th name="th_product" class="text-left">
+                                            <span>Request Date</span>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <t t-foreach="warranties" t-as="line">
+                                    <tr>
+                                        <td>
+                                            <t t-esc="line['warranty']"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="line['product']['en_US']"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="line['state']"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="line['request_date']"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </table>
                         </t>
-                    </table>
+                        <t t-else="">
+                            <table class="table table-bordered mt32">
+                                <thead>
+                                    <tr>
+                                        <th name="th_reference" class="text-left">
+                                            <span>Reference</span>
+                                        </th>
+                                        <th name="th_product" class="text-left">
+                                            <span>State</span>
+                                        </th>
+                                        <th name="th_product" class="text-left">
+                                            <span>Request Date</span>
+                                        </th>
+                                    </tr>
+                                </thead>
+                            </table>
+                            <t t-foreach="unique_products" t-as="pro">
+                                <h6>Product: <span t-esc="pro[1]"/></h6>
+                                <t t-foreach="warranties" t-as="line">
+                                    <t t-if="line['id'] == pro[0]">
+                                        <table class="table table-bordered mt32">
+                                            <tr>
+                                                <td>
+                                                    <t t-esc="line['warranty']"/>
+                                                </td>
+                                                <td>
+                                                    <t t-esc="line['state']"/>
+                                                </td>
+                                                <td>
+                                                    <t t-esc="line['request_date']"/>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </t>
+                                </t>
+                            </t>
+                        </t>
+                    </t>
+                    <t t-elif="products == True and partner == False">
+                        <table class="table table-bordered mt32">
+                            <thead>
+                                <tr>
+                                    <th name="th_reference" class="text-left">
+                                        <span>Reference</span>
+                                    </th>
+                                    <th name="th_customer" class="text-left">
+                                        <span>Customer</span>
+                                    </th>
+                                    <th name="th_product" class="text-left">
+                                        <span>State</span>
+                                    </th>
+                                    <th name="th_product" class="text-left">
+                                        <span>Request Date</span>
+                                    </th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <t t-foreach="unique_products" t-as="pro">
+                            <h6>Product: <span t-esc="pro[1]"/></h6>
+                            <t t-foreach="warranties" t-as="line">
+                                <t t-if="line['id'] == pro[0]">
+                                    <table class="table table-bordered mt32">
+                                        <tr>
+                                            <td>
+                                                <t t-esc="line['warranty']"/>
+                                            </td>
+                                            <td>
+                                                <t t-esc="line['partner']"/>
+                                            </td>
+                                            <td>
+                                                <t t-esc="line['state']"/>
+                                            </td>
+                                            <td>
+                                                <t t-esc="line['request_date']"/>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </t>
+                            </t>
+                        </t>
+                    </t>
+                    <t t-else="">
+                        <table class="table table-bordered mt32">
+                            <thead>
+                                <tr>
+                                    <th name="th_reference" class="text-left">
+                                        <span>Reference</span>
+                                    </th>
+                                    <th name="th_customer" class="text-left">
+                                        <span>Customer</span>
+                                    </th>
+                                    <th name="th_product" class="text-left">
+                                        <span>Product</span>
+                                    </th>
+                                    <th name="th_product" class="text-left">
+                                        <span>State</span>
+                                    </th>
+                                    <th name="th_product" class="text-left">
+                                        <span>Request Date</span>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <t t-foreach="warranties" t-as="line">
+                                <tr>
+                                    <td>
+                                        <t t-esc="line['warranty']"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="line['partner']"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="line['product']['en_US']"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="line['state']"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="line['request_date']"/>
+                                    </td>
+                                </tr>
+                            </t>
+                        </table>
+                    </t>
                 </div>
             </t>
         </t>
