@@ -47,8 +47,10 @@
                             </table>
                         </t>
                         <t t-else="">
-                            <table class="table table-bordered mt32">
-                                <thead>
+                            <t t-foreach="unique_products" t-as="pro">
+                                <h6>Product: <span t-esc="pro[1]"/></h6>
+                                <table class="table table-bordered mt32">
+                                    <thead>
                                     <tr>
                                         <th name="th_reference" class="text-left">
                                             <span>Reference</span>
@@ -60,13 +62,9 @@
                                             <span>Request Date</span>
                                         </th>
                                     </tr>
-                                </thead>
-                            </table>
-                            <t t-foreach="unique_products" t-as="pro">
-                                <h6>Product: <span t-esc="pro[1]"/></h6>
-                                <t t-foreach="warranties" t-as="line">
-                                    <t t-if="line['id'] == pro[0]">
-                                        <table class="table table-bordered mt32">
+                                    </thead>
+                                    <t t-foreach="warranties" t-as="line">
+                                        <t t-if="line['id'] == pro[0]">
                                             <tr>
                                                 <td>
                                                     <t t-esc="line['warranty']"/>
@@ -78,15 +76,19 @@
                                                     <t t-esc="line['request_date']"/>
                                                 </td>
                                             </tr>
-                                        </table>
+                                        </t>
                                     </t>
-                                </t>
+                                </table>
                             </t>
                         </t>
                     </t>
                     <t t-elif="products == True and partner == False">
-                        <table class="table table-bordered mt32">
-                            <thead>
+
+
+                        <t t-foreach="unique_products" t-as="pro">
+                            <h6>Product: <span t-esc="pro[1]"/></h6>
+                            <table class="table table-bordered mt32">
+                                <thead>
                                 <tr>
                                     <th name="th_reference" class="text-left">
                                         <span>Reference</span>
@@ -101,30 +103,26 @@
                                         <span>Request Date</span>
                                     </th>
                                 </tr>
-                            </thead>
-                        </table>
-                        <t t-foreach="unique_products" t-as="pro">
-                            <h6>Product: <span t-esc="pro[1]"/></h6>
-                            <t t-foreach="warranties" t-as="line">
-                                <t t-if="line['id'] == pro[0]">
-                                    <table class="table table-bordered mt32">
-                                        <tr>
-                                            <td>
-                                                <t t-esc="line['warranty']"/>
-                                            </td>
-                                            <td>
-                                                <t t-esc="line['partner']"/>
-                                            </td>
-                                            <td>
-                                                <t t-esc="line['state']"/>
-                                            </td>
-                                            <td>
-                                                <t t-esc="line['request_date']"/>
-                                            </td>
-                                        </tr>
-                                    </table>
+                                </thead>
+                                <t t-foreach="warranties" t-as="line">
+                                    <t t-if="line['id'] == pro[0]">
+                                            <tr>
+                                                <td>
+                                                    <t t-esc="line['warranty']"/>
+                                                </td>
+                                                <td>
+                                                    <t t-esc="line['partner']"/>
+                                                </td>
+                                                <td>
+                                                    <t t-esc="line['state']"/>
+                                                </td>
+                                                <td>
+                                                    <t t-esc="line['request_date']"/>
+                                                </td>
+                                            </tr>
+                                    </t>
                                 </t>
-                            </t>
+                            </table>
                         </t>
                     </t>
                     <t t-else="">
