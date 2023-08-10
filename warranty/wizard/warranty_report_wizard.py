@@ -30,7 +30,7 @@ class WarrantyReportWizard(models.TransientModel):
         select pro.id, rfw.name as warranty, rfw.state, res.name as partner,
         rfw.request_date, ptm.name as product
         from request_for_warranty as rfw
-        inner join product_product as pro 
+        inner join product_product as pro
         on rfw.product_id = pro.id
         inner join product_template as ptm
         on pro.product_tmpl_id = ptm.id

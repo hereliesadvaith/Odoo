@@ -16,11 +16,17 @@
         "report/warranty_report.xml",
         "report/warranty_template.xml",
         "wizard/warranty_report_views.xml",
+        "wizard/warranty_xlsx_report_views.xml",
         "views/request_for_warranty_views.xml",
         "views/product_template_views.xml",
         "views/account_move_views.xml",
         "views/warranty_menus.xml",
     ],
+    "assets": {
+        "web.assets_backend": [
+            "warranty/static/src/js/action_manager.js",
+        ],
+    },
     "installable": True,
     "application": True,
     "license": "LGPL-3",

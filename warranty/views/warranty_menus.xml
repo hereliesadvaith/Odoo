@@ -6,4 +6,5 @@
     <menuitem id="reports_menu" name="Reports" parent="warranty_root_menu" sequence="2"/>
     <menuitem id="request_for_warranty_menu" action="request_for_warranty_action" parent="warranties_menu" sequence="1"/>
     <menuitem id="warranty_report_menu" action="warranty_wizard_action" parent="reports_menu" sequence="1"/>
+    <menuitem id="warranty_xlsx_report_menu" action="action_xlsx_repoort" parent="reports_menu" sequence="2"/>
 </odoo>
