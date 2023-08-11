@@ -94,7 +94,7 @@ class WarrantyReportWizard(models.TransientModel):
 
     def print_xlsx(self):
         """
-            To print the pdf report the report
+            To print the xlsx report the report
         """
         company_id = self.env.context['allowed_company_ids'][0]
         if self.start_date and self.end_date:
@@ -189,12 +189,12 @@ class WarrantyReportWizard(models.TransientModel):
                      warranty['state'],
                      warranty['request_date']])
                 index += 1
-                sheet.add_table(f"A6:D{index}",
-                                {"data": data_list,
-                                 "columns": [{'header': 'Warranty'},
-                                             {'header': 'Product'},
-                                             {'header': 'State'},
-                                             {'header': 'Request Date'}]})
+            sheet.add_table(f"A6:D{index}",
+                            {"data": data_list,
+                                "columns": [{'header': 'Warranty'},
+                                            {'header': 'Product'},
+                                            {'header': 'State'},
+                                            {'header': 'Request Date'}]})
         else:
             for warranty in data['warranties']:
                 data_list.append(
@@ -204,13 +204,13 @@ class WarrantyReportWizard(models.TransientModel):
                      warranty['state'],
                      warranty['request_date']])
                 index += 1
-                sheet.add_table(f"A6:E{index}",
-                                {"data": data_list,
-                                 "columns": [{'header': 'Warranty'},
-                                             {'header': 'Customer'},
-                                             {'header': 'Product'},
-                                             {'header': 'State'},
-                                             {'header': 'Request Date'}]})
+            sheet.add_table(f"A6:E{index}",
+                            {"data": data_list,
+                                "columns": [{'header': 'Warranty'},
+                                            {'header': 'Customer'},
+                                            {'header': 'Product'},
+                                            {'header': 'State'},
+                                            {'header': 'Request Date'}]})
         if data['start_date']:
             sheet.write('A3', 'Date From')
             sheet.write('B3', data['start_date'])

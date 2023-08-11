@@ -75,7 +75,7 @@ class RequestForWarranty(models.Model):
     company_id = fields.Many2one(
         "res.company",
         default=lambda self: self.env['res.company'].browse(
-
+            self.env.context['allowed_company_ids'][0]
         ))
 
     # Compute functions
