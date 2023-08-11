@@ -138,10 +138,10 @@
                                     <th name="th_product" class="text-left">
                                         <span>Product</span>
                                     </th>
-                                    <th name="th_product" class="text-left">
+                                    <th name="th_state" class="text-left">
                                         <span>State</span>
                                     </th>
-                                    <th name="th_product" class="text-left">
+                                    <th name="th_date" class="text-left">
                                         <span>Request Date</span>
                                     </th>
                                 </tr>

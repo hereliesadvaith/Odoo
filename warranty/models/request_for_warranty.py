@@ -72,6 +72,12 @@ class RequestForWarranty(models.Model):
     delivery_count = fields.Integer(
         string="Delivery Count", default=0, help="Number of stock moves")
 
+    company_id = fields.Many2one(
+        "res.company",
+        default=lambda self: self.env['res.company'].browse(
+
+        ))
+
     # Compute functions
 
     @api.depends("purchase_date", "warranty_period")

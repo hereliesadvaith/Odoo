@@ -17,4 +17,11 @@
         <field name="category_id" ref="module_category_warranty"/>
         <field name="implied_ids" eval="[(4, ref('warranty_user_access'))]"/>
     </record>
+    <!--  To create company rules  -->
+    <record id="warranty_multi_company_rule" model="ir.rule">
+        <field name="name">Warranty Multi Company Rule</field>
+        <field name="model_id" ref="model_request_for_warranty"/>
+        <field name="global" eval="True"/>
+        <field name="domain_force">['|', ('company_id', '>', 1), ('company_id', '=', company_id)]</field>
+    </record>
 </odoo>
