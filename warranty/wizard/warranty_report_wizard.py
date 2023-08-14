@@ -23,11 +23,6 @@ class WarrantyReportWizard(models.TransientModel):
 
     # Action methods
 
-    def format_string(self, input_string):
-        words = input_string.split('_')
-        capitalized_words = [word.capitalize() for word in words]
-        return ' '.join(capitalized_words)
-
     def print_pdf(self):
         """
         To print the pdf report the report
@@ -73,8 +68,7 @@ class WarrantyReportWizard(models.TransientModel):
         self.env.cr.execute(query)
         warranties = self.env.cr.dictfetchall()
         for warranty in warranties:
-            new_state = self.format_string(warranty['state'])
-            warranty['state'] = new_state
+            warranty['state'] = warranty['state'].replace("_", " ").title()
         if len(warranties) == 0:
             raise MissingError("No records found")
         if self.product_ids:
@@ -137,8 +131,7 @@ class WarrantyReportWizard(models.TransientModel):
         self.env.cr.execute(query)
         warranties = self.env.cr.dictfetchall()
         for warranty in warranties:
-            new_state = self.format_string(warranty['state'])
-            warranty['state'] = new_state
+            warranty['state'] = warranty['state'].replace("_", " ").title()
         if len(warranties) == 0:
             raise MissingError("No records found")
         if self.product_ids:
