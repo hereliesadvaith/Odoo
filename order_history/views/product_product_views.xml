@@ -6,10 +6,8 @@
         <field name="model">product.product</field>
         <field name="inherit_id" ref="product.product_normal_form_view"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='lst_price']" position="after">
-                <group>
-                    <field name="sale_count" class="oe_inline"/>
-                </group>
+            <xpath expr="//field[@name='taxes_id']" position="after">
+                <field name="sale_count"/>
             </xpath>
         </field>
     </record>
