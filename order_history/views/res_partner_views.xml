@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Inherit views for customer creation page -->
+    <record id="view_partner_form" model="ir.ui.view">
+        <field name="name">base.partner.form.inherit.sale.extension</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <div class="oe_button_box" name="button_box" position="inside">
+                <button type="object" name="action_view_products" class="oe_stat_button"
+                    icon="fa-truck" attrs="{'invisible': [('product_count', '=', 1)]}">
+                    <field name="product_count" widget="statinfo" string="Products" />
+                </button>
+            </div>
+            <notebook position="inside">
+                <page name="Sale Orders">
+                    <field name="sale_order_ids" widget="Many2many" nolabel="1"/>
+                </page>
+            </notebook>
+        </field>
+    </record>
+</odoo>

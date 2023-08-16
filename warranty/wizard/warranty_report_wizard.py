@@ -53,7 +53,7 @@ class WarrantyReportWizard(models.TransientModel):
             query += f"""
             and rfw.request_date <= '{self.end_date}' """
         if self.product_ids:
-            products = tuple(i.id for i in self.product_ids)
+            products = tuple(self.product_ids.ids)
             if len(products) > 1:
                 query += f"""
                 and rfw.product_id in {products}"""
@@ -94,6 +94,7 @@ class WarrantyReportWizard(models.TransientModel):
         if self.start_date and self.end_date:
             if self.start_date > self.end_date:
                 raise ValidationError("Set valid period")
+        print(self.env["request.for.warranty"].sudo().search([]))
         query = f"""
                 select pro.id, rfw.name as warranty, rfw.state,
                 res.name as partner, rfw.request_date, ptm.name as product
@@ -116,7 +117,7 @@ class WarrantyReportWizard(models.TransientModel):
             query += f"""
                     and rfw.request_date <= '{self.end_date}' """
         if self.product_ids:
-            products = tuple(i.id for i in self.product_ids)
+            products = tuple(self.product_ids.ids)
             if len(products) > 1:
                 query += f"""
                         and rfw.product_id in {products}"""
