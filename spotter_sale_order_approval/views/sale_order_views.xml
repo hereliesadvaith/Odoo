@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Inherit views for sale order page -->
+    <record id="view_order_form" model="ir.ui.view">
+        <field name="name">sale.order.form.inherit.order.approval</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_shipping_id']" position="after">
+                <field name="is_above_limit" invisible="1"/>
+            </xpath>
+            <xpath expr="//button[@name='action_quotation_send'][1]" position="attributes">
+                <attribute name="states"/>
+                <attribute name="attrs">{'invisible': ['|',('is_above_limit' ,'=', True),('state', 'not in', ['draft'])]}</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_confirm'][2]" position="attributes">
+                <attribute name="states"/>
+                <attribute name="attrs">{'invisible': ['|',('is_above_limit' ,'=', True),('state', 'not in', ['draft'])]}</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_quotation_send']" position="after">
+                <button name="action_approve" string="Approve" type="object" class="oe_highlight" attrs="{'invisible': ['|',('is_above_limit' ,'=', False),('state', 'not in', 'draft')]}"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

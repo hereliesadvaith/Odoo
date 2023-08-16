@@ -47,7 +47,7 @@
         <field name="res_model">order.history</field>
         <field name="view_mode">tree,form</field>
     </record>
-    <!-- To add menu in purchase module   -->
+    <!-- To add menu in sales module   -->
     <menuitem id="menu_order_history"
               name="Order History"
               action="order_history_action"
