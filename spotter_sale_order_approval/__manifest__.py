@@ -2,6 +2,7 @@
 {
     "name": "Spotter Sale Order Approval",
     "version": "16.0.1.0",
+    "author": "Advaith",
     "category": "Sales",
     "summary": "Sale order approval",
     "description": """
@@ -14,5 +15,4 @@
     ],
     "installable": True,
     "license": "LGPL-3",
-    "author": "Advaith",
 }

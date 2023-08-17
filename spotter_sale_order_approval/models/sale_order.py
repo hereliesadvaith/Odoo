@@ -4,30 +4,38 @@ from odoo import models, fields, api
 
 class SaleOrder(models.Model):
     """
-    To add fields in invoice page.
+    To inherit sale order
     """
     _inherit = "sale.order"
 
-    is_above_limit = fields.Boolean("is_above_limit", default=False)
-    is_approved = fields.Boolean("is_approved", default=False)
+    is_above_limit = fields.Boolean(
+        "is_above_limit", compute="_compute_is_above_limit")
+    is_level_1_approved = fields.Boolean("is_approved", default=False)
+    is_level_2_approved = fields.Boolean("is_approved", default=False)
 
-    # Compute Methods
+    # Compute Functions
 
-    @api.onchange("order_line")
-    def _onchange_order_line(self):
+    @api.depends("order_line")
+    def _compute_is_above_limit(self):
         """
-        To show approve button
+        To configure boolean fields
         """
-        if self.state == "draft":
-            if self.amount_total >= 25000:
-                self.is_above_limit = True
+        for order in self:
+            if ((order.amount_total < 25000 or
+                 order.state != "draft") or
+                    (order.is_level_1_approved and order.is_level_2_approved)):
+                order.is_above_limit = False
             else:
-                self.is_above_limit = False
+                order.is_above_limit = True
 
     # Action Methods
 
     def action_approve(self):
         """
-        To approve sale order
+        To approve quotation
         """
-        self.is_above_limit = False
+        if self.is_level_1_approved:
+            self.is_above_limit = False
+            self.is_level_2_approved = True
+        else:
+            self.is_level_1_approved = True
