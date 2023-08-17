@@ -21,8 +21,8 @@ class SaleOrder(models.Model):
         To configure boolean fields
         """
         for order in self:
-            if ((order.amount_total < 25000 or
-                 order.state != "draft") or
+            if (order.amount_total < 25000 or
+                    order.state != "draft" or
                     (order.is_level_1_approved and order.is_level_2_approved)):
                 order.is_above_limit = False
             else:
@@ -34,6 +34,7 @@ class SaleOrder(models.Model):
         """
         To approve quotation
         """
+        self.ensure_one()
         if self.is_level_1_approved:
             self.is_above_limit = False
             self.is_level_2_approved = True

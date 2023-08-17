@@ -15,7 +15,7 @@ class ProductProduct(models.Model):
 
     def _compute_sale_count(self):
         """
-            To compute sale count
+        To compute sale count
         """
         for record in self:
             sale_order_lines = self.env["sale.order.line"].search([(
