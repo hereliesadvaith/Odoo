@@ -38,11 +38,8 @@ class SaleOrder(models.Model):
         To approve quotation
         """
         self.ensure_one()
-        locations = self.env['stock.location'].search([])
-        for i in locations:
-            print(i.get_metadata()[0]['xmlid'])
         if self.is_level_1_approved:
             self.is_above_limit = False
-            # self.is_level_2_approved = True
+            self.is_level_2_approved = True
         else:
             self.is_level_1_approved = True
