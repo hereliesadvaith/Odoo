@@ -9,8 +9,10 @@ class RequiredComponent(models.Model):
     _name = "required.component"
     _description = "Required Component"
 
-    product_tmpl_id = fields.Many2one("product.template")
-    simple_production_id = fields.Many2one("simple.production")
+    product_tmpl_id = fields.Many2one("product.template",
+                                      help="Product id")
+    simple_production_id = fields.Many2one("simple.production",
+                                           help="Production id")
     product_id = fields.Many2one("product.product", help="Product")
     quantity = fields.Integer(string="Quantity", help="Quantity")
     source_location_id = fields.Many2one("stock.location",

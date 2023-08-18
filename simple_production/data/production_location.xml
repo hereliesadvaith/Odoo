@@ -5,7 +5,7 @@
         <record model="stock.location" id="production_location">
             <field name="name">Manufacturing</field>
             <field name="usage">internal</field>
-            <field name="location_id">3</field>
+            <field name="location_id" ref="stock.stock_location_locations_virtual"/>
         </record>
     </data>
 </odoo>

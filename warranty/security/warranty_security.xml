@@ -22,6 +22,6 @@
         <field name="name">Warranty Multi Company Rule</field>
         <field name="model_id" ref="model_request_for_warranty"/>
         <field name="global" eval="True"/>
-        <field name="domain_force">['|', ('company_id', '>', 1), ('company_id', '=', company_id)]</field>
+        <field name="domain_force">[('company_id', '=', company_id)]</field>
     </record>
 </odoo>

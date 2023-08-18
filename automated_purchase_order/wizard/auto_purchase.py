@@ -15,7 +15,6 @@ class AutoPurchase(models.TransientModel):
     price = fields.Integer(string="Price", required=True, help="Unit price")
     vendor = fields.Many2one(
         "res.partner", string="Vendor", required=True, help="Vendor")
-    # seller_ids = fields.One2many('product.supplierinfo', 'product_tmpl_id')
 
     # Action Methods
 

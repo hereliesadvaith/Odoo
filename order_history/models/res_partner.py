@@ -8,11 +8,15 @@ class ResPartner(models.Model):
     """
     _inherit = "res.partner"
 
-    sale_order_ids = fields.One2many("sale.order", "partner_id")
+    sale_order_ids = fields.One2many("sale.order",
+                                     "partner_id",
+                                     help="Sale orders")
     product_count = fields.Integer("Products", default=0,
-                                   compute="_compute_product_count")
+                                   compute="_compute_product_count",
+                                   help="Product count")
 
-    # Compute Methods
+    # Compute Functions
+
     def _compute_product_count(self):
         """
         To compute product count

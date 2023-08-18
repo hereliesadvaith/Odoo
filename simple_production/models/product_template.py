@@ -11,10 +11,5 @@ class ProductTemplate(models.Model):
     manufacture_ok = fields.Boolean(
         string="Can be Manufactured", help="Check product can be manufactured")
     component_ids = fields.One2many("required.component",
-                                    "product_tmpl_id")
-    # detailed_type = fields.Selection(selection_add=[
-    #     ('raw', 'Raw Material')
-    # ], tracking=True, ondelete={'raw': 'set consu'})
-    # type = fields.Selection(selection_add=[
-    #     ('raw', 'Raw Material')
-    # ], ondelete={'raw': 'set consu'})
+                                    "product_tmpl_id",
+                                    help="components")

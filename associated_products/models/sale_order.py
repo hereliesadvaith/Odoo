@@ -2,10 +2,9 @@
 from odoo import api, fields, models
 
 
-
 class SaleOrder(models.Model):
     """
-    To add fields in invoice page.
+    To inherit sales order page.
     """
     _inherit = "sale.order"
 
@@ -13,7 +12,7 @@ class SaleOrder(models.Model):
         string="Associated Products", help="Check to add associated products")
     _product_id_old = []
 
-    # Onchange functions
+    # Onchange Functions
 
     @api.onchange("associated_products", "partner_id")
     def _onchange_associated_products(self):

@@ -9,9 +9,12 @@ class SaleOrder(models.Model):
     _inherit = "sale.order"
 
     is_above_limit = fields.Boolean(
-        "is_above_limit", compute="_compute_is_above_limit")
-    is_level_1_approved = fields.Boolean("is_approved", default=False)
-    is_level_2_approved = fields.Boolean("is_approved", default=False)
+        "is_above_limit", compute="_compute_is_above_limit",
+        help="Check amount limit")
+    is_level_1_approved = fields.Boolean("is_approved", default=False,
+                                         help="Check level 1 approval")
+    is_level_2_approved = fields.Boolean("is_approved", default=False,
+                                         help="Check level 2 approval")
 
     # Compute Functions
 
@@ -35,8 +38,11 @@ class SaleOrder(models.Model):
         To approve quotation
         """
         self.ensure_one()
+        locations = self.env['stock.location'].search([])
+        for i in locations:
+            print(i.get_metadata()[0]['xmlid'])
         if self.is_level_1_approved:
             self.is_above_limit = False
-            self.is_level_2_approved = True
+            # self.is_level_2_approved = True
         else:
             self.is_level_1_approved = True

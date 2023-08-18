@@ -2,6 +2,7 @@
 {
     "name": "Automated Purchase Order",
     "version": "16.0.1.0",
+    "author": "Advaith",
     "category": "Sales",
     "summary": "Create purchase order from product view.",
     "description": """
@@ -16,5 +17,4 @@
     ],
     "installable": True,
     "license": "LGPL-3",
-    "author": "Advaith",
 }

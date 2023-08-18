@@ -2,6 +2,7 @@
 {
     "name": "Component Request",
     "version": "16.0.1.0",
+    "author": "Advaith",
     "category": "Sales",
     "summary": "Employees can create components requests.",
     "description": """
@@ -18,5 +19,4 @@
     ],
     "installable": True,
     "license": "LGPL-3",
-    "author": "Advaith",
 }

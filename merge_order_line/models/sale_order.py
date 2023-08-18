@@ -4,11 +4,11 @@ from odoo import models, api
 
 class SaleOrder(models.Model):
     """
-    To add fields in invoice page.
+    To inherit sale order
     """
     _inherit = "sale.order"
 
-    # CRUD functions
+    # CRUD Methods
 
     @api.model
     def create(self, vals):

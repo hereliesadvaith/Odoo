@@ -37,14 +37,16 @@ class RequestForWarranty(models.Model):
         help="Invoice number"
     )
     product_id = fields.Many2one(
-        "product.product", string="Product", required=True, help="Product")
+        "product.product", string="Product", required=True,
+        help="Product")
     lot_number_id = fields.Many2one(
-        "stock.lot", string="Lot/Serial Number", help="Lot or Serial number "
-                                                      "of the product")
+        "stock.lot", string="Lot/Serial Number",
+        help="Lot or Serial number of the product")
     request_date = fields.Date(
         default=fields.Date.today(), help="Date of the request")
     customer_id = fields.Many2one(
-        "res.partner", string="Customer", related="invoice_id.partner_id",
+        "res.partner", string="Customer",
+        related="invoice_id.partner_id",
         tracking=True, store=True,
         help="Customer"
     )
@@ -78,7 +80,7 @@ class RequestForWarranty(models.Model):
             self.env.context['allowed_company_ids'][0]
         ))
 
-    # Compute functions
+    # Compute Functions
 
     @api.depends("purchase_date", "warranty_period")
     def _compute_warranty_expire_date(self):
@@ -93,7 +95,7 @@ class RequestForWarranty(models.Model):
             else:
                 record.warranty_expire_date = False
 
-    # Onchange functions
+    # Onchange Functions
 
     @api.onchange("invoice_id")
     def _onchange_invoice_id(self):
@@ -124,7 +126,7 @@ class RequestForWarranty(models.Model):
             domain = []
         return {"domain": {"lot_number_id": domain}}
 
-    # CRUD methods
+    # CRUD Methods
 
     @api.model
     def create(self, vals):
@@ -160,7 +162,7 @@ class RequestForWarranty(models.Model):
         stock_picking.action_confirm()
         stock_picking.button_validate()
 
-    # Action methods
+    # Action Methods
 
     def action_to_approve(self):
         """

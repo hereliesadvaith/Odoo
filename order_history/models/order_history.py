@@ -10,13 +10,19 @@ class SaleOrder(models.Model):
     _description = "Order History"
     _rec_name = "sale_id"
 
-    sale_id = fields.Many2one("sale.order", "Sale Order")
-    partner_id = fields.Many2one("res.partner", string="Partner")
-    date = fields.Date("Date")
-    salesperson_id = fields.Many2one("res.users", string="Salesperson")
-    purchase_order_ids = fields.One2many("purchase.history", "order_history_id")
+    sale_id = fields.Many2one("sale.order", "Sale Order",
+                              help="Sale order")
+    partner_id = fields.Many2one("res.partner", string="Partner",
+                                 help="partner")
+    date = fields.Date("Date", help="Order date")
+    salesperson_id = fields.Many2one("res.users",
+                                     string="Salesperson",
+                                     help="Salesperson")
+    purchase_order_ids = fields.One2many("purchase.history",
+                                         "order_history_id",
+                                         help="Purchase orders")
 
-    # Action methods
+    # Action Methods
 
     def cron_order_history(self):
         """

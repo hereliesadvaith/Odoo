@@ -94,7 +94,6 @@ class WarrantyReportWizard(models.TransientModel):
         if self.start_date and self.end_date:
             if self.start_date > self.end_date:
                 raise ValidationError("Set valid period")
-        print(self.env["request.for.warranty"].sudo().search([]))
         query = f"""
                 select pro.id, rfw.name as warranty, rfw.state,
                 res.name as partner, rfw.request_date, ptm.name as product

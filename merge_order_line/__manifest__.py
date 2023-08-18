@@ -2,6 +2,7 @@
 {
     "name": "Merge Order Lines",
     "version": "16.0.1.0",
+    "author": "Advaith",
     "category": "Sales",
     "summary": "Merge Order Lines",
     "description": """
@@ -11,5 +12,4 @@
     "depends": ["base", "sale", "stock"],
     "installable": True,
     "license": "LGPL-3",
-    "author": "Advaith",
 }

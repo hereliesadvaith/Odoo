@@ -2,6 +2,7 @@
 {
     "name": "Warranty",
     "version": "16.0.1.0",
+    "author": "Advaith",
     "category": "Services",
     "summary": "Requesting Warranty",
     "description": """
@@ -29,5 +30,4 @@
     "installable": True,
     "application": True,
     "license": "LGPL-3",
-    "author": "Advaith",
 }

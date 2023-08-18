@@ -4,11 +4,11 @@ from odoo import api, fields, models
 
 class SaleOrder(models.Model):
     """
-    To add fields in invoice page.
+    To inherit sale order page.
     """
     _inherit = "sale.order"
 
-    # Action methods
+    # Action Methods
 
     def action_confirm(self):
         """

@@ -9,6 +9,9 @@ class PurchaseHistory(models.Model):
     _name = "purchase.history"
     _description = "Purchase Order"
 
-    order_history_id = fields.Many2one("order.history")
-    purchase_id = fields.Many2one("purchase.order")
-    vendor_id = fields.Many2one("res.partner")
+    order_history_id = fields.Many2one("order.history",
+                                       help="Order History id")
+    purchase_id = fields.Many2one("purchase.order",
+                                  help="Purchase order")
+    vendor_id = fields.Many2one("res.partner",
+                                help="Vendor")

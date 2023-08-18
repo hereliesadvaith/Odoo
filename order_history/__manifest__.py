@@ -2,6 +2,7 @@
 {
     "name": "Order History",
     "version": "16.0.1.0",
+    "author": "Advaith",
     "category": "Sales",
     "summary": "History of sale orders and corresponding purchase orders.",
     "description": """
@@ -18,5 +19,4 @@
     ],
     "installable": True,
     "license": "LGPL-3",
-    "author": "Advaith",
 }

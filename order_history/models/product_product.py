@@ -9,9 +9,10 @@ class ProductProduct(models.Model):
     _inherit = ["product.product"]
 
     sale_count = fields.Integer(
-        "Total Sale count", compute="_compute_sale_count")
+        "Total Sale count", compute="_compute_sale_count",
+        help="Sale count")
 
-    # Compute Methods
+    # Compute Functions
 
     def _compute_sale_count(self):
         """
@@ -22,7 +23,7 @@ class ProductProduct(models.Model):
                 "product_id", "=", record.id)])
             record.sale_count = len(sale_order_lines)
 
-    # Onchange functions
+    # Onchange Functions
 
     @api.onchange("lst_price")
     def _onchange_lst_price(self):
