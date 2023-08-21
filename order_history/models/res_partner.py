@@ -23,12 +23,10 @@ class ResPartner(models.Model):
         """
         for record in self:
             if record.sale_order_ids:
-                sale_order_lines = self.env["sale.order.line"].search([(
-                    "order_id", "in", self.sale_order_ids.ids)])
-                for line in sale_order_lines:
+                for line in record.sale_order_ids.order_line:
                     record.product_count += line.product_uom_qty
             else:
-                record.warranty_expire_date = 0
+                record.product_count = 0
 
     # Action Methods
 
@@ -37,8 +35,6 @@ class ResPartner(models.Model):
         To see the products bought by customer
         """
         self.ensure_one()
-        sale_order_lines = self.env["sale.order.line"].search([(
-            "order_id", "in", self.sale_order_ids.ids)])
         return {
             "type": "ir.actions.act_window",
             "name": "Products",
@@ -46,5 +42,6 @@ class ResPartner(models.Model):
             "res_model": "product.product",
             "context": "{'create': False}",
             "domain": [(
-                "id", "in", [i.product_id.id for i in sale_order_lines])],
+                "id", "in", [
+                    i.product_id.id for i in self.sale_order_ids.order_line])],
         }

@@ -53,6 +53,5 @@
               action="order_history_action"
               parent="sale.sale_order_menu"
               sequence="100"
-              groups="sales_team.group_sale_manager"
     />
 </odoo>

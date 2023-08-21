@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from odoo import api, fields, models
+from odoo import fields, models
 
 
 class SaleOrder(models.Model):
@@ -19,9 +19,7 @@ class SaleOrder(models.Model):
             if order.product_id.seller_ids:
                 purchase_order = self.env["purchase.order"].create({
                     "partner_id": order.product_id.seller_ids[0].partner_id.id,
-                    "origin": self.name
-                })
-                purchase_order.update({
+                    "origin": self.name,
                     "order_line": [(fields.Command.create({
                         "product_id": order.product_id.id,
                         "product_qty": order.product_uom_qty,

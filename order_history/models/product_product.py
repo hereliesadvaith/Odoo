@@ -6,7 +6,7 @@ class ProductProduct(models.Model):
     """
     To add fields to product template model.
     """
-    _inherit = ["product.product"]
+    _inherit = "product.product"
 
     sale_count = fields.Integer(
         "Total Sale count", compute="_compute_sale_count",
@@ -19,9 +19,7 @@ class ProductProduct(models.Model):
         To compute sale count
         """
         for record in self:
-            sale_order_lines = self.env["sale.order.line"].search([(
-                "product_id", "=", record.id)])
-            record.sale_count = len(sale_order_lines)
+            record.sale_count = record.sales_count
 
     # Onchange Functions
 

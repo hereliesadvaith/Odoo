@@ -13,11 +13,14 @@ class SaleOrder(models.Model):
     sale_id = fields.Many2one("sale.order", "Sale Order",
                               help="Sale order")
     partner_id = fields.Many2one("res.partner", string="Partner",
-                                 help="partner")
-    date = fields.Date("Date", help="Order date")
+                                 help="partner",
+                                 related="sale_id.partner_id")
+    date = fields.Date("Date", help="Order date",
+                       default=fields.Date.today())
     salesperson_id = fields.Many2one("res.users",
                                      string="Salesperson",
-                                     help="Salesperson")
+                                     help="Salesperson",
+                                     related="sale_id.user_id")
     purchase_order_ids = fields.One2many("purchase.history",
                                          "order_history_id",
                                          help="Purchase orders")
@@ -31,13 +34,11 @@ class SaleOrder(models.Model):
         sale_orders = self.env["sale.order"].search([
             ("state", "=", "sale"),
             ("date_order", ">=", fields.Date.today()),
-        ])
+        ]).filtered(
+            lambda r: r not in self.search([]).mapped('sale_id'))
         for sale_order in sale_orders:
             order_history = self.create({
                 "sale_id": sale_order.id,
-                "partner_id": sale_order.partner_id.id,
-                "date": fields.Date.today(),
-                "salesperson_id": sale_order.user_id.id,
             })
             purchase_orders = self.env["purchase.order"].search([
                 ("origin", "=", sale_order.name)
@@ -46,6 +47,5 @@ class SaleOrder(models.Model):
                 order_history.update({
                     "purchase_order_ids": [(fields.Command.create({
                         "purchase_id": order.id,
-                        "vendor_id": order.partner_id.id,
                     }))]
                 })

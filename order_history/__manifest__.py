@@ -11,11 +11,11 @@
     """,
     "depends": ["base", "sale", "purchase"],
     "data": [
+        "data/cron_order_history.xml",
         "security/ir.model.access.csv",
         "views/res_partner_views.xml",
         "views/product_product_views.xml",
         "views/order_history_views.xml",
-        "data/cron_order_history.xml",
     ],
     "installable": True,
     "license": "LGPL-3",

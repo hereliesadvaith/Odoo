@@ -14,4 +14,4 @@ class PurchaseHistory(models.Model):
     purchase_id = fields.Many2one("purchase.order",
                                   help="Purchase order")
     vendor_id = fields.Many2one("res.partner",
-                                help="Vendor")
+                                help="Vendor", related="purchase_id.partner_id")
