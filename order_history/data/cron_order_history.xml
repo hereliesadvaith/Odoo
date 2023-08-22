@@ -9,7 +9,7 @@
             <field name="code">model.cron_order_history()</field>
             <field name="user_id" ref="base.user_root"/>
             <field name='interval_number'>1</field>
-            <field name="nextcall" eval="(datetime.today() + timedelta(days=0)).strftime('%Y-%m-%d 23:59:59')"/>
+            <field name="nextcall" eval="datetime.today().strftime('%Y-%m-%d 23:59:59')"/>
             <field name='interval_type'>days</field>
             <field name="numbercall">-1</field>
             <field name="doall" eval="False"/>
