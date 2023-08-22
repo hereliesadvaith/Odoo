@@ -14,10 +14,12 @@
                                 <field name="vendor_id"/>
                                 <field name="product_qty"/>
                                 <field name="price"/>
-                                <button name="action_create_po" type="object" string="Create PO"/>
+                                <field name="is_best_price" invisible="1"/>
+                                <button name="action_create_po" type="object" string="Create PO" attrs="{'invisible': [('is_best_price', '=', False)]}"/>
                             </tree>
                         </field>
                     </sheet>
+                    <footer/>
                 </form>
             </field>
         </record>

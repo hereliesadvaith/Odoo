@@ -11,10 +11,16 @@ class PurchaseOrder(models.Model):
     supplier_ids = fields.One2many("supplier.info",
                                    "purchase_order_id")
 
-    # CRUD Methods
+    # Constrains
 
     @api.constrains("order_line")
     def _create_supplier_info(self):
+        """
+        To add data to supplier info page
+        """
+        self.update({
+            "supplier_ids": [(fields.Command.clear())]
+        })
         for order in self.order_line:
             for record in order.product_id.seller_ids:
                 if record.partner_id != self.partner_id:
@@ -34,6 +40,11 @@ class PurchaseOrder(models.Model):
         To open the wizard.
         """
         self.ensure_one()
+        for record in self.supplier_ids.mapped('product_id'):
+            recordset = self.supplier_ids.filtered(
+                lambda r: r.product_id == record).sorted(key=lambda r: r.price)
+            if recordset:
+                recordset[0].is_best_price = True
         return {
             'type': 'ir.actions.act_window',
             'res_model': 'compare.price',

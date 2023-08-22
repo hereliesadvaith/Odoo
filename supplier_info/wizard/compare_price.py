@@ -8,5 +8,4 @@ class ComparePrice(models.TransientModel):
     """
     _name = "compare.price"
 
-    purchase_order_id = fields.Integer("id")
     supplier_ids = fields.Many2many("supplier.info")
