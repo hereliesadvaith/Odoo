@@ -4,6 +4,7 @@ from odoo import models, api
 class WarrantyReport(models.AbstractModel):
     """Abstract model for our warranty report"""
     _name = 'report.warranty.report_warranty'
+    _description = 'Warranty Report'
 
     @api.model
     def _get_report_values(self, docids, data=None):

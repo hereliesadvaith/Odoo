@@ -6,7 +6,8 @@
     "category": "Sales",
     "summary": "Supplier info",
     "description": """
-    You can compare purchase orders.
+    This module will help you compare the vendor price list and to create 
+    purchase order for best price.
     """,
     "depends": ["base", "purchase"],
     "data": [

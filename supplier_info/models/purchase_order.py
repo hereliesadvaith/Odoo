@@ -9,7 +9,8 @@ class PurchaseOrder(models.Model):
     _inherit = "purchase.order"
 
     supplier_ids = fields.One2many("supplier.info",
-                                   "purchase_order_id")
+                                   "purchase_order_id",
+                                   help="Supplier Info")
 
     # Constrains
 

@@ -56,10 +56,6 @@ class RequestForWarranty(models.Model):
     )
     warranty_type = fields.Selection(
         string="Warranty Type",
-        selection=[
-            ("service_warranty", "Service Warranty"),
-            ("replacement_warranty", "Replacement Warranty"),
-        ],
         related="product_id.warranty_type",
         help="Type of warranty"
     )
@@ -128,16 +124,17 @@ class RequestForWarranty(models.Model):
 
     # CRUD Methods
 
-    @api.model
-    def create(self, vals):
+    @api.model_create_multi
+    def create(self, vals_list):
         """
         Used to create sequence number for our request for warranty.
         """
-        if vals.get("name", _("New")) == _("New"):
-            vals["name"] = self.env["ir.sequence"].next_by_code(
-                "warranty.sequence"
-            ) or _("New")
-        result = super(RequestForWarranty, self).create(vals)
+        for vals in vals_list:
+            if vals.get("name", _("New")) == _("New"):
+                vals["name"] = self.env["ir.sequence"].next_by_code(
+                    "warranty.sequence"
+                ) or _("New")
+        result = super(RequestForWarranty, self).create(vals_list)
         return result
 
     def transfer(self, location_id, location_dest_id, picking_type):

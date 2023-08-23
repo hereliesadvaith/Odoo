@@ -9,12 +9,15 @@ class SupplierInfo(models.Model):
     _name = "supplier.info"
     _description = "Supplier Info"
 
-    purchase_order_id = fields.Many2one("purchase.order")
-    product_id = fields.Many2one("product.product")
-    vendor_id = fields.Many2one("res.partner")
-    product_qty = fields.Integer("Quantity")
-    price = fields.Integer("Price")
-    is_best_price = fields.Boolean("Best Price", default=False)
+    purchase_order_id = fields.Many2one("purchase.order",
+                                        help="Purchase order id")
+    product_id = fields.Many2one("product.product",
+                                 help="Product")
+    vendor_id = fields.Many2one("res.partner", help="Vendor")
+    product_qty = fields.Integer("Quantity", help="Quantity")
+    price = fields.Integer("Price", help="Price")
+    is_best_price = fields.Boolean("Best Price", default=False,
+                                   help="check for best price or not")
 
     # Action Methods
 
