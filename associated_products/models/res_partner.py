@@ -4,7 +4,7 @@ from odoo import fields, models
 
 class ResPartner(models.Model):
     """
-    To add fields in invoice page.
+    To add fields in contact creation page.
     """
     _inherit = "res.partner"
 

@@ -2,7 +2,7 @@
 <odoo>
     <!-- Inherit views for sale order page -->
     <record id="view_order_form" model="ir.ui.view">
-        <field name="name">sale.order.form.inherit.associate.products</field>
+        <field name="name">sale.order.form.inherit.associated.products</field>
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
