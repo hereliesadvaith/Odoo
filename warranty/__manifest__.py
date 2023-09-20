@@ -21,6 +21,7 @@
         "views/product_template_views.xml",
         "views/account_move_views.xml",
         "views/warranty_menus.xml",
+        "views/website_form.xml",
     ],
     "assets": {
         "web.assets_backend": [
