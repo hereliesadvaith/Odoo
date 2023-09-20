@@ -6,11 +6,11 @@ The Automatic Purchase Order module is a custom addition to Odoo that simplifies
 
 To install this module in your Odoo instance, follow these steps:
 
-1. Copy the `automatic_purchase_order` directory to your Odoo addons directory.
+1. Copy the `automated_purchase_order` directory to your Odoo addons directory.
 2. Restart your Odoo server.
 3. Log in to Odoo as an administrator.
 4. Go to the Apps menu.
-5. Search for 'Automatic Purchase Order' and install the module.
+5. Search for 'Automated Purchase Order' and install the module.
 
 ## Configuration
 
