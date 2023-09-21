@@ -21,6 +21,7 @@
                     <div class="form-group">
                         <label for="invoice_id" class="control-label">Invoice</label>
                         <select name="invoice_id" class="form-control link-style">
+                            <option value=""/>
                             <t t-foreach="invoices" t-as="invoice">
                                 <option t-esc="invoice.name" t-att-value="invoice.id"/>
                             </t>
@@ -29,6 +30,7 @@
                     <div class="form-group">
                         <label for="product_id" class="control-label">Product</label>
                         <select name="product_id" class="form-control link-style">
+                            <option value=""/>
                             <t t-foreach="products" t-as="product">
                                 <option t-esc="product.name" t-att-value="product.id"/>
                             </t>
@@ -37,6 +39,7 @@
                     <div class="form-group">
                         <label for="lot_number_id" class="control-label">Lot Number</label>
                         <select name="lot_number_id" class="form-control link-style">
+                            <option value=""/>
                             <t t-foreach="lot_numbers" t-as="lot_number">
                                 <option t-esc="lot_number.name" t-att-value="lot_number.id"/>
                             </t>

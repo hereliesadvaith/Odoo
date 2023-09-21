@@ -83,8 +83,6 @@
                         </t>
                     </t>
                     <t t-elif="products == True and partner == False">
-
-
                         <t t-foreach="unique_products" t-as="pro">
                             <h6>Product: <span t-esc="pro[1]"/></h6>
                             <table class="table table-bordered mt32">

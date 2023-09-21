@@ -22,13 +22,12 @@ class WarrantyController(http.Controller):
         ])
         products = request.env['product.product'].sudo().search([])
         lot_numbers = request.env['stock.lot'].sudo().search([])
-        values = {
+        return http.request.render('warranty.warranty_request', {
             "invoices": invoices,
             "products": products,
             "lot_numbers": lot_numbers,
             "customer_id": request.env.user.partner_id,
-        }
-        return http.request.render('warranty.warranty_request', values)
+        })
 
     @http.route('/create/warranty_request', type="http", auth='user',
                 website=True)
