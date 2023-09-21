@@ -5,6 +5,42 @@ from odoo.http import content_disposition, request
 from odoo.tools import html_escape
 
 
+class WarrantyController(http.Controller):
+    """
+    warranty request page controller class
+    """
+    @http.route('/warranty_request', type='http', auth='user',
+                website=True)
+    def warranty_web_form(self, **kw):
+        """
+        To return our warranty request page
+        """
+        invoices = request.env['account.move'].sudo().search([
+            ("state", "=", "posted"),
+            ("name", "like", "INV"),
+            ("partner_id", "=", request.env.user.partner_id.id)
+        ])
+        products = request.env['product.product'].sudo().search([])
+        lot_numbers = request.env['stock.lot'].sudo().search([])
+        values = {
+            "invoices": invoices,
+            "products": products,
+            "lot_numbers": lot_numbers,
+            "customer_id": request.env.user.partner_id,
+        }
+        return http.request.render('warranty.warranty_request', values)
+
+    @http.route('/create/warranty_request', type="http", auth='user',
+                website=True)
+    def create_warranty_request(self, **kw):
+        """
+        To add warranty request data to backend.
+        """
+        kw.pop("customer_id")
+        request.env['request.for.warranty'].sudo().create(kw)
+        return http.request.render('warranty.customer_thanks')
+
+
 class XLSXReportController(http.Controller):
     """
     xlsx report controller class.

@@ -7,4 +7,65 @@
         <field name="parent_id" ref="website.main_menu"/>
         <field name="sequence">45</field>
     </record>
+    <!-- To create a warranty request form in the website. -->
+    <template id="warranty_request" name="Warranty">
+        <t t-call="website.layout">
+            <div class="container">
+                <form role="form" action="/create/warranty_request" method="POST">
+                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                    <div class="form-group">
+                        <label for="customer_id" class="control-label">Name</label>
+                        <input type="text" name="customer_id" t-att-value="customer_id.name" id="customer_id"
+                               class="form-control" readonly="1"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="invoice_id" class="control-label">Invoice</label>
+                        <select name="invoice_id" class="form-control link-style">
+                            <t t-foreach="invoices" t-as="invoice">
+                                <option t-esc="invoice.name" t-att-value="invoice.id"/>
+                            </t>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="product_id" class="control-label">Product</label>
+                        <select name="product_id" class="form-control link-style">
+                            <t t-foreach="products" t-as="product">
+                                <option t-esc="product.name" t-att-value="product.id"/>
+                            </t>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="lot_number_id" class="control-label">Lot Number</label>
+                        <select name="lot_number_id" class="form-control link-style">
+                            <t t-foreach="lot_numbers" t-as="lot_number">
+                                <option t-esc="lot_number.name" t-att-value="lot_number.id"/>
+                            </t>
+                        </select>
+                    </div>
+                    <div class="clearfix oe_login_buttons">
+                        <button type="submit" class="btn btn-primary pull-left">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </t>
+    </template>
+    <!-- To create a thanks page after submitting warranty request. -->
+    <record id="customer_thanks" model="website.page">
+        <field name="name">Thanks</field>
+        <field name="type">qweb</field>
+        <field name="url">/customer-thank-you</field>
+        <field name="website_published">True</field>
+        <field name="key">warranty.customer_thanks</field>
+        <field name="arch" type="xml">
+            <t name="Thanks" t-name="warranty.customer_thanks">
+                <t t-call="website.layout">
+                    <div id="wrap">
+                        <div class="container">
+                            <h1>Thanks</h1>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </field>
+    </record>
 </odoo>
