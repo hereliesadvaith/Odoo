@@ -8,47 +8,80 @@
         <field name="sequence">45</field>
     </record>
     <!-- To create a warranty request form in the website. -->
-    <template id="warranty_request" name="Warranty">
+    <template id="warranty_request">
         <t t-call="website.layout">
-            <div class="container">
-                <form role="form" action="/create/warranty_request" method="POST">
-                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
-                    <div class="form-group">
-                        <label for="customer_id" class="control-label">Name</label>
-                        <input type="text" name="customer_id" t-att-value="customer_id.name" id="customer_id"
-                               class="form-control" readonly="1"/>
+            <div id="wrap" class="oe_structure oe_empty">
+                <section class="s_website_form" data-vcss="001" data-snippet="s_website_form">
+                    <div class="container">
+                        <form action="/create/warranty_request" method="post" enctype="multipart/form-data" class="o_mark_required" data-mark="*" data-model_name="" data-success-page="">
+                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                            <div class="s_website_form_rows row s_col_no_bgcolor">
+                                <div class="form-group col-12 s_website_form_field s_website_form_required" data-type="char" data-name="Field" style="padding: 20px;">
+                                    <div class="row s_col_no_resize s_col_no_bgcolor">
+                                        <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="studio1">
+                                            <span class="s_website_form_label_content">Name</span>
+                                            <span class="s_website_form_mark"> *</span>
+                                        </label>
+                                        <div class="col-sm">
+                                        <input id="customer_id" t-att-value="customer_id.name" type="text" class="form-control s_website_form_input" name="customer_id" required="1" readonly="1"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-12 s_website_form_field s_website_form_required" data-type="char" data-name="Field" style="padding: 20px;">
+                                    <div class="row s_col_no_resize s_col_no_bgcolor">
+                                        <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="studio1">
+                                            <span class="s_website_form_label_content">Invoice</span>
+                                            <span class="s_website_form_mark"> *</span>
+                                        </label>
+                                        <div class="col-sm">
+                                            <select name="invoice_id" t-attf-class="form-control s_website_form_input" required="1">
+                                                <option value=""/>
+                                                <t t-foreach="invoices" t-as="invoice">
+                                                    <option t-esc="invoice.name" t-att-value="invoice.id"/>
+                                                </t>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-12 s_website_form_field s_website_form_required" data-type="char" data-name="Field" style="padding: 20px;">
+                                    <div class="row s_col_no_resize s_col_no_bgcolor">
+                                        <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="studio1">
+                                            <span class="s_website_form_label_content">Product</span>
+                                            <span class="s_website_form_mark"> *</span>
+                                        </label>
+                                        <div class="col-sm">
+                                            <select name="product_id" t-attf-class="form-control s_website_form_input" required="1">
+                                                <option value=""/>
+                                                <t t-foreach="products" t-as="product">
+                                                    <option t-esc="product.name" t-att-value="product.id"/>
+                                                </t>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-12 s_website_form_field s_website_form_required" data-type="char" data-name="Field" style="padding: 20px;">
+                                    <div class="row s_col_no_resize s_col_no_bgcolor">
+                                        <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="studio1">
+                                            <span class="s_website_form_label_content">Lot Number</span>
+                                        </label>
+                                        <div class="col-sm">
+                                            <select name="lot_number_id" t-attf-class="form-control s_website_form_input">
+                                                <option value=""/>
+                                                <t t-foreach="lot_numbers" t-as="lot_number">
+                                                    <option t-esc="lot_number.name" t-att-value="lot_number.id"/>
+                                                </t>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-12 s_website_form_submit" data-name="Submit Button" style="padding: 20px;">
+                                    <div style="width: 200px;" class="s_website_form_label"/>
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
-                    <div class="form-group">
-                        <label for="invoice_id" class="control-label">Invoice</label>
-                        <select name="invoice_id" class="form-control link-style">
-                            <option value=""/>
-                            <t t-foreach="invoices" t-as="invoice">
-                                <option t-esc="invoice.name" t-att-value="invoice.id"/>
-                            </t>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="product_id" class="control-label">Product</label>
-                        <select name="product_id" class="form-control link-style">
-                            <option value=""/>
-                            <t t-foreach="products" t-as="product">
-                                <option t-esc="product.name" t-att-value="product.id"/>
-                            </t>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="lot_number_id" class="control-label">Lot Number</label>
-                        <select name="lot_number_id" class="form-control link-style">
-                            <option value=""/>
-                            <t t-foreach="lot_numbers" t-as="lot_number">
-                                <option t-esc="lot_number.name" t-att-value="lot_number.id"/>
-                            </t>
-                        </select>
-                    </div>
-                    <div class="clearfix oe_login_buttons">
-                        <button type="submit" class="btn btn-primary pull-left">Submit</button>
-                    </div>
-                </form>
+                </section>
             </div>
         </t>
     </template>
@@ -64,7 +97,15 @@
                 <t t-call="website.layout">
                     <div id="wrap">
                         <div class="container">
-                            <h1>Thanks</h1>
+                            <h1>Thanks!</h1>
+                            <div class="row">
+                                <div class="alert alert-success" role="status">
+                                    Your request for warranty has been created.
+                                </div>
+                                <p>
+                                    We will get back to you shortly.
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </t>
