@@ -47,7 +47,7 @@ class RequestForWarranty(models.Model):
     customer_id = fields.Many2one(
         "res.partner", string="Customer",
         related="invoice_id.partner_id",
-        tracking=True, store=True,
+        tracking=True,
         help="Customer",
     )
     purchase_date = fields.Date(

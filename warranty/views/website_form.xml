@@ -13,6 +13,7 @@
             <div id="wrap" class="oe_structure oe_empty">
                 <section class="s_website_form" data-vcss="001" data-snippet="s_website_form">
                     <div class="container">
+                        <h1 style="padding: 20px;">Warranty Request Form</h1>
                         <form action="/create/warranty_request" method="post" enctype="multipart/form-data" class="o_mark_required" data-mark="*" data-model_name="" data-success-page="">
                             <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
                             <div class="s_website_form_rows row s_col_no_bgcolor">
@@ -34,7 +35,7 @@
                                             <span class="s_website_form_mark"> *</span>
                                         </label>
                                         <div class="col-sm">
-                                            <select name="invoice_id" t-attf-class="form-control s_website_form_input" required="1">
+                                            <select name="invoice_id" t-attf-class="form-control s_website_form_input" required="1" id="invoice_id">
                                                 <option value=""/>
                                                 <t t-foreach="invoices" t-as="invoice">
                                                     <option t-esc="invoice.name" t-att-value="invoice.id"/>
@@ -50,7 +51,7 @@
                                             <span class="s_website_form_mark"> *</span>
                                         </label>
                                         <div class="col-sm">
-                                            <select name="product_id" t-attf-class="form-control s_website_form_input" required="1">
+                                            <select name="product_id" t-attf-class="form-control s_website_form_input" required="1" id="product_id">
                                                 <option value=""/>
                                                 <t t-foreach="products" t-as="product">
                                                     <option t-esc="product.name" t-att-value="product.id"/>
@@ -65,7 +66,7 @@
                                             <span class="s_website_form_label_content">Lot Number</span>
                                         </label>
                                         <div class="col-sm">
-                                            <select name="lot_number_id" t-attf-class="form-control s_website_form_input">
+                                            <select name="lot_number_id" t-attf-class="form-control s_website_form_input" id="lot_number_id">
                                                 <option value=""/>
                                                 <t t-foreach="lot_numbers" t-as="lot_number">
                                                     <option t-esc="lot_number.name" t-att-value="lot_number.id"/>

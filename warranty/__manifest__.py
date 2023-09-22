@@ -27,6 +27,9 @@
         "web.assets_backend": [
             "warranty/static/src/js/action_manager.js",
         ],
+        "web.assets_frontend": [
+            "warranty/static/src/js/warranty_request.js",
+        ],
     },
     "installable": True,
     "application": True,

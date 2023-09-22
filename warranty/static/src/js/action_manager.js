@@ -17,3 +17,4 @@ registry.category("ir.actions.report handlers").add("xlsx", async (action) => {
         return def;
     }
 });
+console.log("hello")
