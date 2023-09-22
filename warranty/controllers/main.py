@@ -39,6 +39,18 @@ class WarrantyController(http.Controller):
         request.env['request.for.warranty'].sudo().create(kw)
         return http.request.render('warranty.customer_thanks')
 
+    @http.route('/my/warranties', type="http", auth='user',
+                website=True)
+    def warranty_request_history(self, **kw):
+        """
+        To add warranties data to table
+        """
+        records = request.env['request.for.warranty'].sudo().search([])
+        for record in records:
+            if record.customer_id == request.env.user.partner_id:
+                print("hi")
+        return http.request.render('warranty.warranty_requests_table')
+
 
 class XLSXReportController(http.Controller):
     """
