@@ -1,8 +1,47 @@
 # -*- coding: utf-8 -*-
 import json
 from odoo import http
-from odoo.http import content_disposition, request
+from odoo.http import content_disposition, request, pager
 from odoo.tools import html_escape
+from odoo.addons.portal.controllers import portal
+
+
+class XLSXReportController(http.Controller):
+    """
+    xlsx report controller class.
+    """
+    @http.route('/xlsx_reports', type='http',
+                auth='user', methods=['POST'], csrf=False)
+    def get_report_xlsx(self, model, options,
+                        output_format, report_name, **kw):
+        """
+        To call the get_report_xlsx function.
+        """
+        uid = request.session.uid
+        report_obj = request.env[model].with_user(uid)
+        options = json.loads(options)
+        token = 'dummy-because-api-expects-one'
+        try:
+            if output_format == 'xlsx':
+                response = request.make_response(
+                    None,
+                    headers=[
+                        ('Content-Type', 'application/vnd.ms-excel'),
+                        ('Content-Disposition',
+                            content_disposition(report_name + '.xlsx'))
+                    ]
+                )
+                report_obj.get_xlsx_report(options, response)
+            response.set_cookie('fileToken', token)
+            return response
+        except Exception as e:
+            se = http.serialize_exception(e)
+            error = {
+                'code': 200,
+                'message': 'Odoo Server Error',
+                'data': se
+            }
+            return request.make_response(html_escape(json.dumps(error)))
 
 
 class WarrantyController(http.Controller):
@@ -45,46 +84,28 @@ class WarrantyController(http.Controller):
         """
         To add warranties data to table
         """
-        records = request.env['request.for.warranty'].sudo().search([])
-        for record in records:
-            if record.customer_id == request.env.user.partner_id:
-                print("hi")
+        warranty_obj = request.env['request.for.warranty'].sudo().search(
+            [('customer_id', '=', request.env.user.partner_id.id)]
+        )
+        total_warranty = len(warranty_obj)
+        print(warranty_obj)
+        print(total_warranty)
         return http.request.render('warranty.warranty_requests_table')
 
 
-class XLSXReportController(http.Controller):
+class PortalAttendance(portal.CustomerPortal):
     """
-    xlsx report controller class.
+    Warranty request page inside account documents page.
     """
-    @http.route('/xlsx_reports', type='http',
-                auth='user', methods=['POST'], csrf=False)
-    def get_report_xlsx(self, model, options,
-                        output_format, report_name, **kw):
+    @http.route(['/warranty/list', '/warranty/list/page/<int:page>'],
+                type='http', website=True)
+    def warranty_pagination_view(self, page=1, **kwargs):
         """
-        To call the get_report_xlsx function.
+        To get the warranty details to warranty page.
         """
-        uid = request.session.uid
-        report_obj = request.env[model].with_user(uid)
-        options = json.loads(options)
-        token = 'dummy-because-api-expects-one'
-        try:
-            if output_format == 'xlsx':
-                response = request.make_response(
-                    None,
-                    headers=[
-                        ('Content-Type', 'application/vnd.ms-excel'),
-                        ('Content-Disposition',
-                            content_disposition(report_name + '.xlsx'))
-                    ]
-                )
-                report_obj.get_xlsx_report(options, response)
-            response.set_cookie('fileToken', token)
-            return response
-        except Exception as e:
-            se = http.serialize_exception(e)
-            error = {
-                'code': 200,
-                'message': 'Odoo Server Error',
-                'data': se
-            }
-            return request.make_response(html_escape(json.dumps(error)))
+        warranty_obj = request.env['request.for.warranty'].search(
+            [('customer_id', '=', request.env.user.partner_id.id)]
+        )
+        total_warranty = len(warranty_obj)
+        page_detail = pager(url='/warranty/list', total=total_warranty,
+                            page=page, step=10)
