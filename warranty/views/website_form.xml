@@ -140,12 +140,19 @@
                         <th><span class='d-none d-md-inline'>Invoice No</span></th>
                         <th><span class='d-none d-md-inline'>Product</span></th>
                         <th><span class='d-none d-md-inline'>Purchase Date</span></th>
+                        <th>
+                            <button class="btn btn-primary float-left" onclick="window.location.href='/warranty_request'">New</button>
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
                     <t t-foreach="warranties" t-as="warranty">
                         <tr>
-                            <td><t t-esc="warranty.name"/></td>
+                            <td>
+                                <a t-attf-href="/my/warranties/#{warranty.id}">
+                                    <t t-esc="warranty.name"/>
+                                </a>
+                            </td>
                             <td><t t-esc="warranty.invoice_id.name"/></td>
                             <td><t t-esc="warranty.product_id.name"/></td>
                             <td><t t-esc="warranty.purchase_date"/></td>
@@ -156,4 +163,23 @@
         </t>
     </template>
     <!--  To create breadcrumbs of warranty page  -->
+    <template id="portal_breadcrumbs" inherit_id="portal.portal_breadcrumbs">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li t-if="page_name == 'warranties'" class="breadcrumb-item">Warranties</li>
+            <li t-if="page_name == 'warranty'" class="breadcrumb-item">
+                <a href="/my/warranties">Warranties</a>
+            </li>
+        </xpath>
+    </template>
+    <!-- To create form view for each warranties -->
+    <template id="portal_sidebar" inherit_id="portal.portal_sidebar">
+        <xpath expr="//div[hasclass('o_portal_sidebar')]" position="inside">
+            <t t-if="page_name == 'warranty'" class="row mt16">
+                <p t-esc="warranty.name"/>
+                <p t-esc="warranty.invoice_id.name"/>
+                <p t-esc="warranty.product_id.name"/>
+                <p t-esc="warranty.purchase_date"/>
+            </t>
+        </xpath>
+    </template>
 </odoo>

@@ -83,6 +83,7 @@ class PortalWarranty(CustomerPortal):
     """
     Warranty request page inside account documents page.
     """
+
     def _prepare_home_portal_values(self, counters):
         """
         To get the count of the warranties in portal
@@ -97,9 +98,9 @@ class PortalWarranty(CustomerPortal):
         })
         return values
 
-    @http.route(['/my/warranties', '/my/warranties/page/<int:page>'],
+    @http.route(['/my/warranties'],
                 type='http', auth="user", website=True)
-    def warranty_pagination_view(self, page=1, **kwargs):
+    def warranties_list_view(self, page=1, **kwargs):
         """
         To get the warranty details to warranty page.
         """
@@ -117,3 +118,17 @@ class PortalWarranty(CustomerPortal):
             'pager': page_detail,
         }
         return request.render('warranty.portal_my_warranties', values)
+
+    @http.route(['/my/warranties/<int:warranty_id>'],
+                type='http', auth="user", website=True)
+    def warranties_form_view(self, **kwargs):
+        """
+        To get the form view of each warranty.
+        """
+        warranty = request.env['request.for.warranty'].browse(
+            kwargs['warranty_id'])
+        values = {
+            'warranty': warranty,
+            'page_name': 'warranty',
+        }
+        return request.render('warranty.portal_sidebar', values)
