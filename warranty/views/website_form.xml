@@ -86,46 +86,6 @@
             </div>
         </t>
     </template>
-    <!-- To create a page for showing warranty requests. -->
-    <template id="warranty_requests_table">
-        <t t-call="website.layout">
-        <table class="o_list_view table table-sm table-hover table-striped o_list_view_ungrouped">
-            <thead>
-                <tr>
-                    <th class="o_list_record_selector" width="1">
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input"/>
-                            <label class="custom-control-label"/>
-                        </div>
-                    </th>
-                    <th>Warranty</th>
-                    <th>Invoice</th>
-                    <th>Product</th>
-                    <th>Purchase Date</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                <t t-foreach="records" t-as="record">
-                    <tr class="o_data_row">
-                        <td class="o_list_record_selector">
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input"/>
-                                <label class="custom-control-label"/>
-                            </div>
-                        </td>
-<!--                        <td><t t-esc="record.warranty"/></td>-->
-<!--                        <td><t t-esc="record.invoice"/></td>-->
-<!--                        <td><t t-esc="record.product"/></td>-->
-<!--                        <td><t t-esc="record.purchase_date"/></td>-->
-<!--                        <td><t t-esc="record.status"/></td>-->
-                    </tr>
-                </t>
-            </tbody>
-        </table>
-        </t>
-    </template>
-
     <!-- To create a thanks page after submitting warranty request. -->
     <record id="customer_thanks" model="website.page">
         <field name="name">Thanks</field>
@@ -153,4 +113,47 @@
             </t>
         </field>
     </record>
+    <!--  To create new menu in portal documents  -->
+    <template id="portal_my_home" name="Warranty" customize_show="True"
+         inherit_id="portal.portal_my_home" priority="90">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+           <a href="/my/warranties"
+              class="list-group-item list-group-item-action d-flex align-items-center justify-content-between"
+              title="Warranties">
+               Warranties
+               <span class="badge text-bg-secondary rounded-pill"
+                     data-oe-model="ir.ui.view" data-oe-id="405"
+                     data-oe-field="arch"
+                     data-oe-xpath="/t[1]/a[1]/t[3]/span[1]"
+                     data-placeholder_count="warranties_count">
+               </span>
+           </a>
+        </xpath>
+    </template>
+    <!-- To create list of warranties page   -->
+    <template id="portal_my_warranties">
+        <t t-call="portal.portal_layout">
+            <t t-call="portal.portal_table">
+                <thead>
+                    <tr class="active">
+                        <th><span class='d-none d-md-inline'>Reference</span></th>
+                        <th><span class='d-none d-md-inline'>Invoice No</span></th>
+                        <th><span class='d-none d-md-inline'>Product</span></th>
+                        <th><span class='d-none d-md-inline'>Purchase Date</span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-foreach="warranties" t-as="warranty">
+                        <tr>
+                            <td><t t-esc="warranty.name"/></td>
+                            <td><t t-esc="warranty.invoice_id.name"/></td>
+                            <td><t t-esc="warranty.product_id.name"/></td>
+                            <td><t t-esc="warranty.purchase_date"/></td>
+                        </tr>
+                    </t>
+                </tbody>
+            </t>
+        </t>
+    </template>
+    <!--  To create breadcrumbs of warranty page  -->
 </odoo>

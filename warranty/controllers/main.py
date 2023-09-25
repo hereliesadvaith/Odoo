@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 import json
 from odoo import http
-from odoo.http import content_disposition, request, pager
+from odoo.http import content_disposition, request
 from odoo.tools import html_escape
-from odoo.addons.portal.controllers import portal
+from odoo.addons.portal.controllers.portal import CustomerPortal, pager
 
 
 class XLSXReportController(http.Controller):
@@ -78,34 +78,42 @@ class WarrantyController(http.Controller):
         request.env['request.for.warranty'].sudo().create(kw)
         return http.request.render('warranty.customer_thanks')
 
-    @http.route('/my/warranties', type="http", auth='user',
-                website=True)
-    def warranty_request_history(self, **kw):
-        """
-        To add warranties data to table
-        """
-        warranty_obj = request.env['request.for.warranty'].sudo().search(
-            [('customer_id', '=', request.env.user.partner_id.id)]
-        )
-        total_warranty = len(warranty_obj)
-        print(warranty_obj)
-        print(total_warranty)
-        return http.request.render('warranty.warranty_requests_table')
 
-
-class PortalAttendance(portal.CustomerPortal):
+class PortalWarranty(CustomerPortal):
     """
     Warranty request page inside account documents page.
     """
-    @http.route(['/warranty/list', '/warranty/list/page/<int:page>'],
-                type='http', website=True)
+    def _prepare_home_portal_values(self, counters):
+        """
+        To get the count of the warranties in portal
+        """
+        values = super(PortalWarranty, self)._prepare_home_portal_values(
+            counters)
+        warranties_count = request.env['request.for.warranty'].search_count(
+            [('customer_id', '=', request.env.user.partner_id.id)]
+        )
+        values.update({
+            'warranties_count': warranties_count
+        })
+        return values
+
+    @http.route(['/my/warranties', '/my/warranties/page/<int:page>'],
+                type='http', auth="user", website=True)
     def warranty_pagination_view(self, page=1, **kwargs):
         """
         To get the warranty details to warranty page.
         """
-        warranty_obj = request.env['request.for.warranty'].search(
+        warranties_count = request.env['request.for.warranty'].search_count(
             [('customer_id', '=', request.env.user.partner_id.id)]
         )
-        total_warranty = len(warranty_obj)
-        page_detail = pager(url='/warranty/list', total=total_warranty,
+        page_detail = pager(url='/my/warranties', total=warranties_count,
                             page=page, step=10)
+        warranties = request.env['request.for.warranty'].search([
+            ('customer_id', '=', request.env.user.partner_id.id)
+        ], limit=10, offset=page_detail['offset'])
+        values = {
+            'warranties': warranties,
+            'page_name': 'warranties',
+            'pager': page_detail,
+        }
+        return request.render('warranty.portal_my_warranties', values)

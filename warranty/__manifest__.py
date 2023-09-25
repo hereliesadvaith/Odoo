@@ -8,7 +8,7 @@
     "description": """
     This module is used to send requests to vendors for the warranty.
     """,
-    "depends": ["base", "account", "stock"],
+    "depends": ["base", "account", "stock", "website", "portal"],
     "data": [
         "security/ir.model.access.csv",
         "security/warranty_security.xml",
