@@ -126,9 +126,11 @@ class PortalWarranty(CustomerPortal):
         To get the form view of each warranty.
         """
         warranty = request.env['request.for.warranty'].browse(
-            kwargs['warranty_id'])
+            kwargs['warranty_id']).read()
+        warranty[0]['warranty_type'] = warranty[0]['warranty_type'].replace(
+            "_", " ").title()
         values = {
-            'warranty': warranty,
+            'warranty': warranty[0],
             'page_name': 'warranty',
         }
         return request.render('warranty.portal_sidebar', values)

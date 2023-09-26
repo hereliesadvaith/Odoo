@@ -9,9 +9,9 @@ odoo.define('warranty.warranty', function (require) {
             'change select[name="invoice_id"]': 'changeProductField',
             'change select[name="product_id"]': 'changeLotField',
         },
-//        init: function () {
-//            this._super.apply(this, arguments)
-//        }, use this when you have to write init functions
+        //        init: function () {
+        //            this._super.apply(this, arguments)
+        //        }, use this when you have to write init functions
         changeProductField: async function () {
             var products = await rpc.query({
                 model: "account.move.line",
@@ -58,34 +58,35 @@ odoo.define('warranty.warranty', function (require) {
 })
 
 odoo.define('warranty.warranty_snippet', function (require) {
-   var PublicWidget = require('web.public.widget')
-   var rpc = require('web.rpc')
-   var warrantySnippet = PublicWidget.Widget.extend({
-       selector: '.warranty_snippet',
-       start: function () {
-           var self = this;
-           rpc.query({
-               route: '/latest_warranties',
-               params: {},
-           }).then(function (result) {
-               result.forEach(function (warranty) {
-                   var customer = warranty['customer_id'][1].includes(',') ? warranty['customer_id'][1].split(',')[1] : warranty['customer_id'][1]
-                   self.$("#warranty_template").append(`
-                       <div class="col-md-3">
-                        <div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
-                            <div class="card-header">${warranty['name']}</div>
-                            <div class="card-body">
-                                <p class="card-text">Customer: ${customer}</p>
-                                <p class="card-text">Product: ${warranty['product_id'][1]}</p>
-                                <a href=${"my/warranties/"+warranty['id']}><button class="btn btn-info">More</button></a>
+    var PublicWidget = require('web.public.widget')
+    var rpc = require('web.rpc')
+    var warrantySnippet = PublicWidget.Widget.extend({
+        selector: '.warranty_snippet',
+        start: function () {
+            var self = this;
+            rpc.query({
+                route: '/latest_warranties',
+                params: {},
+            }).then(function (result) {
+                self.$("#warranty_template").empty()
+                result.forEach(function (warranty) {
+                    var customer = warranty['customer_id'][1].includes(',') ? warranty['customer_id'][1].split(',')[1] : warranty['customer_id'][1]
+                    self.$("#warranty_template").append(`
+                        <div class="col-md-3">
+                            <div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
+                                <div class="card-header">${warranty['name']}</div>
+                                <div class="card-body">
+                                    <p class="card-text">Customer: ${customer}</p>
+                                    <p class="card-text">Product: ${warranty['product_id'][1]}</p>
+                                    <a href=${"my/warranties/" + warranty['id']}><button class="btn btn-info">More</button></a>
+                                </div>
                             </div>
                         </div>
-                        </div>
-                   `)
-               })
-           })
-       },
-   });
-   PublicWidget.registry.warranty_snippet = warrantySnippet
-   return warrantySnippet
+                    `)
+                })
+            })
+        },
+    });
+    PublicWidget.registry.warranty_snippet = warrantySnippet
+    return warrantySnippet
 });
