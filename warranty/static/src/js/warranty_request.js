@@ -9,11 +9,9 @@ odoo.define('warranty.warranty', function (require) {
             'change select[name="invoice_id"]': 'changeProductField',
             'change select[name="product_id"]': 'changeLotField',
         },
-
-        init: function () {
-            this._super.apply(this, arguments)
-        },
-
+//        init: function () {
+//            this._super.apply(this, arguments)
+//        }, use this when you have to write init functions
         changeProductField: async function () {
             var products = await rpc.query({
                 model: "account.move.line",
@@ -44,19 +42,17 @@ odoo.define('warranty.warranty', function (require) {
             })
             this.renderLotOptions(lot_number_ids)
         },
-
         renderProductOptions: function (product_ids) {
-            $('#product_id').empty().append("<option value=''></option>")
+            this.$el.find('select[name="product_id"]').empty().append("<option value=''></option>");
             product_ids.forEach(function (product) {
-                $("#product_id").append("<option value='" + product[0] + "'>" + product[1] + "</option>");
-            })
+                this.$el.find('select[name="product_id"]').append("<option value='" + product[0] + "'>" + product[1] + "</option>");
+            }.bind(this))
         },
-
         renderLotOptions: function (lot_number_ids) {
-            $('#lot_number_id').empty().append("<option value=''></option>")
+            this.$el.find('select[name="lot_number_id"]').empty().append("<option value=''></option>");
             lot_number_ids.forEach(function (lot) {
-                $("#lot_number_id").append("<option value='" + lot[0] + "'>" + lot[1] + "</option>");
-            })
+                this.$el.find('select[name="lot_number_id"]').append("<option value='" + lot[0] + "'>" + lot[1] + "</option>");
+            }.bind(this))
         },
     })
 })
