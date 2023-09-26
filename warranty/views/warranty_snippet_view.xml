@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--    To define the content of the snippet-->
+    <template id="warranty_snippet" name="Latest Warranties">
+        <section class="warranty_snippet">
+            <div class="container">
+                <h3 style="padding: 20px;">Latest Warranties</h3>
+                <div class="row" id="warranty_template">
+                </div>
+            </div>
+        </section>
+    </template>
+    <!--  To add our snippet into website.snippets  -->
+    <template id="external_snippets" inherit_id="website.snippets" priority="8">
+        <xpath expr="//div[@id='snippet_effect']//t[@t-snippet][last()]" position="after">
+            <t t-snippet="warranty.warranty_snippet"/>
+        </xpath>
+    </template>
+</odoo>
