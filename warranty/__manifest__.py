@@ -29,6 +29,7 @@
             "warranty/static/src/js/action_manager.js",
         ],
         "web.assets_frontend": [
+            "warranty/static/src/xml/warranty_carousel.xml",
             "warranty/static/src/js/warranty_request.js",
         ],
     },

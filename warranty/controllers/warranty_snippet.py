@@ -12,6 +12,6 @@ class WarrantySnippet(http.Controller):
         To return the values for snippet
         """
         warranties = request.env['request.for.warranty'].search_read(
-            [], order="request_date desc", limit=4
+            [], order="request_date desc"
         )
         return warranties

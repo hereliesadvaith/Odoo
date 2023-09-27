@@ -2,10 +2,14 @@
 <odoo>
     <!--    To define the content of the snippet-->
     <template id="warranty_snippet" name="Latest Warranties">
-        <section class="warranty_snippet">
-            <div class="container">
-                <h3 style="padding: 20px;">Latest Warranties</h3>
-                <div class="row" id="warranty_template">
+        <section class="oe_structure container warranty_snippet">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="text-center py-5">
+                        <h1 class="h1" style="padding: 20px;">Latest Warranties</h1>
+                        <div id="warranty_carousel">
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -13,7 +17,8 @@
     <!--  To add our snippet into website.snippets  -->
     <template id="external_snippets" inherit_id="website.snippets" priority="8">
         <xpath expr="//div[@id='snippet_effect']//t[@t-snippet][last()]" position="after">
-            <t t-snippet="warranty.warranty_snippet"/>
+            <t t-snippet="warranty.warranty_snippet"
+                 t-thumbnail="/warranty/static/src/img/snippets/snippet.png"/>
         </xpath>
     </template>
 </odoo>

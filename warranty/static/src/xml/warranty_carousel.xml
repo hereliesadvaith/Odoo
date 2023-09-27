@@ -1,0 +1,52 @@
+<!-- Template for our carousel -->
+<template id="template" xml:space="preserve" name="Warranty Snippet Carousel">
+    <t t-name="warranty.warranty_snippet_carousel">
+        <div id="warranty_carousel" class="container carousel slide" data-bs-ride="carousel" t-att-data-bs-interval="interval">
+            <!-- Create a row to hold the carousel content and buttons -->
+            <div class="row">
+                <!-- Create a column for the Previous button on the left -->
+                <div class="col-md-1">
+                    <button class="carousel-control-prev" data-bs-slide="prev" aria-label="Previous" title="Previous">
+                        <span class="fa fa-chevron-circle-left fa-2x" style="color: black"/>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                </div>
+                <br/>
+                <!-- Create a column for the carousel content -->
+                <div class="col-md-10">
+                    <div class="carousel-inner" role="listbox">
+                        <t t-foreach="chunks" t-as="chunk">
+                            <div t-att-class="chunk.is_active ? 'carousel-item active' : 'carousel-item'">
+                                <div class="row">
+                                    <t t-foreach="chunk" t-as="item">
+                                        <!-- Your carousel item content goes here -->
+                                        <div class="block span3 col-3">
+                                            <div class="card-group">
+                                                <div class="card text-white bg-dark mb-3">
+                                                    <div class="card-header"><t t-esc="item.name"/></div>
+                                                    <div class="card-body">
+                                                        <p class="card-text">Customer: <t t-esc="item.customer_id[1]"/></p>
+                                                        <p class="card-text">Product: <t t-esc="item.product_id[1]"/></p>
+                                                        <a t-attf-href="{{item.href}}"><button class="btn btn-info">More</button></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </t>
+                                </div>
+                            </div>
+                        </t>
+                    </div>
+                </div>
+                <br/>
+                <!-- Create a column for the Next button on the right -->
+                <div class="col-md-1">
+                    <button class="carousel-control-next" data-bs-slide="next" aria-label="Next" title="Next">
+                        <span class="fa fa-chevron-circle-right fa-2x" style="color: black;"/>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </t>
+</template>

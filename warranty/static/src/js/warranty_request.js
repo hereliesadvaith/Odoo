@@ -60,31 +60,49 @@ odoo.define('warranty.warranty', function (require) {
 odoo.define('warranty.warranty_snippet', function (require) {
     var PublicWidget = require('web.public.widget')
     var rpc = require('web.rpc')
+    var core = require('web.core')
+    var qweb = core.qweb
     var warrantySnippet = PublicWidget.Widget.extend({
         selector: '.warranty_snippet',
+        events: {
+            'click .carousel-control-next': 'carouselNext',
+            'click .carousel-control-prev': 'carouselPrev',
+        },
         start: function () {
             var self = this;
             rpc.query({
                 route: '/latest_warranties',
                 params: {},
             }).then(function (result) {
-                self.$("#warranty_template").empty()
                 result.forEach(function (warranty) {
                     var customer = warranty['customer_id'][1].includes(',') ? warranty['customer_id'][1].split(',')[1] : warranty['customer_id'][1]
-                    self.$("#warranty_template").append(`
-                        <div class="col-md-3">
-                            <div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
-                                <div class="card-header">${warranty['name']}</div>
-                                <div class="card-body">
-                                    <p class="card-text">Customer: ${customer}</p>
-                                    <p class="card-text">Product: ${warranty['product_id'][1]}</p>
-                                    <a href=${"my/warranties/" + warranty['id']}><button class="btn btn-info">More</button></a>
-                                </div>
-                            </div>
-                        </div>
-                    `)
+                    var product = warranty['product_id'][1].includes(']') ? warranty['product_id'][1].split(']')[1] : warranty['product_id'][1]
+                    warranty['customer_id'][1] = customer
+                    warranty['product_id'][1] = product
+                    warranty['href'] = "/my/warranties/"+ warranty['id']
                 })
+                var chunks = _.chunk(result, 4)
+                chunks[0].is_active = true
+                self.$("#warranty_carousel").html(
+                    qweb.render('warranty.warranty_snippet_carousel', {chunks})
+                )
             })
+        },
+        carouselNext: function (event) {
+            var buttons = this.$('.carousel-control-next')
+            for (var i = 0; i < buttons.length; i++) {
+                buttons.eq(i).data('slNo', i)
+            }
+            var nextValue = $(event.currentTarget).data('slNo')
+            this.$('.carousel').eq(nextValue).carousel('next')
+        },
+        carouselPrev: function (event) {
+            var buttons = this.$('.carousel-control-prev')
+            for (var i = 0; i < buttons.length; i++) {
+                buttons.eq(i).data('slNo', i)
+            }
+            var prevValue = $(event.currentTarget).data('slNo')
+            this.$(".carousel").eq(prevValue).carousel('prev')
         },
     });
     PublicWidget.registry.warranty_snippet = warrantySnippet
