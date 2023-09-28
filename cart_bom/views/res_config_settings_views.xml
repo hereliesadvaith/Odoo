@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <!--    To inherit configuration page view-->
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.website.sale</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="website_sale.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@id='hide_add_to_cart_setting']" position="after">
+                <div class="col-12 col-lg-6 o_setting_box" id="select_multiple_products_settingF">
+                    <div class="o_setting_left_pane">
+                        <field name="enable_select_multiple_products"/>
+                    </div>
+                    <div class="o_setting_right_pane">
+                        <label for="enable_select_multiple_products" string="Select Multiple Products"/>
+                        <div class="text-muted">
+                            Can select multiple products
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>
