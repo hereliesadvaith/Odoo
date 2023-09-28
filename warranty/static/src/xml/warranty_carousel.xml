@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!-- Template for our carousel -->
 <template id="template" xml:space="preserve" name="Warranty Snippet Carousel">
     <t t-name="warranty.warranty_snippet_carousel">
@@ -6,9 +7,8 @@
             <div class="row">
                 <!-- Create a column for the Previous button on the left -->
                 <div class="col-md-1">
-                    <button class="carousel-control-prev" data-bs-slide="prev" aria-label="Previous" title="Previous">
-                        <span class="fa fa-chevron-circle-left fa-2x" style="color: black"/>
-                        <span class="visually-hidden">Previous</span>
+                    <button class="carousel-control-prev" data-bs-slide="prev" aria-label="Previous" title="Previous" style="width: 4rem;">
+                        <span class="fa fa-chevron-circle-left fa-2x" style="color: black;"/>
                     </button>
                 </div>
                 <br/>
@@ -41,9 +41,8 @@
                 <br/>
                 <!-- Create a column for the Next button on the right -->
                 <div class="col-md-1">
-                    <button class="carousel-control-next" data-bs-slide="next" aria-label="Next" title="Next">
+                    <button class="carousel-control-next" data-bs-slide="next" aria-label="Next" title="Next" style="width: 4rem;">
                         <span class="fa fa-chevron-circle-right fa-2x" style="color: black;"/>
-                        <span class="visually-hidden">Next</span>
                     </button>
                 </div>
             </div>
