@@ -9,16 +9,11 @@
     This module will show the bill of materials of the 
     products after the product description.
     """,
-    "depends": ["base","sale", "website", "mrp"],
+    "depends": ["base", "sale", "website", "mrp"],
     "data": [
         "views/res_config_settings_views.xml",
         "views/cart_template_views.xml",
     ],
-    "assets": {
-        "web.assets_frontend": [
-            "cart_bom/static/src/js/action_manager.js",
-        ],
-    },
     "installable": True,
     "license": "LGPL-3",
 }

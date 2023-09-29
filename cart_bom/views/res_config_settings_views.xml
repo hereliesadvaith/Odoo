@@ -16,6 +16,7 @@
                         <div class="text-muted">
                             To show BOM of products
                         </div>
+                        <br/>
                         <div class="content-group">
                             <label class="col-lg-3" string="Products" for="bom_product_ids"/>
                             <field name="bom_product_ids" widget="many2many_tags"/>
