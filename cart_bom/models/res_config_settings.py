@@ -8,8 +8,9 @@ class ResConfigSettings(models.TransientModel):
     """
     _inherit = 'res.config.settings'
 
-    enable_select_multiple_products = fields.Boolean(
+    show_bom_products = fields.Boolean(
         "Select Multiple Products", store=True)
+    bom_product_ids = fields.Many2many("product.product",)
 
     def set_values(self):
         """
@@ -17,8 +18,8 @@ class ResConfigSettings(models.TransientModel):
         """
         result = super(ResConfigSettings, self).set_values()
         self.env['ir.config_parameter'].sudo().set_param(
-            'enable_select_multiple_products',
-            self.enable_select_multiple_products)
+            'show_bom_products',
+            self.show_bom_products)
         return result
 
     @api.model
@@ -27,8 +28,14 @@ class ResConfigSettings(models.TransientModel):
         To get the field value.
         """
         result = super(ResConfigSettings, self).get_values()
-        result['enable_select_multiple_products'] = self.env[
+        result['show_bom_products'] = self.env[
             'ir.config_parameter'].sudo().get_param(
-            'enable_select_multiple_products'
+            'show_bom_products'
         )
         return result
+
+
+class Website(models.Model):
+    _inherit = 'website'
+
+    bom_product_ids = fields.Many2many('product.product')
