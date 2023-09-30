@@ -12,17 +12,23 @@ class WebsiteSale(WebsiteSale):
     @http.route([
         '/shop/cart',
     ], type='http', auth="public", website=True,
-                sitemap=False)
+        sitemap=False)
     def cart(self, access_token=None, revive='', **post):
         """
         To inherit /shop/cart route
         """
         result = super(WebsiteSale, self).cart(access_token=access_token,
-                                                     revive=revive, **post)
+                                               revive=revive, **post)
         bom_components = []
+        product_ids = [i.bom_product_ids for i in
+                       request.env['website'].sudo().browse(
+                           request.website.id
+                       )]
+        tmpl_ids = [i.product_tmpl_id.id for i in product_ids[0]]
         for record in result.qcontext['website_sale_order'].website_order_line:
             bom_id = request.env['mrp.bom'].sudo().search([
-                ('product_tmpl_id', '=', record.product_id.product_tmpl_id.id)
+                ('product_tmpl_id', '=', record.product_id.product_tmpl_id.id),
+                ('product_tmpl_id', 'in', tmpl_ids),
             ])
             if bom_id:
                 for i in bom_id[0].bom_line_ids:
@@ -55,7 +61,7 @@ class WebsiteSale(WebsiteSale):
         order = request.website.sale_get_order()
         for record in order.website_order_line:
             bom_id = request.env['mrp.bom'].sudo().search([
-                ('product_tmpl_id', '=', record.product_id.product_tmpl_id.id)
+                ('product_tmpl_id', '=', record.product_id.product_tmpl_id.id),
             ])
             if bom_id:
                 for i in bom_id[0].bom_line_ids:
