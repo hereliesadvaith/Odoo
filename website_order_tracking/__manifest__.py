@@ -6,11 +6,12 @@
     "category": "Website",
     "summary": "Tracking of orders in website.",
     "description": """
-    This module will show the details of the delivery of sales
+    This module will help to show the details of the delivery of sales
     orders.
     """,
     "depends": ["base", "sale", "website", "stock"],
     "data": [
+        "views/website_portal_views.xml",
     ],
     "installable": True,
     "license": "LGPL-3",

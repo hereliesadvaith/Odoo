@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+   <data>
+       <template id="order_tracking" name="Order Tracking">
+           <t t-call="website.layout">
+               <div id="wrap" class="oe_structure oe_empty order_tracking">
+                   <div class="container">
+                       <h1 style="padding: 20px;">Track Order <span t-esc="order.name"/></h1>
+                   </div>
+               </div>
+           </t>
+       </template>
+   </data>
+</odoo>

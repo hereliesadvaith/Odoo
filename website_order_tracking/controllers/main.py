@@ -7,3 +7,12 @@ class WebsiteTracking(http.Controller):
     """
     To inherit add values in website tracking page
     """
+    @http.route(['/order_tracking/<int:order_id>'],
+                type='http', auth="user", website=True)
+    def warranties_form_view(self, **kwargs):
+        """
+        To get the order tracking page.
+        """
+        order = request.env['sale.order'].browse(kwargs['order_id'])
+        values = {'order': order}
+        return request.render('website_order_tracking.order_tracking', values)
