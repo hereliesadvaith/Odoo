@@ -11,7 +11,9 @@
     """,
     "depends": ["base", "sale", "website", "stock"],
     "data": [
+        "security/ir.model.access.csv",
         "views/website_portal_views.xml",
+        "views/stock_picking_views.xml",
     ],
     "installable": True,
     "license": "LGPL-3",

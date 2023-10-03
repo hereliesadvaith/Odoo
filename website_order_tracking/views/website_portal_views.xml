@@ -1,14 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-   <data>
-       <template id="order_tracking" name="Order Tracking">
-           <t t-call="website.layout">
-               <div id="wrap" class="oe_structure oe_empty order_tracking">
-                   <div class="container">
-                       <h1 style="padding: 20px;">Track Order <span t-esc="order.name"/></h1>
-                   </div>
-               </div>
-           </t>
-       </template>
-   </data>
+    <!--    To create order tracking page-->
+    <template id="order_tracking" name="Order Tracking">
+    <t t-call="website.layout">
+        <div class="container">
+            <h1 style="padding: 20px;">Track Order: <t t-esc="order.name"/></h1>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="wizard">
+                    <div class="progress-wizard">
+                        <t t-foreach="transfers" t-as="transfer">
+                        <div t-att-class="'progress-wizard-step ' + ('active' if transfer.state == 'completed' else 'disabled')">
+                            <div class="progress-wizard-bar d-none d-md-block"/>
+                            <span class="progress-wizard-dot d-none d-md-inline-block"/>
+                            <div style="padding: 20px;">
+                                From : <span t-esc="transfer.from_address"/><br/>
+                                To : <span t-esc="transfer.to_address"/><br/>
+                                Expected Date: <span t-esc="transfer.deadline"/>
+                            </div>
+                        </div>
+                        </t>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+    </template>
+    <!--  To create button to track order  -->
+    <template id="portal_my_orders" name="My Sales Orders Inherit" inherit_id="sale.portal_my_orders" >
+        <xpath expr="//tr[hasclass('active')]" position="inside">
+            <th class="text-end">Track Order</th>
+        </xpath>
+        <xpath expr="//td[hasclass('text-end')][2]" position="after">
+            <td class="text-end">
+                <a t-att-href="'/order_tracking/'+ str(order.id)">
+                    <button class="btn btn-info">
+                        Track
+                    </button>
+                </a>
+            </td>
+        </xpath>
+    </template>
 </odoo>
