@@ -14,12 +14,11 @@ class WebsiteTracking(http.Controller):
         To get the order tracking page.
         """
         order = request.env['sale.order'].browse(kwargs['order_id'])
-        transfers = request.env['stock.picking'].search([
+        transfer = request.env['stock.picking'].search([
             ('origin', '=', order.name)
-        ])[0].track_order_ids
-        print(transfers)
+        ])[-1]
         values = {
-            "transfers": transfers,
+            "transfer": transfer,
             "order": order,
         }
         return request.render('website_order_tracking.order_tracking', values)
