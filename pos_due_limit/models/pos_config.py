@@ -8,9 +8,9 @@ class PosConfig(models.Model):
     """
     _inherit = 'pos.config'
 
-    set_due_limit = fields.Boolean("Set due limit for customers",
+    set_due_limit = fields.Boolean("Due Limit",
                                    help="enable to set limit")
-    due_limit_value = fields.Float("Add limit",
+    due_limit_value = fields.Float("Limit",
                                    help="to add limit")
 
 
@@ -24,3 +24,11 @@ class ResConfigSettings(models.TransientModel):
         related='pos_config_id.set_due_limit', readonly=False)
     pos_due_limit_value = fields.Float(
         related='pos_config_id.due_limit_value', readonly=False)
+
+class ResPartner(models.Model):
+    """
+    To add fields in contact creation page.
+    """
+    _inherit = "res.partner"
+
+    balance_due = fields.Float("Balance Due", help="Balance due")

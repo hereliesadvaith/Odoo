@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--To add the balance due  -->
+<templates xml:space="preserve">
+    <!--To add the balance due in partner details-->
+    <t t-name="PartnerDetailsEdit" t-inherit="point_of_sale.PartnerDetailsEdit" t-inherit-mode="extension" owl="1">
+        <xpath expr="//div[hasclass('partner-details-right')]" position="inside">
+            <div class="partner-detail">
+                <span class="label">Due</span>
+                <input class="detail balance_due" name="vat" t-on-change="captureChange"
+                       t-att-value="props.partner.balance_due"/>
+            </div>
+        </xpath>
+    </t>
+    <!--To add the balance due in partner line-->
+    <t t-name="PartnerLine" t-inherit="point_of_sale.PartnerLine" t-inherit-mode="extension" owl="1">
+        <xpath expr="//td[hasclass('partner-line-balance')]" position="after">
+            <td>
+                <t t-esc="props.partner.balance_due or ''" />
+            </td>
+        </xpath>
+    </t>
+    <!-- To add the balance due header in partner list -->
+    <t t-name="PartnerListScreen" t-inherit="point_of_sale.PartnerListScreen" t-inherit-mode="extension" owl="1">
+        <xpath expr="//th[@t-if='isBalanceDisplayed']" position="after">
+            <th>Due</th>
+        </xpath>
+    </t>
+</templates>
