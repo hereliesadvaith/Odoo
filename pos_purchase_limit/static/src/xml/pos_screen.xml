@@ -6,7 +6,7 @@
         <xpath expr="//div[hasclass('partner-details-right')]" position="inside">
             <div class="partner-detail" t-if="props.partner.enable_purchase_limit">
                 <span class="label">Limit</span>
-                <input class="detail balance_due" name="vat" t-on-change="captureChange"
+                <input class="detail purchase_limit" t-on-change="captureChange" readonly="1"
                        t-att-value="props.partner.purchase_limit_value"/>
             </div>
         </xpath>
