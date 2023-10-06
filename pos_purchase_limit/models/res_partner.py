@@ -11,3 +11,4 @@ class ResPartner(models.Model):
     enable_purchase_limit = fields.Boolean("Purchase Limit",
                                            help="Balance due")
     purchase_limit_value = fields.Float("Limit", help="Add limit")
+    total_session_amount = fields.Float(help="session_amount")

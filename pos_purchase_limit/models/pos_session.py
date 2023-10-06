@@ -15,4 +15,5 @@ class PosSession(models.Model):
         result = super()._loader_params_res_partner()
         result['search_params']['fields'].extend(['enable_purchase_limit'])
         result['search_params']['fields'].extend(['purchase_limit_value'])
+        result['search_params']['fields'].extend(['total_session_amount'])
         return result
