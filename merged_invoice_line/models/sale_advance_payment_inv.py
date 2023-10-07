@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from odoo import models, fields, api
+from odoo import models
 
 
 class SaleAdvancePaymentInv(models.TransientModel):
@@ -8,18 +8,18 @@ class SaleAdvancePaymentInv(models.TransientModel):
     """
     _inherit = 'sale.advance.payment.inv'
 
-    def _create_invoices(self, sale_order_ids):
+    def _create_invoices(self, sale_orders):
         """
         To inherit create_invoices
         """
         result = super(
-            SaleAdvancePaymentInv, self)._create_invoices(sale_order_ids)
+            SaleAdvancePaymentInv, self)._create_invoices(sale_orders)
         if len(result) == 1:
             for line in result.line_ids:
                 line.sale_order_names = line.sale_line_ids.order_id.name
             for order_line in result.line_ids.sale_line_ids:
                 for line in result.line_ids.filtered(
-                lambda r: r.product_id == order_line.product_id and
+                    lambda r: r.product_id == order_line.product_id and
                     r.price_unit == order_line.price_unit and
                     order_line not in r.sale_line_ids and
                     order_line.order_id not in r.sale_line_ids.order_id
@@ -41,4 +41,5 @@ class SaleAdvancePaymentInv(models.TransientModel):
                     invoice_lines[0].quantity = quantity
                     invoice_lines[0].price_unit = unit_price
                     invoice_lines[1:].unlink()
+            result.line_ids.sale_line_ids.order_id.invoice_status = 'invoiced'
         return result
