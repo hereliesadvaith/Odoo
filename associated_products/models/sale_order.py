@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 from odoo import api, fields, models
 
+# Global variables
+_product_id_old = []
+
 
 class SaleOrder(models.Model):
     """
@@ -10,26 +13,25 @@ class SaleOrder(models.Model):
 
     associated_products = fields.Boolean(
         string="Associated Products", help="Check to add associated products")
-    _product_id_old = []
 
     # Onchange Functions
 
     @api.onchange("associated_products", "partner_id")
     def _onchange_associated_products(self):
         """
-        To add records in order lines.
+        To add records in sale order lines.
         """
         for record in self.order_line:
-            if record.product_id.id in self._product_id_old:
+            if record.product_id.id in _product_id_old:
                 self.update({
                     'order_line': [(fields.Command.unlink(record.id))]
                 })
-        self._product_id_old.clear()
+        _product_id_old.clear()
         if self.partner_id.associated_product_ids:
             if self.associated_products:
                 for product in self.partner_id.associated_product_ids:
-                    self._product_id_old.append(product.id)
-                    data = {
+                    _product_id_old.append(product.id)
+                    vals = {
                         "product_id": product.id,
                         "product_uom_qty": 1,
                         "product_uom": product.uom_id,
@@ -38,7 +40,7 @@ class SaleOrder(models.Model):
                         "order_id": self.id,
                     }
                     self.update({
-                        'order_line': [(fields.Command.create(data))],
+                        'order_line': [(fields.Command.create(vals))],
                     })
             else:
                 for record in self.order_line:
