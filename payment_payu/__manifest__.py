@@ -15,6 +15,7 @@
         'views/payment_provider_views.xml',
         'views/payment_payu_templates.xml',
         'data/payment_provider_data.xml',
+        'data/payment_transaction_sequence.xml',
     ],
     "post_init_hook": "post_init_hook",
     "uninstall_hook": "uninstall_hook",

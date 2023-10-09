@@ -3,15 +3,14 @@
     <template id="redirect_form">
         <form action="https://test.payu.in/_payment" method="post">
             <input type="hidden" name="key" t-att-value="key"/>
-            <input type="hidden" name="txnid" value="txnid"/>
-            <input type="hidden" name="amount" value="10"/>
-            <input type="hidden" name="email" value="test@gmail.com"/>
-            <input type="hidden" name="firstname" value="Ashish"/>
-            <input type="hidden" name="lastname" value="Kumar"/>
+            <input type="hidden" name="txnid" t-att-value="txnid"/>
+            <input type="hidden" name="amount" t-att-value="amount"/>
+            <input type="hidden" name="productinfo" t-att-value="productinfo" />
+            <input type="hidden" name="firstname" t-att-value="firstname"/>
+            <input type="hidden" name="email" t-att-value="email"/>
             <input type="hidden" name="surl" value="https://apiplayground-response.herokuapp.com/"/>
             <input type="hidden" name="furl" value="https://apiplayground-response.herokuapp.com/"/>
-            <input type="hidden" name="phone" value="98788473847"/>
-            <input type="hidden" name="hash" value="81df929f63c8d2b0f52cb525e70ac83665ec2e6656c9e95afca00eaba15982555230ea54e17c11f317e5890027bc57d07ca58cd61fd651a32c1d1c5b197eaa"/>
+            <input type="hidden" name="hash" t-att-value="hash"/>
             <input type="submit" value="submit"/>
         </form>
     </template>
