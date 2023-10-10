@@ -1,5 +1,8 @@
 # Associated Products
 
+![Static Badge](https://img.shields.io/badge/Status-In_Production-limegreen)
+
+
 This Odoo module enhances sales workflows by allowing seamless association of multiple products with specific contacts. When selecting a customer in a sales quotation, the associated products are automatically populated into the sales order lines. Simplify your sales process with this streamlined solution.
 
 ## Installation
@@ -19,4 +22,4 @@ After installation, follow these steps to configure and use the module:
 1. Go to the 'Contacts' app in Odoo.
 2. Open the customer for which you want to enable associated products.
 3. Add products you want in the 'Associated Products' field.
-4. Save the changes. Now when you select a customer in sales quotation and enable the associated products check box, the associated products will automatically populated into the sales order lines.
+4. Save the changes. Now when you select a customer in sales quotation and enable the associated products check box, the associated products will automatically populate into the sales order lines.
