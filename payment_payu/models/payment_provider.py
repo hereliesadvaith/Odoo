@@ -1,14 +1,11 @@
 # -*- coding: utf-8 -*-
-import hashlib
-import logging
-
 from odoo import fields, models
 
 
-_logger = logging.getLogger(__name__)
-
-
 class PaymentProvider(models.Model):
+    """
+    To add fields in Payment Provider model.
+    """
     _inherit = 'payment.provider'
 
     code = fields.Selection(

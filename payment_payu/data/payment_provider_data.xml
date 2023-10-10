@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data noupdate="1">
+        <!--  To add PayU payment provider  -->
         <record id="payment_provider_payu" model="payment.provider">
             <field name="name">PayU Payment Services</field>
             <field name="code">payu</field>

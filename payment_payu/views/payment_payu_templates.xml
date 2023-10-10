@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <!--  Redirect form for our payment method  -->
     <template id="redirect_form">
+        <!-- Change action to https://secure.payu.in/_payment after testing -->
         <form action="https://test.payu.in/_payment" method="post">
             <input type="hidden" name="key" t-att-value="key"/>
             <input type="hidden" name="txnid" t-att-value="txnid"/>
@@ -8,8 +10,9 @@
             <input type="hidden" name="productinfo" t-att-value="productinfo" />
             <input type="hidden" name="firstname" t-att-value="firstname"/>
             <input type="hidden" name="email" t-att-value="email"/>
-            <input type="hidden" name="surl" value="https://apiplayground-response.herokuapp.com/"/>
-            <input type="hidden" name="furl" value="https://apiplayground-response.herokuapp.com/"/>
+            <input type="hidden" name="phone" t-att-value="phone"/>
+            <input type="hidden" name="surl" t-att-value="return_url"/>
+            <input type="hidden" name="furl" t-att-value="return_url" />
             <input type="hidden" name="hash" t-att-value="hash"/>
             <input type="submit" value="submit"/>
         </form>
