@@ -23,4 +23,9 @@ addons_path = /home/user/odoo/addons, /home/user/odoo/our_repository
 
 ```
 3. Open the Odoo application and go to Apps. From the apps list activate our application.
-4. Enable developer mode and from top menu click the Update App List option and enjoy.
+4. Enable developer mode and from top menu click the Update App List option.
+
+**Important Notice**: Please note that some of the apps included in this repository may be in the development stage marked with ![Static Badge](https://img.shields.io/badge/Status-In_Development-red) . We strongly recommend using only the applications marked with ![Static Badge](https://img.shields.io/badge/Status-In_Production-limegreen) in a live production environment. Apps in the development stage may not be fully stable or feature-complete and are primarily intended for testing and development purposes.
+
+Enjoy the enhanced features and functionalities these production-ready applications bring to your Odoo ERP system!
+
