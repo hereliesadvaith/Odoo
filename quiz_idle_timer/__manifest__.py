@@ -12,6 +12,12 @@
     "depends": ["website", "survey"],
     "data": [
         "views/survey_survey_views.xml",
+        "views/survey_templates.xml",
     ],
+    "assets": {
+        "web.assets_frontend": [
+            "quiz_idle_timer/static/src/js/quiz_timer.js",
+        ],
+    },
     "license": "LGPL-3",
 }

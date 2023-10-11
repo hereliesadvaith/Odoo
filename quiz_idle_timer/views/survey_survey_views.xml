@@ -7,8 +7,8 @@
         <field name="inherit_id" ref="survey.survey_survey_view_form"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='scoring_type']" position="before">
-                <field name="idle_time" widget="float_time" attrs="{'invisible': [('is_time_limited', '=', False)]}"/>
-                <field name="turn_page_time" widget="float_time" attrs="{'invisible': [('is_time_limited', '=', False)]}"/>
+                <field name="idle_time" widget="float_time"/>
+                <field name="turn_page_time" widget="float_time"/>
             </xpath>
         </field>
     </record>

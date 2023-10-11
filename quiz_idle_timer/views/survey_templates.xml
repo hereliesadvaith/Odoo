@@ -1,0 +1,10 @@
+<odoo>
+    <data>
+        <!-- To inherit survey page  -->
+        <template id="survey_fill_header" inherit_id="survey.survey_fill_header" name="survey_fill_form_inherited">
+            <xpath expr="//div[hasclass('o_survey_timer')]" position="after">
+                <button id="button_time" class="button_time">Hii</button>
+            </xpath>
+        </template>
+    </data>
+</odoo>
