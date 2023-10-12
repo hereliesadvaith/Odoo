@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<templates>
+    <t t-name="qr_code_generator" owl="1">
+        <div class="d-flex align-items-center m-2">
+            <button class="btn btn-primary">
+                Q
+            </button>
+        </div>
+    </t>
+</templates>
