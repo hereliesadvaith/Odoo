@@ -8,7 +8,7 @@ class Slide(models.Model):
     """
     _inherit = "survey.survey"
 
-    idle_time = fields.Float("Idle Time Start Delay",
+    idle_time = fields.Integer("Idle Time Start Delay (s)",
                              help="Set starting delay time")
-    turn_page_time = fields.Float("Page Turn Delay",
+    turn_page_time = fields.Integer("Page Turn Delay (s)",
                                   help="Set page turn delay time")

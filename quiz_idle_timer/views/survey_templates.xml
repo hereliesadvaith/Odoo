@@ -3,7 +3,11 @@
         <!-- To inherit survey page  -->
         <template id="survey_fill_header" inherit_id="survey.survey_fill_header" name="survey_fill_form_inherited">
             <xpath expr="//div[hasclass('o_survey_timer')]" position="after">
-                <button id="button_time" class="button_time">Hii</button>
+                <t t-if="not survey_last">
+                <div class="idle_timer_data" t-att-data-idle-time="survey.idle_time" t-att-data-turn-page-time="survey.turn_page_time">
+                    <h3 id="idle_timer" class="idle_timer">00:00</h3>
+                </div>
+                </t>
             </xpath>
         </template>
     </data>
