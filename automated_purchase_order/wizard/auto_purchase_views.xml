@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <!-- Auto purchase page form view -->
+        <!-- Auto purchase wizard form view -->
         <record id="auto_purchase_view_form" model="ir.ui.view">
             <field name="name">Auto Purchase</field>
             <field name="model">auto.purchase</field>
