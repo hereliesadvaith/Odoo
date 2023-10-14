@@ -20,7 +20,7 @@ To install this module in your Odoo instance, follow these steps:
 
 After installation, follow these steps to configure and use the module:
 
-1. Go to the 'Product Variants' menu in Odoo.
+1. Enable 'Variants' option in settings and go to the 'Product Variants' page.
 2. Open the product for which you want to create purchase order.
 3. Click the 'Purchase' button. If the product has vendors and vendor prices set, first vendor details will automatically added to the purchase order wizard.
 4. Set the desired reorder quantity and select the preferred vendor.
