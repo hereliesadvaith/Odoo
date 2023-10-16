@@ -3,7 +3,7 @@
     <t t-name="qr_code_generator" owl="1">
         <div class="d-flex align-items-center m-2">
             <button class="btn btn-primary" t-on-click="() => this._onClick()">
-                Q
+                <i class="fa fa-qrcode" aria-hidden="true"/>
             </button>
         </div>
     </t>

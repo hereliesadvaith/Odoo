@@ -11,6 +11,8 @@
     "website": "https://hereliesadvaith.github.io",
     "depends": ["base"],
     "data": [
+        "security/ir.model.access.csv",
+        "wizard/qr_code_generator_views.xml",
     ],
     "assets": {
         "web.assets_backend": [

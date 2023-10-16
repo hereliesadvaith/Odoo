@@ -12,8 +12,8 @@ class QRCode extends Component {
     _onClick() {
         this.action.doAction({
             type: "ir.actions.act_window",
-            name: "Purchase Order",
-            res_model: "purchase.order",
+            name: "QR Code Generator",
+            res_model: "qr.code.generator",
             view_mode: "form",
             views: [[false, "form"]],
             target: "new",
