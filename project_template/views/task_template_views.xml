@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--  Menu for Task Templates  -->
+    <record id="task_template_action" model="ir.actions.act_window">
+        <field name="name">Task Template</field>
+        <field name="res_model">task.template</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>
