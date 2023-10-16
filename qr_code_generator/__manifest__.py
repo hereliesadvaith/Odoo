@@ -2,7 +2,7 @@
 {
     "name": "QR Code Generator",
     "version": "16.0.1.0.0",
-    "category": "Technical",
+    "category": "Hidden",
     "summary": "To add QR Code Generator.",
     "description": """
     This module is used to create a QR Code generator.
