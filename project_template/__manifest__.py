@@ -16,6 +16,7 @@
         "views/project_template_views.xml",
         "views/task_template_views.xml",
         "views/project_menu_items.xml",
+        "views/project_views.xml",
     ],
     "license": "LGPL-3",
     "installable": True,
