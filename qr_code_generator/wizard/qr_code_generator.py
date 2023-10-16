@@ -69,5 +69,5 @@ class QRCodeGenerator(models.TransientModel):
             "type": "ir.actions.act_url",
             "target": "self",
             "url": f"/web/image?model=qr.code.generator"
-                   f"&download=true&id={self.id}&field"f"=qr_code",
+                   f"&download=true&id={self.id}&field=qr_code",
         }

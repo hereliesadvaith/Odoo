@@ -6,10 +6,12 @@ const { Component } = owl
 
 class QRCode extends Component {
     setup(){
+        // Functions that works at setup
         super.setup(...arguments)
         this.action = useService("action")
     }
     _onClick() {
+        // To pop up wizard when clicking on the QR Code button
         this.action.doAction({
             type: "ir.actions.act_window",
             name: "QR Code Generator",
