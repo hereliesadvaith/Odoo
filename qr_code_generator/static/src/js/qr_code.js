@@ -1,9 +1,24 @@
 /** @odoo-module **/
 import { registry } from "@web/core/registry"
+import { useService } from "@web/core/utils/hooks"
 const { Component } = owl
 
-class QRCode extends Component {
 
+class QRCode extends Component {
+    setup(){
+        super.setup(...arguments)
+        this.action = useService("action")
+    }
+    _onClick() {
+        this.action.doAction({
+            type: "ir.actions.act_window",
+            name: "Purchase Order",
+            res_model: "purchase.order",
+            view_mode: "form",
+            views: [[false, "form"]],
+            target: "new",
+        })
+    }
 }
 QRCode.template = "qr_code_generator";
 const Systray = {
