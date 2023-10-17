@@ -32,8 +32,8 @@
                            <field name="task_template_ids">
                                <tree string="Tasks" editable="bottom">
                                    <field name="name"/>
-                                   <field name="user_ids" widget="many2many_tags"/>
-                                   <field name="tag_ids" widget="many2many_tags"/>
+                                   <field name="user_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                                   <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                                </tree>
                            </field>
                        </page>

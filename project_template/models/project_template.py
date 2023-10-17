@@ -42,7 +42,7 @@ class ProjectTemplate(models.Model):
                 "tag_ids": self.tag_ids.ids,
                 "company_id": self.company_id.id,
                 "user_id": self.user_id.id,
-                "task_template_ids": self.task_template_ids.ids,
-                "task_stage_ids": self.task_stage_ids.ids,
+                "default_task_template_ids": self.task_template_ids.ids,
+                "default_task_stage_ids": self.task_stage_ids.ids,
             },
         }
