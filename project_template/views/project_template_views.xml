@@ -1,6 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!--  Menu for Project Templates  -->
+    <!-- Form view for project template page. -->
+    <record id="project_template_view_form" model="ir.ui.view">
+        <field name="name">project.template.view.form</field>
+        <field name="model">project.template</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_create_project" type="object" string="Create Project"
+                        class="oe_highlight"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" />
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="label_tasks"/>
+                            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                        </group>
+                        <group>
+                            <field name="company_id"/>
+                            <field name="user_id"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <!--  Menu action Project Templates  -->
     <record id="project_template_action" model="ir.actions.act_window">
         <field name="name">Project Template</field>
         <field name="res_model">project.template</field>

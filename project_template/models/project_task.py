@@ -20,6 +20,8 @@ class ProjectTask(models.Model):
             "view_mode": "form",
             "target": "new",
             "context": {
-                "default_name": "hello there",
+                "default_name": self.name,
+                "default_user_ids": self.user_ids.ids,
+                "default_tag_ids": self.tag_ids.ids,
             }
         }

@@ -20,6 +20,9 @@ class ProjectProject(models.Model):
             "view_mode": "form",
             "target": "new",
             "context": {
-                "default_name": "hi there",
+                "default_label_tasks": self.label_tasks,
+                "default_tag_ids": self.tag_ids.ids,
+                "default_company_id": self.company_id.id,
+                "default_user_id": self.user_id.id,
             }
         }
