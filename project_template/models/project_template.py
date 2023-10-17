@@ -17,6 +17,12 @@ class ProjectTemplate(models.Model):
                                  help="Company")
     user_id = fields.Many2one("res.users", string="Project Manager",
                               help="Project Manager")
+    task_template_ids = fields.One2many("task.template",
+                                        "project_template_id",
+                                        help="Tasks")
+    task_stage_ids = fields.Many2many("project.task.type",
+                                      string="Task Stages",
+                                      help="Task Stages")
 
     # Action Methods
 
@@ -24,16 +30,19 @@ class ProjectTemplate(models.Model):
         """
         To create a project using template
         """
+        self.ensure_one()
         return {
             "type": "ir.actions.act_window",
-            "res_model": "project.project",
-            "name": "Create Project",
+            "res_model": "create.template",
+            "name": "Create Form",
             "view_mode": "form",
             "target": "new",
             "context": {
-                "default_label_tasks": self.label_tasks,
-                "default_tag_ids": self.tag_ids.ids,
-                "default_company_id": self.company_id.id,
-                "default_user_id": self.user_id.id,
-            }
+                "label_tasks": self.label_tasks,
+                "tag_ids": self.tag_ids.ids,
+                "company_id": self.company_id.id,
+                "user_id": self.user_id.id,
+                "task_template_ids": self.task_template_ids.ids,
+                "task_stage_ids": self.task_stage_ids.ids,
+            },
         }

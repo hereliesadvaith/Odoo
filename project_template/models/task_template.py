@@ -14,6 +14,8 @@ class TaskTemplate(models.Model):
                                 help="Assignees")
     tag_ids = fields.Many2many("project.tags", string="Tags",
                                help="Tags")
+    project_template_id = fields.Many2one("project.template",
+                                          help="Project template id")
 
     # Action Methods
 
@@ -21,4 +23,15 @@ class TaskTemplate(models.Model):
         """
         To create task using template
         """
-        print("hi")
+        return {
+            "type": "ir.actions.act_window",
+            "res_model": "project.task",
+            "name": "Create Template",
+            "view_mode": "form",
+            "target": "new",
+            "context": {
+                "default_name": self.name,
+                "default_user_ids": self.user_ids.ids,
+                "default_tag_ids": self.tag_ids.ids,
+            }
+        }

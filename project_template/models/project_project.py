@@ -13,16 +13,17 @@ class ProjectProject(models.Model):
         """
         To create project template
         """
+        self.ensure_one()
         return {
             "type": "ir.actions.act_window",
-            "res_model": "project.template",
-            "name": "Create Template",
+            "res_model": "create.template",
+            "name": "Create Form",
             "view_mode": "form",
             "target": "new",
             "context": {
-                "default_label_tasks": self.label_tasks,
-                "default_tag_ids": self.tag_ids.ids,
-                "default_company_id": self.company_id.id,
-                "default_user_id": self.user_id.id,
-            }
+                "label_tasks": self.label_tasks,
+                "tag_ids": self.tag_ids.ids,
+                "company_id": self.company_id.id,
+                "user_id": self.user_id.id,
+            },
         }
