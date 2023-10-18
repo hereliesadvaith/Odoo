@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Inherit survey creation page -->
+    <record id="survey_survey_view_form" model="ir.ui.view">
+        <field name="name">survey.survey.view.form.inherit.survey.contact.creation</field>
+        <field name="model">survey.survey</field>
+        <field name="inherit_id" ref="survey.survey_survey_view_form"/>
+        <field name="arch" type="xml">
+            <notebook position="inside">
+                <page name="Contact Relation">
+                    <field name="survey_contact_ids" nolabel="1">
+                        <tree editable="bottom">
+                            <field name="survey_id" invisible="1"/>
+                            <field name="questions_id"/>
+                            <field name="partner_fields_id"/>
+                        </tree>
+                    </field>
+                </page>
+            </notebook>
+        </field>
+    </record>
+</odoo>
