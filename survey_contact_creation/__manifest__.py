@@ -15,10 +15,5 @@
         "security/ir.model.access.csv",
         "views/survey_survey_views.xml",
     ],
-    "assets": {
-        "web.assets_frontend": [
-            "survey_contact_creation/static/src/js/**/*",
-        ],
-    },
     "license": "LGPL-3",
 }
