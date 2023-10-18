@@ -22,12 +22,12 @@ class PaymentProvider(models.Model):
         currency_field='main_currency_id',
     )
 
-    # Constrains Methods
+    # Constrains
 
     @api.constrains("maximum_amount", "minimum_amount")
     def _constrains_amounts(self):
         """
-        Validation of minimum and max amounts.
+        Validation of minimum and maximum amounts.
         """
         if self.minimum_amount > self.maximum_amount:
             raise ValidationError(
@@ -43,7 +43,7 @@ class PaymentProvider(models.Model):
             is_express_checkout=False, is_validation=False, **kwargs
     ):
         """
-        To add our conditions in _get_compatible_providers
+        To add our conditions in _get_compatible_providers function.
         """
         result = super(PaymentProvider, self)._get_compatible_providers(
             company_id, partner_id, amount, currency_id=None,
