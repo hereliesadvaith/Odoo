@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--  To add fields in payment provider  -->
+    <record id="payment_provider_form" model="ir.ui.view">
+        <field name="name">payment.provider.form.inherit.restrict.payment.acquirer</field>
+        <field name="model">payment.provider</field>
+        <field name="inherit_id" ref="payment.payment_provider_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='maximum_amount']" position="replace">
+                <field name="maximum_amount"/>
+                <field name="minimum_amount"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
