@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+   <div t-name="inventory_dashboard.InventoryDashboard" owl="1">
+       <h1>Hello there</h1>
+   </div>
+</templates>
