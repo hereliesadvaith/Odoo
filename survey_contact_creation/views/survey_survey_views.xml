@@ -11,7 +11,7 @@
                     <field name="survey_contact_ids" nolabel="1">
                         <tree editable="bottom">
                             <field name="survey_id" invisible="1"/>
-                            <field name="questions_id"/>
+                            <field name="question_id"/>
                             <field name="partner_fields_id"/>
                         </tree>
                     </field>

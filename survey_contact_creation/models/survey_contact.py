@@ -11,7 +11,7 @@ class SurveyContact(models.Model):
 
     survey_id = fields.Many2one("survey.survey",
                                 string="Survey ID")
-    questions_id = fields.Many2one("survey.question",
+    question_id = fields.Many2one("survey.question",
                                    string="Questions", help="Questions",
                                    domain="[('survey_id', '=', survey_id)]",)
     partner_fields_id = fields.Many2one("ir.model.fields",
