@@ -21,8 +21,10 @@
     ],
     "assets": {
         "web.assets_backend": [
-            "inventory_dashboard/static/src/dashboard/inventory_dashboard.js",
             "inventory_dashboard/static/src/dashboard/inventory_dashboard.xml",
+            "inventory_dashboard/static/src/dashboard/inventory_dashboard.js",
+            "inventory_dashboard/static/src/dashboard/inventory_card.xml",
+            "inventory_dashboard/static/src/dashboard/inventory_card.js",
         ],
     },
     "license": "LGPL-3",
