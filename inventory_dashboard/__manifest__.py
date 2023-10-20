@@ -21,10 +21,14 @@
     ],
     "assets": {
         "web.assets_backend": [
-            "inventory_dashboard/static/src/dashboard/inventory_dashboard.xml",
-            "inventory_dashboard/static/src/dashboard/inventory_dashboard.js",
-            "inventory_dashboard/static/src/dashboard/inventory_card.xml",
-            "inventory_dashboard/static/src/dashboard/inventory_card.js",
+            "inventory_dashboard/static/src/components/inventory_dashboard.xml",
+            "inventory_dashboard/static/src/components/inventory_dashboard.js",
+            "inventory_dashboard/static/src/components/kpi_card/kpi_card.xml",
+            "inventory_dashboard/static/src/components/kpi_card/kpi_card.js",
+            "inventory_dashboard/static/src/components/chart_renderer/chart_renderer.xml",
+            "inventory_dashboard/static/src/components/chart_renderer/chart_renderer.js",
+            "inventory_dashboard/static/src/components/product_table/product_table.js",
+            "inventory_dashboard/static/src/components/product_table/product_table.xml",
         ],
     },
     "license": "LGPL-3",

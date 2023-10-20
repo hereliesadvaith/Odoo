@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+   <div t-name="inventory_dashboard.InventoryDashboard" owl="1">
+       <div class="vh-100 overflow-auto bg-muted">
+           <div class="row m-3">
+               <div class="col-lg-7">
+                    <div class="row">
+                        <div class="col m-0 p-0">
+                            <div class="shadow-sm border m-2 p-4 bg-white">
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <h1 class="text-primary fw-bold">Inventory Dashboard</h1>
+                                    <div>
+                                        <select class="form-select" t-model="state.period" t-on-change="onChangePeriod">
+                                            <option value="0">Select Period</option>
+                                            <option value="7">Last 7 days</option>
+                                            <option value="30">Last 30 days</option>
+                                            <option value="90">Last 90 days</option>
+                                            <option value="365">Last 365 days</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                   <div class="row">
+                       <ProductTable/>
+                   </div>
+               </div>
+               <div class="col-5">
+                    <div class="row">
+                        <div class="col m-0 p-0">
+                            <div class="shadow-sm border m-2 p-4 bg-white">
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <h3 class="text-primary fw-bold">Monthly Sales</h3>
+                                    <div class="px-3 py-1 bg-primary cursor-pointer">
+                                        <span class="fa fa-arrow-right text-white"/>
+                                    </div>
+                                </div>
+                                <ChartRenderer type="'bar'" title="'Top Products Report'"/>
+                            </div>
+                        </div>
+                    </div>
+               </div>
+           </div>
+       </div>
+   </div>
+</templates>

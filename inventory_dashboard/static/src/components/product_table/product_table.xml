@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<templates>
+    <t t-name="inventory_dashboard.ProductTable" owl="1">
+        <div class="table-responsive bg-white">
+        <table class="table mb-0 table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Product</th>
+                    <th scope="col">Incoming</th>
+                    <th scope="col">Outgoing</th>
+                    <th scope="col">Internal Transfers</th>
+                    <th scope="col">Average Expense</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Mark</td>
+                    <td>Mark</td>
+                    <td>Mark</td>
+                    <td>Mark</td>
+                </tr>
+            </tbody>
+        </table>
+        </div>
+    </t>
+</templates>
