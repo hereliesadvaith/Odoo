@@ -30,14 +30,8 @@ export class InventoryDashboard extends Component {
     }
 
     async getProductDetails() {
-        const context = {}
-        this.product_details = await this.orm.call(
-            'inventory.dashboard',
-            'get_product_details',
-            [0],
-            {context: context},
-        )
-        console.log(this.product_details)
+        const products = await this.orm.searchRead("product.product", [["id", "=", 12]],[])
+        const move_lines = await this.orm.searchRead("stock.move.line",[["move_id", "in", products[0].stock_move_ids], ["product_id", "=", 12]],[])
     }
 
 }
