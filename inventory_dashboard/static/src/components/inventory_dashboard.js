@@ -1,41 +1,46 @@
 /* @odoo-module */
 
 import { registry } from "@web/core/registry"
-import { KpiCard } from "./kpi_card/kpi_card"
-import { ChartRenderer } from "./chart_renderer/chart_renderer"
-import { ProductTable } from "./product_table/product_table"
-import { loadJS } from "@web/core/assets"
 import { useService } from "@web/core/utils/hooks"
-const { Component, onWillStart, useRef, onMounted, useState } = owl
+import { ChartRenderer } from "./chart_renderer/chart_renderer"
+
+const { Component, onWillStart, useState } = owl
 
 export class InventoryDashboard extends Component {
+    // to load the initial datas
     setup() {
         this.orm = useService("orm")
         this.state = useState({
-            period: 90,
+            period: 0,
+            type: "inventory_valuation"
+
         })
-        onWillStart(async ()=> {
+        onWillStart(async () => {
             this.getDates()
-            await this.getProductDetails()
+            await this.loadDashboardData()
         })
     }
-
+    // to get dates in database format
+    getDates() {
+        this.state.current_date = moment().subtract(this.state.period, 'days').format('DD/MM/YYYY')
+    }
+    // to change the values based on selected period
     async onChangePeriod() {
         this.getDates()
+        console.log(this.state.period)
     }
-
-    getDates(){
-        this.state.current_date = moment().subtract(this.state.period, 'days').format('DD/MM/YYYY')
-        this.state.previous_date = moment().subtract(this.state.period * 2, 'days').format('DD/MM/YYYY')
+    // to change the values based on selected type
+    async onChangeType() {
+        this.getDates()
+        console.log(this.state.type)
     }
-
-    async getProductDetails() {
-        const products = await this.orm.searchRead("product.product", [["id", "=", 12]],[])
-        const move_lines = await this.orm.searchRead("stock.move.line",[["move_id", "in", products[0].stock_move_ids], ["product_id", "=", 12]],[])
+    // to get product details
+    async loadDashboardData() {
+        const products = await this.orm.searchRead("product.product", [], [])
+        console.log(products)
     }
-
 }
 
 InventoryDashboard.template = "inventory_dashboard.InventoryDashboard"
-InventoryDashboard.components = { KpiCard, ChartRenderer, ProductTable }
+InventoryDashboard.components = { ChartRenderer }
 registry.category("actions").add("inventory_dashboard", InventoryDashboard)

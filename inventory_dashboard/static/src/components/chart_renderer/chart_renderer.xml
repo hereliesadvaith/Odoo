@@ -1,5 +1,6 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
+    <!-- Chart template -->
    <div t-name="inventory_dashboard.ChartRenderer" owl="1">
        <canvas t-ref="chart"/>
    </div>
