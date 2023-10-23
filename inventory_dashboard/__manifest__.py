@@ -17,6 +17,7 @@
     "website": "https://hereliesadvaith.github.io",
     "depends": ["base", "stock"],
     "data": [
+        "security/ir.model.access.csv",
         "views/inventory_views.xml",
     ],
     "assets": {

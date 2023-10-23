@@ -36,8 +36,9 @@ export class InventoryDashboard extends Component {
     }
     // to get product details
     async loadDashboardData() {
-        const products = await this.orm.searchRead("product.product", [], [])
-        console.log(products)
+        var domain = [["id", "in", "res.partner"]]
+        var result = await this.orm.call("inventory.dashboard", "get_stock_incoming", [0, domain])
+        console.log(result)
     }
 }
 
