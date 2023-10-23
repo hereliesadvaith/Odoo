@@ -2,6 +2,8 @@
 
 import { registry } from "@web/core/registry"
 import { useService } from "@web/core/utils/hooks"
+import { loadJS } from "@web/core/assets"
+import { getColor } from "@web/views/graph/colors"
 import { ChartRenderer } from "./chart_renderer/chart_renderer"
 
 const { Component, onWillStart, useState } = owl
@@ -12,33 +14,86 @@ export class InventoryDashboard extends Component {
         this.orm = useService("orm")
         this.state = useState({
             period: 0,
-            type: "inventory_valuation"
-
+            type: "incoming_stock",
         })
+        this.domain = [["detailed_type", "=", "product"]]
         onWillStart(async () => {
-            this.getDates()
+            await loadJS("/web/static/lib/Chart/Chart.js")
             await this.loadDashboardData()
         })
     }
-    // to get dates in database format
-    getDates() {
-        this.state.current_date = moment().subtract(this.state.period, 'days').format('DD/MM/YYYY')
-    }
     // to change the values based on selected period
     async onChangePeriod() {
-        this.getDates()
-        console.log(this.state.period)
+        await this.loadDashboardData()
     }
     // to change the values based on selected type
     async onChangeType() {
-        this.getDates()
-        console.log(this.state.type)
+        await this.loadDashboardData()
     }
     // to get product details
     async loadDashboardData() {
-        var domain = [["id", "in", "res.partner"]]
-        var result = await this.orm.call("inventory.dashboard", "get_stock_incoming", [0, domain])
-        console.log(result)
+        switch(this.state.type) {
+            case "incoming_stock":
+                await this.getStockIncoming()
+                break
+            case "outgoing_stock":
+                await this.getStockOutgoing()
+                break
+        }
+    }
+    // stock incoming values for chart
+    async getStockIncoming() {
+        this.state.primaryChartTitle = "Incoming Stock"
+        const data = await this.orm.call("inventory.dashboard", "get_stock_incoming", [0, this.domain])
+        this.state.chartConfig = {
+            type: "bar",
+            data: {
+                labels: data.products,
+                datasets: [{
+                    label: "# of Quantity",
+                    data: data.incoming_qty,
+                    backgroundColor: data.products.map((_, index) => getColor(index)),
+                    borderColor: data.products.map((_, index) => getColor(index)),
+                    borderWidth: 1,
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            suggestedMin: 0,
+                        }
+                    }]
+                }
+            },
+        }
+    }
+    // stock incoming values for chart
+    async getStockOutgoing() {
+        this.state.primaryChartTitle = "Outgoing Stock"
+        const data = await this.orm.call("inventory.dashboard", "get_stock_outgoing", [0, this.domain])
+        this.state.chartConfig = {
+            type: "bar",
+            data: {
+                labels: data.products,
+                datasets: [{
+                    label: "# of Quantity",
+                    data: data.outgoing_qty,
+                    backgroundColor: data.products.map((_, index) => getColor(index)),
+                    borderColor: data.products.map((_, index) => getColor(index)),
+                    borderWidth: 1,
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            suggestedMin: 0,
+                        }
+                    }]
+                }
+            },
+        }
     }
 }
 
