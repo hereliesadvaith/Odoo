@@ -15,6 +15,7 @@ export class InventoryDashboard extends Component {
         this.state = useState({
             period: 0,
             type: "incoming_stock",
+            chartConfig: {}
         })
         this.domain = [["detailed_type", "=", "product"]]
         onWillStart(async () => {
@@ -32,19 +33,17 @@ export class InventoryDashboard extends Component {
     }
     // to get product details
     async loadDashboardData() {
-        switch(this.state.type) {
-            case "incoming_stock":
-                await this.getStockIncoming()
-                break
-            case "outgoing_stock":
-                await this.getStockOutgoing()
-                break
+        if (this.state.type === "incoming_stock") {
+            await this.getStockIncoming()
+        } else if (this.state.type === "outgoing_stock") {
+            await this.getStockOutgoing()
         }
     }
     // stock incoming values for chart
     async getStockIncoming() {
         this.state.primaryChartTitle = "Incoming Stock"
         const data = await this.orm.call("inventory.dashboard", "get_stock_incoming", [0, this.domain])
+        this.env.bus.trigger('renderEvent', {"data": data})
         this.state.chartConfig = {
             type: "bar",
             data: {
@@ -72,6 +71,7 @@ export class InventoryDashboard extends Component {
     async getStockOutgoing() {
         this.state.primaryChartTitle = "Outgoing Stock"
         const data = await this.orm.call("inventory.dashboard", "get_stock_outgoing", [0, this.domain])
+        this.env.bus.trigger('renderEvent', {"data": data})
         this.state.chartConfig = {
             type: "bar",
             data: {
