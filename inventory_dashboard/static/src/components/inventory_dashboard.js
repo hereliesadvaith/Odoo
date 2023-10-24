@@ -15,7 +15,6 @@ export class InventoryDashboard extends Component {
         this.state = useState({
             period: 0,
             type: "incoming_stock",
-            chartConfig: {}
         })
         this.domain = [["detailed_type", "=", "product"]]
         onWillStart(async () => {
@@ -37,13 +36,14 @@ export class InventoryDashboard extends Component {
             await this.getStockIncoming()
         } else if (this.state.type === "outgoing_stock") {
             await this.getStockOutgoing()
+        } else if (this.state.type === "internal_transfer") {
+            await this.getInternalTransfer()
         }
     }
     // stock incoming values for chart
     async getStockIncoming() {
         this.state.primaryChartTitle = "Incoming Stock"
         const data = await this.orm.call("inventory.dashboard", "get_stock_incoming", [0, this.domain])
-        this.env.bus.trigger('renderEvent', {"data": data})
         this.state.chartConfig = {
             type: "bar",
             data: {
@@ -52,8 +52,6 @@ export class InventoryDashboard extends Component {
                     label: "# of Quantity",
                     data: data.incoming_qty,
                     backgroundColor: data.products.map((_, index) => getColor(index)),
-                    borderColor: data.products.map((_, index) => getColor(index)),
-                    borderWidth: 1,
                 }]
             },
             options: {
@@ -66,12 +64,12 @@ export class InventoryDashboard extends Component {
                 }
             },
         }
+        this.env.bus.trigger('renderEvent', { "config": this.state.chartConfig })
     }
     // stock incoming values for chart
     async getStockOutgoing() {
         this.state.primaryChartTitle = "Outgoing Stock"
         const data = await this.orm.call("inventory.dashboard", "get_stock_outgoing", [0, this.domain])
-        this.env.bus.trigger('renderEvent', {"data": data})
         this.state.chartConfig = {
             type: "bar",
             data: {
@@ -80,8 +78,6 @@ export class InventoryDashboard extends Component {
                     label: "# of Quantity",
                     data: data.outgoing_qty,
                     backgroundColor: data.products.map((_, index) => getColor(index)),
-                    borderColor: data.products.map((_, index) => getColor(index)),
-                    borderWidth: 1,
                 }]
             },
             options: {
@@ -94,6 +90,33 @@ export class InventoryDashboard extends Component {
                 }
             },
         }
+        this.env.bus.trigger('renderEvent', { "config": this.state.chartConfig })
+    }
+    // get internal stock transfers 
+    async getInternalTransfer() {
+        this.state.primaryChartTitle = "Internal Transfer"
+        const data = await this.orm.call("inventory.dashboard", "get_internal_transfer", [0, this.domain])
+        this.state.chartConfig = {
+            type: "bar",
+            data: {
+                labels: data.products,
+                datasets: [{
+                    label: "# of Transfers",
+                    data: data.internal_transfers,
+                    backgroundColor: data.products.map((_, index) => getColor(index)),
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            suggestedMin: 0,
+                        }
+                    }]
+                }
+            },
+        }
+        this.env.bus.trigger('renderEvent', { "config": this.state.chartConfig })
     }
 }
 

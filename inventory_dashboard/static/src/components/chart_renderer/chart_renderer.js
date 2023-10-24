@@ -15,7 +15,7 @@ export class ChartRenderer extends Component {
     }
     // to render chart with data from props
     renderChart() {
-        this.chart = new Chart(this.chartRef.el , {
+        this.chart = new Chart(this.chartRef.el, {
             type: this.props.config.type,
             data: this.props.config.data,
             options: this.props.config.options,
@@ -24,8 +24,11 @@ export class ChartRenderer extends Component {
     // to update chart with new datas
     updateChart(ev) {
         if (this.chart) {
-            const data = ev.data
-            console.log(data)
+            const config = ev.config
+            this.chart.type = config.type
+            this.chart.data = config.data
+            this.chart.options = config.options
+            this.chart.update()
         }
     }
 }
