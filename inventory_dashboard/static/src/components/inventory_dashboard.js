@@ -14,44 +14,51 @@ export class InventoryDashboard extends Component {
         this.orm = useService("orm")
         this.state = useState({
             period: 0,
-            type: "incoming_stock",
+            type: "inventory_valuation",
         })
         this.domain = [["detailed_type", "=", "product"]]
         onWillStart(async () => {
             await loadJS("/web/static/lib/Chart/Chart.js")
-            await this.loadDashboardData()
+            await this.loadPrimaryChartData()
+            await this.loadWarehouseChartData()
         })
     }
     // to change the values based on selected period
     async onChangePeriod() {
-        await this.loadDashboardData()
+        this.domain = [["detailed_type", "=", "product"]]
+        await this.loadPrimaryChartData()
+        await this.loadWarehouseChartData()
     }
     // to change the values based on selected type
     async onChangeType() {
-        await this.loadDashboardData()
+        await this.loadPrimaryChartData()
     }
-    // to get product details
-    async loadDashboardData() {
+    // to load dashboard data
+    async loadPrimaryChartData() {
         if (this.state.type === "incoming_stock") {
-            await this.getStockIncoming()
+            await this.getPrimaryChartData("Incoming Stock", "get_incoming_stock", "# of Quantity")
         } else if (this.state.type === "outgoing_stock") {
-            await this.getStockOutgoing()
+            await this.getPrimaryChartData("Outgoing Stock", "get_outgoing_stock", "# of Quantity")
         } else if (this.state.type === "internal_transfer") {
-            await this.getInternalTransfer()
+            await this.getPrimaryChartData("Internal Transfer", "get_internal_transfer", "# of Transfers")
+        } else if (this.state.type === "average_expense") {
+            await this.getPrimaryChartData("Average Expense", "get_average_expense", "$")
+        } else if (this.state.type === "inventory_valuation") {
+            await this.getPrimaryChartData("Inventory Valuation", "get_inventory_valuation", "$")
         }
     }
-    // stock incoming values for chart
-    async getStockIncoming() {
-        this.state.primaryChartTitle = "Incoming Stock"
-        const data = await this.orm.call("inventory.dashboard", "get_stock_incoming", [0, this.domain])
-        this.state.chartConfig = {
-            type: "bar",
+    // get data from model functions.
+    async getPrimaryChartData(chartTitle, apiMethod, chartLabel) {
+        this.state.primaryChartTitle = chartTitle
+        const result = await this.orm.call("inventory.dashboard", apiMethod, [0, this.domain])
+        this.state.primaryChartConfig = {
+            id: "primary_chart",
             data: {
-                labels: data.products,
+                labels: result.labels,
                 datasets: [{
-                    label: "# of Quantity",
-                    data: data.incoming_qty,
-                    backgroundColor: data.products.map((_, index) => getColor(index)),
+                    label: chartLabel,
+                    data: result.data,
+                    backgroundColor: result.labels.map((_, index) => getColor(index)),
                 }]
             },
             options: {
@@ -64,59 +71,42 @@ export class InventoryDashboard extends Component {
                 }
             },
         }
-        this.env.bus.trigger('renderEvent', { "config": this.state.chartConfig })
+        this.env.bus.trigger('renderEvent', { "config": this.state.primaryChartConfig })
     }
-    // stock incoming values for chart
-    async getStockOutgoing() {
-        this.state.primaryChartTitle = "Outgoing Stock"
-        const data = await this.orm.call("inventory.dashboard", "get_stock_outgoing", [0, this.domain])
-        this.state.chartConfig = {
-            type: "bar",
-            data: {
-                labels: data.products,
-                datasets: [{
-                    label: "# of Quantity",
-                    data: data.outgoing_qty,
-                    backgroundColor: data.products.map((_, index) => getColor(index)),
-                }]
-            },
+    // get data for warehouse chart
+    async loadWarehouseChartData() {
+        this.state.warehouseChartTitle = "Warehouse Stock"
+        const result = await this.orm.call("inventory.dashboard", "get_stock_location", [0, this.domain])
+        const data = {
+            labels: ['Category 1', 'Category 2', 'Category 3'],
+            datasets: [
+                {
+                    label: 'Type A',
+                    data: [10, 15, 20],
+                    backgroundColor: 'rgba(75, 192, 192, 0.5)',
+                },
+                {
+                    label: 'Type B',
+                    data: [5, 10, 15],
+                    backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                },
+            ],
+        };
+        this.state.warehouseChartConfig = {
+            id: "warehouse_chart",
+            data: data,
             options: {
                 scales: {
+                    xAxes: [{
+                        stacked: true
+                    }],
                     yAxes: [{
-                        ticks: {
-                            suggestedMin: 0,
-                        }
+                        stacked: true
                     }]
-                }
+                },
             },
         }
-        this.env.bus.trigger('renderEvent', { "config": this.state.chartConfig })
-    }
-    // get internal stock transfers 
-    async getInternalTransfer() {
-        this.state.primaryChartTitle = "Internal Transfer"
-        const data = await this.orm.call("inventory.dashboard", "get_internal_transfer", [0, this.domain])
-        this.state.chartConfig = {
-            type: "bar",
-            data: {
-                labels: data.products,
-                datasets: [{
-                    label: "# of Transfers",
-                    data: data.internal_transfers,
-                    backgroundColor: data.products.map((_, index) => getColor(index)),
-                }]
-            },
-            options: {
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            suggestedMin: 0,
-                        }
-                    }]
-                }
-            },
-        }
-        this.env.bus.trigger('renderEvent', { "config": this.state.chartConfig })
+        this.env.bus.trigger('renderEvent', { "config": this.state.warehouseChartConfig })
     }
 }
 

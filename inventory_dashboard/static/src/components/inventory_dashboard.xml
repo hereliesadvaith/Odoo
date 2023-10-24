@@ -43,7 +43,22 @@
                                         <span class="fa fa-arrow-right text-white"/>
                                     </div>
                                 </div>
-                                <ChartRenderer config="state.chartConfig"/>
+                                <ChartRenderer type="'bar'" config="state.primaryChartConfig"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="row">
+                        <div class="col m-0 p-0">
+                            <div class="shadow-sm border m-2 p-4 bg-white">
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <h2 class="text-primary fw-bold"><span t-esc="state.warehouseChartTitle"/></h2>
+                                    <div class="px-3 py-1 bg-primary cursor-pointer">
+                                        <span class="fa fa-arrow-right text-white"/>
+                                    </div>
+                                </div>
+                                <ChartRenderer type="'bar'" config="state.warehouseChartConfig"/>
                             </div>
                         </div>
                     </div>

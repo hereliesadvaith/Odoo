@@ -7,7 +7,7 @@ const { Component, useRef, onMounted } = owl
 export class ChartRenderer extends Component {
     setup() {
         this.chartRef = useRef("chart")
-        this.chart = null
+        this.charts = {}
         onMounted(() => {
             this.renderChart()
             this.env.bus.on("renderEvent", this, this.updateChart)
@@ -15,20 +15,17 @@ export class ChartRenderer extends Component {
     }
     // to render chart with data from props
     renderChart() {
-        this.chart = new Chart(this.chartRef.el, {
-            type: this.props.config.type,
+        this.charts[this.props.config.id] = new Chart(this.chartRef.el, {
+            type: this.props.type,
             data: this.props.config.data,
             options: this.props.config.options,
         })
     }
     // to update chart with new datas
     updateChart(ev) {
-        if (this.chart) {
-            const config = ev.config
-            this.chart.type = config.type
-            this.chart.data = config.data
-            this.chart.options = config.options
-            this.chart.update()
+        if (this.charts[ev.config.id]) {
+            this.charts[ev.config.id].data = ev.config.data
+            this.charts[ev.config.id].update()
         }
     }
 }
