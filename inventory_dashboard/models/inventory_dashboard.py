@@ -15,36 +15,64 @@ class InventoryDashboard(models.AbstractModel):
         """
         To get incoming stocks
         """
-        products = self.env["product.product"].sudo().search(domain).filtered(
-            lambda r: r.incoming_qty > 0)
+        domain.append(["picking_type_id", "=", self.env.ref(
+            "stock.picking_type_in"
+        ).id])
+        if self.env.user not in self.env.ref("stock.group_stock_manager").users:
+            domain.append(["create_uid", "=", self.env.context["uid"]])
+        stock_moves = self.env["stock.move"].search(domain)
+        purchase_orders, products = [], []
+        for product in stock_moves.mapped("product_id").filtered(
+                lambda r: r.detailed_type == "product"
+        ):
+            quantity = 0
+            for rec in stock_moves.filtered(lambda r: r.product_id == product):
+                quantity += rec.product_uom_qty
+            products.append(product.name)
+            purchase_orders.append(quantity)
         return {
-            "labels": [i.name for i in products],
-            "data": [i.incoming_qty for i in products]
+            "labels": products,
+            "data": purchase_orders,
         }
 
     def get_outgoing_stock(self, domain):
         """
         To get outgoing stocks
         """
-        products = self.env["product.product"].sudo().search(domain).filtered(
-            lambda r: r.outgoing_qty > 0)
+        domain.append(["picking_type_id", "=", self.env.ref(
+            "stock.picking_type_out"
+        ).id])
+        if self.env.user not in self.env.ref("stock.group_stock_manager").users:
+            domain.append(["create_uid", "=", self.env.context["uid"]])
+        stock_moves = self.env["stock.move"].search(domain)
+        delivery_orders, products = [], []
+        for product in stock_moves.mapped("product_id").filtered(
+                lambda r: r.detailed_type == "product"
+        ):
+            quantity = 0
+            for rec in stock_moves.filtered(lambda r: r.product_id == product):
+                quantity += rec.product_uom_qty
+            products.append(product.name)
+            delivery_orders.append(quantity)
         return {
-            "labels": [i.name for i in products],
-            "data": [i.outgoing_qty for i in products]
+            "labels": products,
+            "data": delivery_orders,
         }
 
     def get_internal_transfer(self, domain):
         """
         To get internal transfers
         """
-        stock_moves = self.env["stock.move"].search([
-            ("picking_type_id", "=", self.env.ref(
-                "stock.picking_type_internal"
-            ).id),
-            ("state", "not in", ["done", "cancel"]),
-        ])
+        domain.append(["picking_type_id", "=", self.env.ref(
+            "stock.picking_type_internal"
+        ).id])
+        if self.env.user not in self.env.ref("stock.group_stock_manager").users:
+            domain.append(["create_uid", "=", self.env.context["uid"]])
+        stock_moves = self.env["stock.move"].search(domain)
         internal_transfers, products = [], []
-        for product in stock_moves.mapped("product_id"):
+        for product in stock_moves.mapped("product_id").filtered(
+                lambda r: r.detailed_type == "product"
+        ):
             quantity = 0
             for rec in stock_moves.filtered(lambda r: r.product_id == product):
                 quantity += rec.product_uom_qty
@@ -59,32 +87,77 @@ class InventoryDashboard(models.AbstractModel):
         """
         To get average expense of products.
         """
-        products = self.env["product.product"].sudo().search(domain).filtered(
-            lambda r: r.qty_available > 0)
+        if self.env.user not in self.env.ref("stock.group_stock_manager").users:
+            domain.append(["create_uid", "=", self.env.context["uid"]])
+        purchase_order_lines = self.env["purchase.order.line"].search(domain)
+        average_expense, products, quantities = [], [], []
+        for product in purchase_order_lines.mapped("product_id").filtered(
+                lambda r: r.detailed_type == "product"
+        ):
+            price_subtotal = 0
+            quantity = 0
+            for rec in purchase_order_lines.filtered(
+                    lambda r: r.product_id == product and
+                              r.qty_received > 0
+            ):
+                quantity += rec.qty_received
+                price_subtotal += rec.qty_received * rec.price_unit
+            if price_subtotal > 0 and quantity > 0:
+                products.append(product.name)
+                quantities.append(product.qty_available)
+                average_expense.append(price_subtotal / quantity)
         return {
-            "labels": [i.name for i in products],
-            "data": [i.avg_cost for i in products]
+            "labels": products,
+            "data": average_expense,
+            "qty_available": quantities,
         }
 
     def get_inventory_valuation(self, domain):
         """
         To get datas for inventory valuation
         """
-        products = self.env["product.product"].sudo().search(domain).filtered(
-            lambda r: r.qty_available > 0)
+        result = self.get_average_expense(domain)
         return {
-            "labels": [i.name for i in products],
-            "data": [(i.avg_cost * i.qty_available) for i in products]
+            "labels": result["labels"],
+            "data": [(result["data"][i] * result["qty_available"][i]) for i in
+                     range(len(result["labels"]))]
         }
 
-    def get_stock_location(self, domain):
+    def get_stock_location(self):
         """
         To get warehouse location based stock
         """
-        products = self.env["product.product"].sudo().search(domain).filtered(
-            lambda r: r.qty_available > 0)
-        stock_quant_ids = self.env["stock.quant"].sudo().search([]).filtered(
-            lambda r: r.location_id.usage == "internal"
-        )
-        print(stock_quant_ids)
-        return [[i.location_id.name, i.product_id.name, i.inventory_quantity_auto_apply] for i in stock_quant_ids]
+        stock_quant_ids = self.env["stock.quant"].sudo().search([
+            ("location_id.usage", "=", "internal"),
+            ("company_id", "=", self.env.context["allowed_company_ids"][0])
+        ])
+        quantities = []
+        for record in stock_quant_ids.mapped("location_id"):
+            quantity = 0
+            for rec in stock_quant_ids.filtered(
+                    lambda r: r.location_id == record
+            ):
+                quantity += rec.inventory_quantity_auto_apply
+            quantities.append(quantity)
+        return {
+            "labels": [(i.location_id.name + "/" + i.name) for i in
+                       stock_quant_ids.mapped("location_id")],
+            "data": quantities,
+        }
+
+    def get_stock_move(self):
+        """
+        To get total stock moves of warehouse
+        """
+        picking_types = self.env["stock.picking.type"].search([])
+        transfers = []
+        for picking_type in picking_types:
+            transfers.append(
+                self.env["stock.picking"].search_count([
+                    ("picking_type_id", "=", picking_type.id)
+                ])
+            )
+        return {
+            "labels": [i.name for i in picking_types],
+            "data": transfers,
+        }

@@ -16,41 +16,64 @@ export class InventoryDashboard extends Component {
             period: 0,
             type: "inventory_valuation",
         })
-        this.domain = [["detailed_type", "=", "product"]]
+        this.domain = []
         onWillStart(async () => {
             await loadJS("/web/static/lib/Chart/Chart.js")
             await this.loadPrimaryChartData()
             await this.loadWarehouseChartData()
+            await this.loadTransferChartData()
         })
     }
     // to change the values based on selected period
     async onChangePeriod() {
-        this.domain = [["detailed_type", "=", "product"]]
+        this.domain = []
         await this.loadPrimaryChartData()
-        await this.loadWarehouseChartData()
     }
     // to change the values based on selected type
     async onChangeType() {
+        this.domain = []
         await this.loadPrimaryChartData()
     }
     // to load dashboard data
     async loadPrimaryChartData() {
         if (this.state.type === "incoming_stock") {
-            await this.getPrimaryChartData("Incoming Stock", "get_incoming_stock", "# of Quantity")
+            if (this.state.period > 0) {
+                this.state.current_date = moment().subtract(this.state.period, 'days').format('DD/MM/YYYY')
+                this.domain.push(["date", ">", this.state.current_date])
+            }
+            await this.getPrimaryChartData("Incoming Stock", "get_incoming_stock", "# of Quantity", [0, this.domain])
         } else if (this.state.type === "outgoing_stock") {
-            await this.getPrimaryChartData("Outgoing Stock", "get_outgoing_stock", "# of Quantity")
+            if (this.state.period > 0) {
+                this.state.current_date = moment().subtract(this.state.period, 'days').format('DD/MM/YYYY')
+                this.domain.push(["date", ">", this.state.current_date])
+            }
+            await this.getPrimaryChartData("Outgoing Stock", "get_outgoing_stock", "# of Quantity", [0, this.domain])
         } else if (this.state.type === "internal_transfer") {
-            await this.getPrimaryChartData("Internal Transfer", "get_internal_transfer", "# of Transfers")
+            if (this.state.period > 0) {
+                this.state.current_date = moment().subtract(this.state.period, 'days').format('DD/MM/YYYY')
+                this.domain.push(["date", ">", this.state.current_date])
+            }
+            await this.getPrimaryChartData("Internal Transfer", "get_internal_transfer", "# of Quantity", [0, this.domain])
         } else if (this.state.type === "average_expense") {
-            await this.getPrimaryChartData("Average Expense", "get_average_expense", "$")
+            this.domain = [["state", "=", "purchase"]]
+            if (this.state.period > 0) {
+                this.state.current_date = moment().subtract(this.state.period, 'days').format('DD/MM/YYYY')
+                this.domain.push(["date_planned", ">", this.state.current_date])
+            }
+            await this.getPrimaryChartData("Average Expense", "get_average_expense", "$", [0, this.domain])
         } else if (this.state.type === "inventory_valuation") {
-            await this.getPrimaryChartData("Inventory Valuation", "get_inventory_valuation", "$")
+            this.domain = [["state", "=", "purchase"]]
+            if (this.state.period > 0) {
+                this.state.current_date = moment().subtract(this.state.period, 'days').format('DD/MM/YYYY')
+                this.domain.push(["date_planned", ">", this.state.current_date])
+            }
+            await this.getPrimaryChartData("Inventory Valuation", "get_inventory_valuation", "$", [0, this.domain])
         }
     }
     // get data from model functions.
-    async getPrimaryChartData(chartTitle, apiMethod, chartLabel) {
+    async getPrimaryChartData(chartTitle, apiMethod, chartLabel, domain) {
         this.state.primaryChartTitle = chartTitle
-        const result = await this.orm.call("inventory.dashboard", apiMethod, [0, this.domain])
+        const result = await this.orm.call("inventory.dashboard", apiMethod, domain)
         this.state.primaryChartConfig = {
             id: "primary_chart",
             data: {
@@ -76,37 +99,54 @@ export class InventoryDashboard extends Component {
     // get data for warehouse chart
     async loadWarehouseChartData() {
         this.state.warehouseChartTitle = "Warehouse Stock"
-        const result = await this.orm.call("inventory.dashboard", "get_stock_location", [0, this.domain])
-        const data = {
-            labels: ['Category 1', 'Category 2', 'Category 3'],
-            datasets: [
-                {
-                    label: 'Type A',
-                    data: [10, 15, 20],
-                    backgroundColor: 'rgba(75, 192, 192, 0.5)',
-                },
-                {
-                    label: 'Type B',
-                    data: [5, 10, 15],
-                    backgroundColor: 'rgba(255, 99, 132, 0.5)',
-                },
-            ],
-        };
+        const result = await this.orm.call("inventory.dashboard", "get_stock_location", [0])
         this.state.warehouseChartConfig = {
             id: "warehouse_chart",
-            data: data,
+            data: {
+                labels: result.labels,
+                datasets: [{
+                    label: "# of Quantities",
+                    data: result.data,
+                    backgroundColor: result.labels.map((_, index) => getColor(index)),
+                }]
+            },
             options: {
                 scales: {
-                    xAxes: [{
-                        stacked: true
-                    }],
                     yAxes: [{
-                        stacked: true
+                        ticks: {
+                            suggestedMin: 0,
+                        }
                     }]
-                },
+                }
             },
         }
         this.env.bus.trigger('renderEvent', { "config": this.state.warehouseChartConfig })
+    }
+    // get all transfers data
+    async loadTransferChartData() {
+        this.state.transferChartTitle = "Transfers"
+        const result = await this.orm.call("inventory.dashboard", "get_stock_move", [0])
+        this.state.transferChartConfig = {
+            id: "transfer_chart",
+            data: {
+                labels: result.labels,
+                datasets: [{
+                    label: "# of Transfers",
+                    data: result.data,
+                    backgroundColor: result.labels.map((_, index) => getColor(index)),
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            suggestedMin: 0,
+                        }
+                    }]
+                }
+            },
+        }
+        this.env.bus.trigger('renderEvent', { "config": this.state.transferChartConfig })
     }
 }
 
