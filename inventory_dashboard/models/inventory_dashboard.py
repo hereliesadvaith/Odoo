@@ -28,8 +28,9 @@ class InventoryDashboard(models.AbstractModel):
             quantity = 0
             for rec in stock_moves.filtered(lambda r: r.product_id == product):
                 quantity += rec.product_uom_qty
-            products.append(product.name)
-            purchase_orders.append(quantity)
+            if quantity > 0:
+                products.append(product.name)
+                purchase_orders.append(quantity)
         return {
             "labels": products,
             "data": purchase_orders,
@@ -52,8 +53,9 @@ class InventoryDashboard(models.AbstractModel):
             quantity = 0
             for rec in stock_moves.filtered(lambda r: r.product_id == product):
                 quantity += rec.product_uom_qty
-            products.append(product.name)
-            delivery_orders.append(quantity)
+            if quantity > 0:
+                products.append(product.name)
+                delivery_orders.append(quantity)
         return {
             "labels": products,
             "data": delivery_orders,
@@ -76,8 +78,9 @@ class InventoryDashboard(models.AbstractModel):
             quantity = 0
             for rec in stock_moves.filtered(lambda r: r.product_id == product):
                 quantity += rec.product_uom_qty
-            products.append(product.name)
-            internal_transfers.append(quantity)
+            if quantity > 0:
+                products.append(product.name)
+                internal_transfers.append(quantity)
         return {
             "labels": products,
             "data": internal_transfers,
