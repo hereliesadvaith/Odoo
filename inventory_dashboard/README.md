@@ -1,6 +1,6 @@
 # Inventory Dashboard
 
-![Static Badge](https://img.shields.io/badge/Status-In_Development-orange)
+![Static Badge](https://img.shields.io/badge/Status-In_Production-limegreen)
 ![Static Badge](https://img.shields.io/badge/Odoo-16.0-darkviolet)
 
 
@@ -23,7 +23,7 @@ To install this module in your Odoo instance, follow these steps:
 - **Stock Movement Analysis:** View incoming, outgoing stock and internal transfers product-wise.
 - **Location-Based Stock Tracking:** Monitor stock levels across different locations.
 - **Picking Type Grouping:** Categorize stock movements by picking type.
-- **Average Product Expense:** Calculate product purchase cost.
+- **Average Product Expense:** Calculate average expense(purchase cost + landed cost).
 - **Inventory Valuation:** Analyze inventory value.
 - **Time-Based Filtering:** Filter data by week, month.
 - **User & Manager Access:** Role-specific data access.

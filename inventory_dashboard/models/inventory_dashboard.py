@@ -106,7 +106,7 @@ class InventoryDashboard(models.AbstractModel):
             if price_subtotal > 0 and quantity > 0:
                 products.append(product.name)
                 quantities.append(product.qty_available)
-                average_expense.append(price_subtotal / quantity)
+                average_expense.append(round((price_subtotal / quantity), 2))
         return {
             "labels": products,
             "data": average_expense,
