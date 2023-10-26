@@ -55,17 +55,17 @@ export class InventoryDashboard extends Component {
             }
             await this.getPrimaryChartData("Internal Transfer", "get_internal_transfer", "# of Quantity", [0, this.domain])
         } else if (this.state.type === "average_expense") {
-            this.domain = [["state", "=", "purchase"]]
+            this.domain = []
             if (this.state.period > 0) {
                 this.state.current_date = moment().subtract(this.state.period, 'days').format('DD/MM/YYYY')
-                this.domain.push(["date_planned", ">", this.state.current_date])
+                this.domain.push(["create_date", ">", this.state.current_date])
             }
             await this.getPrimaryChartData("Average Expense", "get_average_expense", "$", [0, this.domain])
         } else if (this.state.type === "inventory_valuation") {
-            this.domain = [["state", "=", "purchase"]]
+            this.domain = []
             if (this.state.period > 0) {
                 this.state.current_date = moment().subtract(this.state.period, 'days').format('DD/MM/YYYY')
-                this.domain.push(["date_planned", ">", this.state.current_date])
+                this.domain.push(["create_date", ">", this.state.current_date])
             }
             await this.getPrimaryChartData("Inventory Valuation", "get_inventory_valuation", "$", [0, this.domain])
         }

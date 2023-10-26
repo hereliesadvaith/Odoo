@@ -21,10 +21,10 @@
     ],
     "assets": {
         "web.assets_backend": [
-            "inventory_dashboard/static/src/components/inventory_dashboard.xml",
-            "inventory_dashboard/static/src/components/inventory_dashboard.js",
-            "inventory_dashboard/static/src/components/chart_renderer/chart_renderer.xml",
-            "inventory_dashboard/static/src/components/chart_renderer/chart_renderer.js",
+            "inventory_dashboard/static/src/dashboard/inventory_dashboard.xml",
+            "inventory_dashboard/static/src/dashboard/inventory_dashboard.js",
+            "inventory_dashboard/static/src/dashboard/chart_renderer/chart_renderer.xml",
+            "inventory_dashboard/static/src/dashboard/chart_renderer/chart_renderer.js",
         ],
     },
     "license": "LGPL-3",

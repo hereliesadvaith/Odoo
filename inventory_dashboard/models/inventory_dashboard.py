@@ -92,19 +92,17 @@ class InventoryDashboard(models.AbstractModel):
         """
         if self.env.user not in self.env.ref("stock.group_stock_manager").users:
             domain.append(["create_uid", "=", self.env.context["uid"]])
-        purchase_order_lines = self.env["purchase.order.line"].search(domain)
+        stock_valuation_layers = self.env[
+            "stock.valuation.layer"].search(domain)
         average_expense, products, quantities = [], [], []
-        for product in purchase_order_lines.mapped("product_id").filtered(
-                lambda r: r.detailed_type == "product"
-        ):
+        for product in stock_valuation_layers.mapped("product_id"):
             price_subtotal = 0
             quantity = 0
-            for rec in purchase_order_lines.filtered(
-                    lambda r: r.product_id == product and
-                              r.qty_received > 0
+            for rec in stock_valuation_layers.filtered(
+                    lambda r: r.product_id == product
             ):
-                quantity += rec.qty_received
-                price_subtotal += rec.qty_received * rec.price_unit
+                quantity += rec.quantity
+                price_subtotal += rec.value
             if price_subtotal > 0 and quantity > 0:
                 products.append(product.name)
                 quantities.append(product.qty_available)
