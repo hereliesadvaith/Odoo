@@ -15,11 +15,10 @@ class ProductListScreen extends PosComponent {
     }
     editProduct(ev) {
         var product = this.props.products.filter(
-        obj => obj.id == ev.target.getAttribute("data-product-id"))
-        console.log(product)
-//        this.showPopup("EditProductPopup", {
-//            "product": product,
-//        })
+            obj => obj.id == ev.target.dataset.productId)
+        this.showPopup("EditProductPopup", {
+            "product": product[0],
+        })
     }
 }
 
