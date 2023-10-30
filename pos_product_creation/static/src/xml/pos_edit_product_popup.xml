@@ -10,9 +10,9 @@
                             <i class="fa fa-times" style="float:right" t-on-click="cancel"/>
                             <hr/>
 						</h3>
-                        <div class="product-img-edit-popup">
+                        <div id="img_edit_popup_div">
 							<img t-att-src="props.product.image_url" t-att-alt="props.product.display_name"
-                                 id="img_url_tag_edit"/>
+                                 id="img_edit_popup"/>
 						</div>
                         <div class="field_div" style="display:flex; margin-bottom: 15px;">
 							<label for="img_field" class="field_label" style="margin-right:10px; margin-top: 10px; width: 120px; display: inline-block; text-align: left;">Image</label>
@@ -45,8 +45,7 @@
 								<t t-foreach="env.pos.db.category_by_id" t-as="category"
                                    t-key="env.pos.db.category_by_id[category].id">
 									<option t-att-value="env.pos.db.category_by_id[category].id"
-                                            t-att-title="env.pos.db.category_by_id[category].name"
-                                            t-att-selected="env.pos.db.category_by_id[category] ? ((env.pos.db.category_by_id[category].id === props.product.pos_categ_id[0]) ? true : undefined):undefined">
+                                            t-att-selected="true ? env.pos.db.category_by_id[category].id === props.product.pos_categ_id[0] : undefined">
 										<t t-esc="env.pos.db.category_by_id[category].name"/>
 									</option>
 								</t>

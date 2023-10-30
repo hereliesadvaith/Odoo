@@ -56,8 +56,9 @@ class CreateProductPopup extends AbstractAwaitablePopup {
                 response: { confirmed: false, payload: null },
             })
         }
+        window.location.reload()
     }
 }
 
-CreateProductPopup.template = "CreateProductPopup";
-Registries.Component.add(CreateProductPopup);
+CreateProductPopup.template = "CreateProductPopup"
+Registries.Component.add(CreateProductPopup)

@@ -31,7 +31,7 @@
 										</thead>
                                         <tbody class="partner-list-contents">
 											<t t-foreach="props.products" t-as="product" t-key="product.id">
-												<tr>
+												<tr t-att-id="product.id">
 													<td>
 														<div class="product-img">
 															<img t-att-src="product.image_url" class="product_img" t-att-alt="product.display_name"/>
