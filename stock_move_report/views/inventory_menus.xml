@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--  Menu for Inventory  -->
+    <menuitem id="inventory_report_menu" action="inventory_report_wizard_action" parent="stock.menu_warehouse_report" sequence="235"/>
+</odoo>

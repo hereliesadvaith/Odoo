@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--  inventory wizard report action  -->
+    <record id="inventory_report_action" model="ir.actions.report">
+        <field name="name">Stock Move Report</field>
+        <field name="model">inventory.report.wizard</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">stock_move_report.report_inventory</field>
+        <field name="report_file">stock_move_report.report_inventory</field>
+        <field name="binding_model_id" ref="model_inventory_report_wizard"/>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>
