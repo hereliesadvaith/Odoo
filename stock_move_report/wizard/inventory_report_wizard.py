@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*
 from odoo import fields, models
+from odoo.exceptions import ValidationError
 
 
 class InventoryReportWizard(models.TransientModel):
@@ -32,11 +33,17 @@ class InventoryReportWizard(models.TransientModel):
         To print pdf report
         """
         company_id = self.env.context['allowed_company_ids'][0]
-        data = self.env["stock.move.line"].search_read([
-            ("company_id", "=", company_id)
-        ])
+        if self.start_date and self.end_date:
+            if self.start_date > self.end_date:
+                raise ValidationError("Set valid period")
+        query = f"""
+        SELECT * FROM stock_move_line as sml
+        WHERE sml.company_id = {company_id}
+        """
+        self.env.cr.execute(query)
+        stock_moves = self.env.cr.dictfetchall()
         result = {
-            "data": data,
+            "data": stock_moves,
         }
         return self.env.ref("stock_move_report.inventory_report_action").report_action(
             None, data=result
