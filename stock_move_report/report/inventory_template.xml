@@ -7,6 +7,63 @@
                 <div class="page">
                     <h1 class="text-center">Stock Move Report</h1>
                     <br/>
+                    <t t-foreach="unique_picking_types" t-as="type">
+                        <h5 style="font-weight: bold;"><span t-esc="type"/></h5>
+                        <table class="table table-bordered mt32">
+                            <thead>
+                                <tr>
+                                    <th name="th_date" class="text-left">
+                                        <span>Date</span>
+                                    </th>
+                                    <th name="th_reference" class="text-left">
+                                        <span>Reference</span>
+                                    </th>
+                                    <th name="th_product" class="text-left">
+                                        <span>Product</span>
+                                    </th>
+                                    <th name="th_quantity" class="text-left">
+                                        <span>Quantity</span>
+                                    </th>
+                                    <th name="th_from" class="text-left">
+                                        <span>From</span>
+                                    </th>
+                                    <th name="th_quantity" class="text-left">
+                                        <span>To</span>
+                                    </th>
+                                    <th name="th_quantity" class="text-left">
+                                        <span>Status</span>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <t t-foreach="stock_moves" t-as="line">
+                                <t t-if="type == line['picking_type']['en_US']">
+                                    <tr>
+                                        <td>
+                                            <t t-esc="line['date']"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="line['reference']"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="line['product']['en_US']"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="line['quantity']"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="line['from']"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="line['to']"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="line['status']"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </t>
+                        </table>
+                    </t>
                 </div>
             </t>
         </t>
