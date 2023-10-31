@@ -17,6 +17,11 @@
         "report/inventory_report.xml",
         "views/inventory_menus.xml",
     ],
+    "assets": {
+        "web.assets_backend": [
+            "stock_move_report/static/src/js/action_manager.js",
+        ],
+    },
     "license": "LGPL-3",
     "installable": True,
 }
