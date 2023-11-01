@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Form views for component request page. -->
+    <record id="monthly_sale_report_view_form" model="ir.ui.view">
+        <field name="name">monthly.sale.report.view.form</field>
+        <field name="model">monthly.sale.report</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_generate" type="object" string="Generate"
+                        class="oe_highlight" states="draft" />
+                    <button name="action_pause" type="object" string="Pause"
+                        class="oe_highlight" states="ongoing" />
+                    <button name="action_generate" type="object" string="Restart"
+                        states="paused" />
+                    <field name="state" widget="statusbar" />
+                </header>
+               <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="partner_ids" widget="many2many_tags" />
+                            <field name="team_id" />
+                            <field name="period" />
+                        </group>
+                        <group>
+                            <field name="start_date" />
+                            <field name="end_date" />
+                        </group>
+                    </group>
+               </sheet>
+            </form>
+        </field>
+    </record>
+    <!--  component request tree view  -->
+    <record id="monthly_sale_report_view_tree" model="ir.ui.view">
+        <field name="name">monthly.sale.report.view.tree</field>
+        <field name="model">monthly.sale.report</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" />
+                <field name="partner_ids" widget="many2many_tags" />
+                <field name="period"/>
+                <field name="state" />
+
+            </tree>
+        </field>
+    </record>
+    <!--  To set sales report action -->
+    <record id="sale_report_action" model="ir.actions.act_window">
+        <field name="name">Sale Report</field>
+        <field name="res_model">monthly.sale.report</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <!-- To add menu in sales module   -->
+    <menuitem id="sale_report"
+            name="Sale Reports"
+            action="sale_report_action"
+            parent="sale.menu_sale_config"
+            sequence="70"
+    />
+</odoo>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Mail template fo sale report -->
+    <record id="email_template_sale_report" model="mail.template">
+        <field name="name">Sale Reports: Send by mail</field>
+        <field name="model_id" ref="monthly_sale_report.model_monthly_sale_report"/>
+        <field name="subject">Sale Report</field>
+        <field name="body_html" type="html">
+            <div style="margin: 0px; padding: 0px;">
+                <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                    Hi there,
+                    <br/>
+                    <br/>
+                    Sale report of the company is attached with this mail.
+                </p>
+                <br/>
+                Regards,
+                <br/>
+            </div>
+        </field>
+        <field name="auto_delete" eval="True"/>
+    </record>
+</odoo>
