@@ -4,7 +4,8 @@ from odoo.exceptions import ValidationError, MissingError
 import json
 from odoo.tools import date_utils
 import io
-import xlsxwriter
+from openpyxl import Workbook, utils
+from openpyxl.styles import Alignment, Font
 
 
 class InventoryReportWizard(models.TransientModel):
@@ -15,17 +16,17 @@ class InventoryReportWizard(models.TransientModel):
     _description = "Inventory Report Wizard"
 
     product_ids = fields.Many2many("product.product", string="Products",
-                                 help="Select Products")
+                                   help="Select Products")
     picking_type_ids = fields.Many2many("stock.picking.type", string="Transfer Type",
-                                    help="Select Locations")
+                                        help="Select Locations")
     state = fields.Selection(selection=[
-            ("draft", "Draft"),
-            ("waiting", "Waiting Another Operation"),
-            ("confirmed", "Waiting"),
-            ("assigned", "Ready"),
-            ("done", "Done"),
-            ("cancel", "Cancelled"),
-        ],
+        ("draft", "Draft"),
+        ("waiting", "Waiting Another Operation"),
+        ("confirmed", "Waiting"),
+        ("assigned", "Ready"),
+        ("done", "Done"),
+        ("cancel", "Cancelled"),
+    ],
         help="Status", string="Status")
     start_date = fields.Date(string="Start Date", help="Start Date")
     end_date = fields.Date(string="End Date", help="End Date")
@@ -95,11 +96,12 @@ class InventoryReportWizard(models.TransientModel):
         query += "ORDER BY stm.date DESC"
         self.env.cr.execute(query)
         stock_moves = self.env.cr.dictfetchall()
-        unique_picking_types = list(set([i["picking_type"]["en_US"] for i in stock_moves]))
+        unique_picking_types = list(
+            set([i["picking_type"]["en_US"] for i in stock_moves]))
         if len(stock_moves) == 0:
             raise MissingError("No records found")
         for move in stock_moves:
-            move["status"] = move["status"].title()
+            move["status"] = move["status"].replace("_", " ").title()
         data = {
             "stock_moves": stock_moves,
             "unique_picking_types": unique_picking_types,
@@ -178,7 +180,7 @@ class InventoryReportWizard(models.TransientModel):
         if len(stock_moves) == 0:
             raise MissingError("No records found")
         for move in stock_moves:
-            move["status"] = move["status"].title()
+            move["status"] = move["status"].replace("_", " ").title()
         data = {
             "stock_moves": stock_moves,
             "unique_picking_types": unique_picking_types,
@@ -196,52 +198,52 @@ class InventoryReportWizard(models.TransientModel):
             },
             "report_type": "xlsx",
         }
-    
+
     def get_xlsx_report(self, data, response):
         """
-        To generate xlsx report
+        To generate xlsx report using openpyxl
         """
         output = io.BytesIO()
-        workbook = xlsxwriter.Workbook(output, {"in_memory": True})
-        sheet = workbook.add_worksheet()
-        sheet.set_column("A:F", 20)
-        head = workbook.add_format(
-            {"align": "center", "bold": True, "font_size": "20px"})
-        sheet.merge_range("A1:F2", "STOCK MOVE REPORT", head)
+        workbook = Workbook()
+        sheet = workbook.active
+        for column in range(1, 8):
+            col_letter = utils.get_column_letter(column)
+            sheet.column_dimensions[col_letter].width = 20
+        head = Font(bold=True, size=20)
+        thead = Font(bold=True)
+        sheet.merge_cells('A1:G2')
+        sheet['A1'] = "STOCK MOVE REPORT"
+        sheet['A1'].font = head
+        sheet['A1'].alignment = Alignment(horizontal='center')
+        for cell in sheet[6]:
+            cell.font = thead
+
         if data["start_date"]:
-            sheet.write("A3", "From")
-            sheet.write("B3", data["start_date"])
-            if data["end_date"]:
-                sheet.write("D3", "To")
-                sheet.write("E3", data["end_date"])
-        elif data["end_date"]:
-            sheet.write("A3", "Date To")
-            sheet.write("B3", data["end_date"])
-        data_list = []
-        index = 6
+            sheet['A3'] = "Date From"
+            sheet['B3'] = data["start_date"]
+        if data["end_date"]:
+            sheet['A4'] = "Date To"
+            sheet['B4'] = data["end_date"]
+
+        data_list = [
+            ['Date', 'Reference', 'Product', 'Quantity', 'From', 'To', 'Status']
+        ]
         for move in data['stock_moves']:
-                data_list.append([
-                     move['date'],
-                     move['reference'],
-                     move['product']['en_US'],
-                     move['quantity'],
-                     move['from'],
-                     move['to'],
-                     move['status']])
-                index += 1
-                sheet.add_table(f"A6:G{index}", {
-                                "data": data_list,
-                                "columns": [
-                                    {'header': 'Date'},
-                                    {'header': 'Reference'},
-                                    {'header': 'Product'},
-                                    {'header': 'Quantity'},
-                                    {'header': 'From'},
-                                    {'header': 'To'},
-                                    {'header': 'Status'}
-                                ]
-                })
-        workbook.close()
+            data_list.append([
+                move['date'],
+                move['reference'],
+                move['product']['en_US'],
+                move['quantity'],
+                move['from'],
+                move['to'],
+                move['status'],
+            ])
+
+        for row_index, row in enumerate(data_list, start=6):
+            for col_index, cell_value in enumerate(row, start=1):
+                sheet.cell(row=row_index, column=col_index, value=cell_value)
+
+        workbook.save(output)
         output.seek(0)
         response.stream.write(output.read())
         output.close()
