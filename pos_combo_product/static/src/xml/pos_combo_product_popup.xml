@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+	<t t-name="ComboProductPopup" owl="1">
+		<div class="popup product-line-popup" style="max-width: 684px;">
+			<main class="body">
+				<div>
+					<header>
+						<h3>
+							<span>Create Product</span>
+                            <hr/>
+						</h3>
+					</header>
+				</div>
+			</main>
+            <footer class="footer cash-move">
+				<div class="button confirm disable highlight" t-on-click="confirm">
+                    Confirm
+                </div>
+                <div class="button cancel" t-on-click="cancel">
+                    Cancel
+				</div>
+			</footer>
+		</div>
+	</t>
+</templates>

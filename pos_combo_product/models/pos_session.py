@@ -14,4 +14,23 @@ class PosSession(models.Model):
         """
         result = super()._loader_params_product_product()
         result['search_params']['fields'].append('is_combo')
+        result['search_params']['fields'].append('combo_product_ids')
         return result
+    
+    def _pos_ui_models_to_load(self):
+        result = super()._pos_ui_models_to_load()
+        result.append('combo.product')
+        return result
+    
+    def _loader_params_combo_product(self):
+    
+        return { 
+            'search_params': { 
+                'domain': [],  
+                'fields': ['product_id', 'is_required', 'quantity'],                
+            },
+        }
+    
+    def _get_pos_ui_combo_product(self, params):
+        return self.env['combo.product'].search_read(
+            **params['search_params'])

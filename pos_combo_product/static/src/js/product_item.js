@@ -10,8 +10,12 @@ const ComboProduct = (ProductItem) =>
             super.setup()
             useListener('click-product', this.showComboPopup)
         }
-        showComboPopup(ev) {
-            console.log(this)
+        showComboPopup() {
+            if (this.props.product.is_combo) {
+                this.showPopup("ComboProductPopup", {
+                    "combo_product_ids": this.props.product.combo_product_ids,
+                })
+            }
         }
     }
 Registries.Component.extend(ProductItem, ComboProduct)
