@@ -5,9 +5,12 @@
         <t t-call="web.html_container">
             <t t-call="web.external_layout">
                 <div class="page">
-                    <h1 class="text-center">Sale Report</h1>
+                    <h1 class="text-center">Sales Report</h1>
                     <br />
                     <div>
+                        <t t-if="sale_team">
+                            <h5>Sale Team: <t t-esc="sale_team"/></h5>
+                        </t>
                         <h6>From: <t t-esc="start_date" /></h6>
                         <h6>To: <t t-esc="end_date" /></h6>
                     </div>
