@@ -15,6 +15,7 @@
         "security/ir.model.access.csv",
         "data/sale_report_mail_template.xml",
         "data/cron_monthly_sale_report.xml",
+        "data/cron_weekly_sale_report.xml",
         "report/pdf_sale_report_action.xml",
         "report/pdf_sale_report_template.xml",
         "views/sale_report_views.xml",
