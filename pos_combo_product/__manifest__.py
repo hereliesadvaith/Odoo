@@ -17,6 +17,7 @@
     "assets": {
         "point_of_sale.assets": [
             "pos_combo_product/static/src/js/*",
+            "pos_combo_product/static/src/css/*",
             "pos_combo_product/static/src/xml/*",
         ],
     },
