@@ -25,9 +25,9 @@ class PosSession(models.Model):
     def _loader_params_combo_product(self):
     
         return { 
-            'search_params': { 
+            'search_params': {  
                 'domain': [],  
-                'fields': ['product_id', 'is_required', 'quantity'],                
+                'fields': ['pos_categ_id', 'product_ids', 'is_required', 'quantity'],
             },
         }
     

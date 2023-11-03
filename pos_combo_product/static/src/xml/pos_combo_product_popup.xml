@@ -1,14 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates id="template" xml:space="preserve">
 	<t t-name="ComboProductPopup" owl="1">
-		<div class="popup product-line-popup" style="max-width: 684px;">
+		<div class="popup product-info-popup" style="max-width: 684px;">
 			<main class="body">
 				<div>
 					<header>
 						<h3>
-							<span>Create Product</span>
+							Combo Products
                             <hr/>
 						</h3>
+						<div class="section-financials">
+							<t t-foreach="props.categories" t-as="category" t-key="category.id">
+								<div class="section-title">
+									<t t-esc="category.name"/>
+								</div>
+							</t>
+						</div>
 					</header>
 				</div>
 			</main>

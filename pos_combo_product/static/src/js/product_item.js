@@ -12,7 +12,11 @@ const ComboProduct = (ProductItem) =>
         }
         showComboPopup() {
             if (this.props.product.is_combo) {
+                const categories = Object.keys(
+                    this.env.pos.db.category_by_id
+                    ).map(key => this.env.pos.db.category_by_id[key])
                 this.showPopup("ComboProductPopup", {
+                    "categories": categories,
                     "combo_product_ids": this.props.product.combo_product_ids,
                 })
             }
