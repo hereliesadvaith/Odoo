@@ -9,13 +9,25 @@
 							Combo Products
                             <hr/>
 						</h3>
-						<div class="section-financials">
 							<t t-foreach="props.categories" t-as="category" t-key="category.id">
 								<div class="section-title">
-									<t t-esc="category.name"/>
+									<span t-esc="category.name"/>
+								</div>
+								<div>
+									<article class="product" t-on-click="addToOrderLine">
+										<t t-if="props.product.image_128">
+											<div class="product-img">
+												<img t-att-src="props.product.image_url" t-att-alt="props.product.display_name" />
+											</div>
+										</t>
+										<div class="product-content">
+											<div t-attf-class="#{props.product.image_128 ? 'product-name' : 'product-name no-image' }" t-attf-id="article_product_{{props.product.id}}">
+												<t t-esc="props.product.display_name" />
+											</div>
+										</div>
+									</article>
 								</div>
 							</t>
-						</div>
 					</header>
 				</div>
 			</main>
