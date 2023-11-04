@@ -8,8 +8,8 @@ class ComboProductPopup extends AbstractAwaitablePopup {
     setup() {
         super.setup()
     }
-    addToOrderLine() {
-        console.log("hi")
+    addToOrderLine(ev) {
+        console.log(ev.currentTarget.dataset.product)
     }
     confirm() {
         this.env.posbus.trigger('close-popup', {

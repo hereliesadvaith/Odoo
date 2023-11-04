@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+<!--  To add the combo products name in order line  -->
+    <t t-name="Orderline" t-inherit="point_of_sale.Orderline" t-inherit-mode="extension" owl="1">
+        <xpath expr="//span[hasclass('product-name')]" position="after">
+            <br/>
+            <t t-if="props.combo_prodcts">
+                <t t-foreach="props.combo_products" t-as="combo_product" t-key="combo_product.id">
+                    <span t-esc="combo_product.name"/>
+                </t>
+            </t>
+        </xpath>
+    </t>
+</templates>

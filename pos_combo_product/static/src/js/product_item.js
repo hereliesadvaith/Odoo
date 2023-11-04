@@ -12,32 +12,31 @@ const ComboProduct = (ProductItem) =>
         }
         showComboPopup() {
             if (this.props.product.is_combo) {
-                // combo_details
+                // combo details
                 var combo_products = this.env.pos.combo_product.filter(
-                    product => this.props.product.combo_product_ids.includes(product.id)
+                    item => this.props.product.combo_product_ids.includes(item.id)
                 )
-                var product_ids = []
+                // products
+                var products = []
                 for (var rec of combo_products) {
                     for (var id in rec['product_ids']) {
-                        product_ids.push(rec['product_ids'][id])
+                        this.env.pos.db.product_by_id[rec[
+                            'product_ids'][id]]["combo_quantity"] = rec.quantity
+                        this.env.pos.db.product_by_id[rec[
+                            'product_ids'][id]]["combo_is_required"] = rec.is_required
+                        this.env.pos.db.product_by_id[rec[
+                                'product_ids'][id]]["image_url"] = `/web/image?model=product.product&field=image_128&id=${rec['product_ids'][id]}`
+                        products.push(this.env.pos.db.product_by_id[rec['product_ids'][id]])
                     }
                 }
-                // products
-                var products = Object.values(this.env.pos.db.product_by_id).filter(
-                    product => product_ids.includes(product.id)
-                )
                 // categories
-                var categories = []
-                for (var rec of products) {
-                    categories.push(rec.pos_categ_id[1])
-                }
-                for (var rec of products) {
-                    rec["image_url"] = `/web/image?model=product.product&field=image_128&id=${rec.id}`
-                }
+                var category_ids = products.map(rec => rec.pos_categ_id[0])
+                var categories = Object.values(this.env.pos.db.category_by_id).filter(
+                    item => category_ids.includes(item.id)
+                )
                 this.showPopup("ComboProductPopup", {
                     "categories": categories,
-                    "combo_product_ids": this.props.product.combo_product_ids,
-                    "product": this.props.product,
+                    "products": products,
                 })
             }
         }

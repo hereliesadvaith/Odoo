@@ -13,20 +13,24 @@
 								<div class="section-title">
 									<span t-esc="category.name"/>
 								</div>
+								<t t-foreach="props.products" t-as="product" t-key="product.id">
+								<t t-if="product.pos_categ_id[0] == category.id">
 								<div>
-									<article class="product" t-on-click="addToOrderLine">
-										<t t-if="props.product.image_128">
+									<article class="product" t-on-click="addToOrderLine" t-attf-data-product="JSON.stringify(product)">
+										<t t-if="product.image_128">
 											<div class="product-img">
-												<img t-att-src="props.product.image_url" t-att-alt="props.product.display_name" />
+												<img t-att-src="product.image_url" t-att-alt="product.display_name" />
 											</div>
 										</t>
 										<div class="product-content">
-											<div t-attf-class="#{props.product.image_128 ? 'product-name' : 'product-name no-image' }" t-attf-id="article_product_{{props.product.id}}">
-												<t t-esc="props.product.display_name" />
+											<div t-attf-class="#{product.image_128 ? 'product-name' : 'product-name no-image' }" t-attf-id="article_product_{{product.id}}">
+												<t t-esc="product.display_name" />
 											</div>
 										</div>
 									</article>
 								</div>
+								</t>
+								</t>
 							</t>
 					</header>
 				</div>
