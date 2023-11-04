@@ -16,7 +16,7 @@
 								<t t-foreach="props.products" t-as="product" t-key="product.id">
 								<t t-if="product.pos_categ_id[0] == category.id">
 								<div>
-									<article class="product" t-on-click="addToOrderLine" t-attf-data-product="JSON.stringify(product)">
+									<article class="product" t-on-click="addToOrderLine" t-att-data-id="product.id">
 										<t t-if="product.image_128">
 											<div class="product-img">
 												<img t-att-src="product.image_url" t-att-alt="product.display_name" />

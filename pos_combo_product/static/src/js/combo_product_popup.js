@@ -9,7 +9,9 @@ class ComboProductPopup extends AbstractAwaitablePopup {
         super.setup()
     }
     addToOrderLine(ev) {
-        console.log(ev.currentTarget.dataset.product)
+        var product = this.props.products.filter(item => ev.currentTarget.dataset.id == item.id)[0]
+        this.env.posbus.trigger("addToOrderLine", { "product": product })
+
     }
     confirm() {
         this.env.posbus.trigger('close-popup', {
