@@ -1,6 +1,6 @@
 /**@odoo-module **/
 
-import { PosGlobalState} from 'point_of_sale.models'
+import { PosGlobalState } from 'point_of_sale.models'
 import Registries from 'point_of_sale.Registries'
 
 const NewPosGlobalState = (PosGlobalState) => class NewPosGlobalState extends PosGlobalState {

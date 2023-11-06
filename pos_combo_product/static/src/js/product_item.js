@@ -21,6 +21,8 @@ const ComboProduct = (ProductItem) =>
                 for (var rec of combo_products) {
                     for (var id in rec['product_ids']) {
                         this.env.pos.db.product_by_id[rec[
+                            'product_ids'][id]]["parent_product_id"] = this.props.product.id
+                        this.env.pos.db.product_by_id[rec[
                             'product_ids'][id]]["combo_quantity"] = rec.quantity
                         this.env.pos.db.product_by_id[rec[
                             'product_ids'][id]]["combo_is_required"] = rec.is_required
@@ -29,13 +31,27 @@ const ComboProduct = (ProductItem) =>
                         products.push(this.env.pos.db.product_by_id[rec['product_ids'][id]])
                     }
                 }
-                // categories
-                var category_ids = products.map(rec => rec.pos_categ_id[0])
-                var categories = Object.values(this.env.pos.db.category_by_id).filter(
-                    item => category_ids.includes(item.id)
+                // Splitting products based on combo_is_required attribute
+                var productsWithComboRequired = products.filter(product => product.combo_is_required)
+                var productsWithoutComboRequired = products.filter(product => !product.combo_is_required)
+
+                // Extracting category IDs for each list
+                var categoryIdsWithComboRequired = productsWithComboRequired.map(product => product.pos_categ_id[0])
+                var categoryIdsWithoutComboRequired = productsWithoutComboRequired.map(product => product.pos_categ_id[0])
+
+                // Creating two dictionaries of categories based on the category IDs
+                var categoriesWithComboRequired = Object.values(this.env.pos.db.category_by_id).filter(
+                    category => categoryIdsWithComboRequired.includes(category.id)
+                )
+
+                var categoriesWithoutComboRequired = Object.values(this.env.pos.db.category_by_id).filter(
+                    category => categoryIdsWithoutComboRequired.includes(category.id)
                 )
                 this.showPopup("ComboProductPopup", {
-                    "categories": categories,
+                    "categoriesWithComboRequired": categoriesWithComboRequired,
+                    "productsWithComboRequired": productsWithComboRequired,
+                    "categoriesWithoutComboRequired": categoriesWithoutComboRequired,
+                    "productsWithoutComboRequired": productsWithoutComboRequired,
                     "products": products,
                 })
             }

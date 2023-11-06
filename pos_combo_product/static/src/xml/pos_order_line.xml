@@ -2,13 +2,22 @@
 <templates id="template" xml:space="preserve">
     <!--  To add the combo products name in order line  -->
     <t t-name="Orderline" t-inherit="point_of_sale.Orderline" t-inherit-mode="extension" owl="1">
-        <xpath expr="//span[hasclass('product-name')]" position="after">
-            <br/>
-            <t t-log="props"/>
-            <t t-if="props.combo_prodcts">
-                <t t-foreach="props.combo_products" t-as="combo_product" t-key="combo_product.id">
-                    <span t-esc="combo_product.name"/>
-                </t>
+        <xpath expr="//ul[hasclass('info-list')]" position="after">
+            <t t-if="props.line.get_combo_products()">
+                <ul class="info-list">
+                    <t t-foreach="props.line.get_combo_products()" t-as="product" t-key="product.id">
+                        <li>
+                            <span>
+                            <t t-esc="product.combo_quantity"/> Units of
+                            <t t-esc="product.display_name"/> 
+                            at <t t-esc="env.pos.format_currency(product.lst_price)"/> / Units
+                            </span>
+                            <span class="price">
+                                <t t-esc="env.pos.format_currency(product.combo_quantity * product.lst_price)"/>
+                            </span>
+                        </li>
+                    </t>
+                </ul>
             </t>
         </xpath>
     </t>

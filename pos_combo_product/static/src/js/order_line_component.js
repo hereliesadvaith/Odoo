@@ -8,16 +8,17 @@ const ComboProductline = (Orderline) =>
     class extends Orderline {
         setup() {
             super.setup()
-            if (!this.props.combo_products) {
-                this.props.combo_products = []
+            if (!this.props.line.combo_products) {
+                this.props.line.combo_products = []
             }
             onMounted(() => {
                 this.env.posbus.on("addToOrderLine", this, this.addToOrderLine)
             })
         }
         addToOrderLine(ev) {
-            this.props.combo_products.push(ev.product)
-            console.log(this.props)
+            if (this.props.line.product.id == ev.product.parent_product_id) {
+                this.props.line.combo_products.push(ev.product)
+            }
         }
     }
 Registries.Component.extend(Orderline, ComboProductline)
