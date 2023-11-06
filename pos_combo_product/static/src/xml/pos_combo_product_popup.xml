@@ -1,40 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates id="template" xml:space="preserve">
 	<t t-name="ComboProductPopup" owl="1">
-		<div class="popup product-info-popup" style="max-width: 684px;">
-			<main class="body">
-				<div>
-					<header>
-						<h3>
-							Combo Products
-                            <hr/>
-						</h3>
-							<t t-foreach="props.categories" t-as="category" t-key="category.id">
-								<div class="section-title">
-									<span t-esc="category.name"/>
+		<div class="popup" style="max-width: 684px;">
+			<header>
+				<h3>
+					Combo Products
+					<hr/>
+				</h3>
+			</header>
+			<body>
+				<t t-foreach="props.categories" t-as="category" t-key="category.id">
+					<div class="section-title" style="background-color: cyan;">
+						<span t-esc="category.name"/>
+					</div>
+					<div style="display: flex; justify-content: space-around; background-color: white;">
+					<t t-foreach="props.products" t-as="product" t-key="product.id">
+					<t t-if="product.pos_categ_id[0] == category.id">
+						<article class="product" t-on-click="addToOrderLine" t-att-data-id="product.id">
+							<t t-if="product.image_128">
+								<div class="product-img">
+									<img t-att-src="product.image_url" t-att-alt="product.display_name" />
 								</div>
-								<t t-foreach="props.products" t-as="product" t-key="product.id">
-								<t t-if="product.pos_categ_id[0] == category.id">
-								<div>
-									<article class="product" t-on-click="addToOrderLine" t-att-data-id="product.id">
-										<t t-if="product.image_128">
-											<div class="product-img">
-												<img t-att-src="product.image_url" t-att-alt="product.display_name" />
-											</div>
-										</t>
-										<div class="product-content">
-											<div t-attf-class="#{product.image_128 ? 'product-name' : 'product-name no-image' }" t-attf-id="article_product_{{product.id}}">
-												<t t-esc="product.display_name" />
-											</div>
-										</div>
-									</article>
-								</div>
-								</t>
-								</t>
 							</t>
-					</header>
-				</div>
-			</main>
+							<div class="product-content">
+								<div t-attf-class="#{product.image_128 ? 'product-name' : 'product-name no-image' }" t-attf-id="article_product_{{product.id}}">
+									<t t-esc="product.display_name" />
+								</div>
+							</div>
+						</article>
+					</t>
+					</t>
+					</div>
+				</t>
+			</body>
             <footer class="footer cash-move">
 				<div class="button confirm disable highlight" t-on-click="confirm">
                     Confirm
