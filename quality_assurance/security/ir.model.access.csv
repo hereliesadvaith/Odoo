@@ -1,0 +1,2 @@
+id,name,model_id/id,group_id/id,perm_read,perm_write,perm_create,perm_unlink
+access_quality_measure,access.quality.measure,model_quality_measure,,1,1,1,1

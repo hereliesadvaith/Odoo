@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="quality_measure_view_tree" model="ir.ui.view">
+        <field name="name">quality.measure.view.tree</field>
+        <field name="model">quality.measure</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" />
+                <field name="product_id" />
+                <field name="trigger_ids" widget="many2many_tags" />
+            </tree>
+        </field>
+    </record>
+    <!-- Action for quality measure page -->
+    <record id="quality_measure_action" model="ir.actions.act_window">
+        <field name="name">Quality Measure</field>
+        <field name="res_model">quality.measure</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>
