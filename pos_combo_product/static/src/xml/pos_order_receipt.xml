@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <!--To add the combo products in receipt-->
+    <t t-name="OrderReceipt" t-inherit="point_of_sale.OrderLinesReceipt" t-inherit-mode="extension" owl="1">
+        <xpath expr="//t[@t-foreach='receipt.orderlines']" position="inside">
+            <div t-if="(line.combo_products).length > 0" class="pos-receipt-left-padding">
+                Combo Products
+                <t t-foreach="line.combo_products" t-as="product" t-key="product.id">
+                    <li>
+                        <span>
+                            <t t-esc="product.combo_quantity"/> Units of
+                            <t t-esc="product.display_name"/> 
+                        </span>
+                    </li>
+                </t>
+            </div>
+            <t t-log="line"/>
+        </xpath>
+    </t>
+</templates>

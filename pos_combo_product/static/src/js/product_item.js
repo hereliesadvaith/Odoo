@@ -27,6 +27,8 @@ const ComboProduct = (ProductItem) =>
                         this.env.pos.db.product_by_id[rec[
                             'product_ids'][id]]["combo_is_required"] = rec.is_required
                         this.env.pos.db.product_by_id[rec[
+                            'product_ids'][id]]["combo_selected"] = false
+                        this.env.pos.db.product_by_id[rec[
                                 'product_ids'][id]]["image_url"] = `/web/image?model=product.product&field=image_128&id=${rec['product_ids'][id]}`
                         products.push(this.env.pos.db.product_by_id[rec['product_ids'][id]])
                     }

@@ -33,11 +33,24 @@ const ComboProductline = (Orderline) =>
         get_combo_products() {
             return this.combo_products
         }
-        // export_for_printing() {
-        //     var result = super.export_for_printing(...arguments)
-        //     // console.log(result)
-        //     return result
-        // }
+        export_for_printing() {
+            var result = super.export_for_printing(...arguments)
+            var combo_products = []
+            if (this.combo_products) {
+                for (var rec of this.combo_products) {
+                    combo_products.push(
+                        {
+                            "id": rec.id,
+                            "display_name": rec.display_name,
+                            "combo_quantity": rec.combo_quantity,
+                            "lst_price": rec.lst_price,
+                        }
+                    )
+                }
+                result.combo_products = combo_products
+            }
+            return result
+        }
     }
 Registries.Model.extend(Orderline, ComboProductline)
 return Orderline

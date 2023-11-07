@@ -10,8 +10,12 @@ class ComboProductPopup extends AbstractAwaitablePopup {
     }
     addToOrderLine(ev) {
         var product = this.props.products.filter(item => ev.currentTarget.dataset.id == item.id)[0]
-        this.env.posbus.trigger("addToOrderLine", { "product": product })
-
+        if (product.combo_selected) {
+            this.env.posbus.trigger("removeFromOrderLine", { "product": product })
+        } else {
+            this.env.posbus.trigger("addToOrderLine", { "product": product })
+        }
+        product.combo_selected = product.combo_selected ? false : true
     }
     confirm() {
         this.env.posbus.trigger('close-popup', {

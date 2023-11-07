@@ -17,7 +17,8 @@
 					<div style="display: flex; justify-content: space-around; background-color: white;">
 						<t t-foreach="props.productsWithComboRequired" t-as="product" t-key="product.id">
 							<t t-if="product.combo_is_required and product.pos_categ_id[0] == category.id">
-								<article class="product" t-on-click="addToOrderLine" t-att-data-id="product.id">
+								<article class="product" t-on-click="addToOrderLine" t-att-data-id="product.id"
+								t-att-style="product.combo_selected ? 'background-color: lightblue; margin: 4px; padding: 4px' : 'margin: 4px; padding: 4px'">
 									<t t-if="product.image_128">
 										<div class="product-img">
 											<img t-att-src="product.image_url" t-att-alt="product.display_name" />
@@ -41,7 +42,8 @@
 					<div style="display: flex; justify-content: space-around; background-color: white">
 						<t t-foreach="props.productsWithoutComboRequired" t-as="product" t-key="product.id">
 							<t t-if="!product.combo_is_required and product.pos_categ_id[0] == category.id">
-								<article class="product" t-on-click="addToOrderLine" t-att-data-id="product.id">
+								<article class="product" t-on-click="addToOrderLine" t-att-data-id="product.id"
+								t-att-style="product.combo_selected ? 'background-color: lightblue; margin: 4px; padding: 4px' : 'margin: 4px; padding: 4px'">
 									<t t-if="product.image_128">
 										<div class="product-img">
 											<img t-att-src="product.image_url" t-att-alt="product.display_name" />
