@@ -15,6 +15,7 @@
         "views/quality_measure_views.xml",
         "views/quality_alert_views.xml",
         "views/quality_test_views.xml",
+        "views/stock_picking_views.xml",
         "views/quality_assurance_menus.xml",
     ],
     "installable": True,

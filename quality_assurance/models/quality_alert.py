@@ -26,11 +26,54 @@ class QualityAlert(models.Model):
     stock_picking_id = fields.Many2one("stock.picking",
                                        string="Source Operation",
                                        )
-    state = fields.Selection(selection=[
+    state = fields.Selection(store=True, selection=[
         ("ongoing", "Ongoing"),
         ("pass", "Pass"),
         ("fail", "Fail")
-    ], string="Status")
+    ], string="Status", default="ongoing", compute="_compute_state")
+    quality_test_ids = fields.One2many("quality.test", "quality_alert_id",
+                                       help="Quality Tests")
+    is_test_generated = fields.Boolean("is_test_generated", default=False)
+    
+    # Action Methods
+
+    def action_generate_test(self):
+        """
+        To generate quality tests
+        """
+        self.ensure_one()
+        quality_measuere_ids = self.env["quality.measure"].search([
+            ("product_id", "=", self.product_id.id),
+            ("trigger_ids", "in", self.stock_picking_id.picking_type_id.id)
+        ])
+        for quality_measure_id in quality_measuere_ids:
+            self.update({
+                "quality_test_ids": [(fields.Command.create({
+                    "name": quality_measure_id.name,
+                    "test_type": quality_measure_id.test_type,
+                    "quality_measure_id": quality_measure_id.id,
+                    "quality_alert_id": self.id,
+                    "product_id": self.product_id.id,
+                }))]
+            })
+        self.is_test_generated = True
+    
+    @api.depends("quality_test_ids")
+    def _compute_state(self):
+        """
+        To compute status of the alert
+        """
+        for record in self:
+            if record.quality_test_ids:
+                if len(record.quality_test_ids) == len(
+                    record.quality_test_ids.filtered(
+                        lambda r: r.status == "pass")):
+                    self.state = "pass"
+                else:
+                    self.state = "ongoing"
+            else:
+                self.state ="ongoing"
+
     
     # CRUD Methods
 

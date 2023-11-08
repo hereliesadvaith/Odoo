@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <!-- Form view for quality test page. -->
-    <record id="quality_alert_view_form" model="ir.ui.view">
+    <record id="quality_test_view_form" model="ir.ui.view">
         <field name="name">quality.test.view.form</field>
         <field name="model">quality.test</field>
         <field name="arch" type="xml">
             <form>
-                <header>
-                    <field name="state" widget="statusbar"
-                        statusbar_visible="ongoing,pass" />
-                </header>
                 <sheet>
                     <div class="oe_title">
                         <h1>
@@ -29,6 +25,7 @@
                         <group>
                             <field name="product_id"/>
                             <field name="user_id" />
+                            <field name="status" />
                         </group>
                     </group>
                 </sheet>
@@ -44,7 +41,7 @@
                 <field name="name" />
                 <field name="product_id" />
                 <field name="user_id"/>
-                <field name="state"/>  
+                <field name="status"/>  
             </tree>
         </field>
     </record>
