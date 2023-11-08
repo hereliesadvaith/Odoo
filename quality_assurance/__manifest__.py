@@ -11,7 +11,10 @@
     "depends": ["base", "stock"],
     "data": [
         "security/ir.model.access.csv",
+        "data/quality_alert_sequence.xml",
         "views/quality_measure_views.xml",
+        "views/quality_alert_views.xml",
+        "views/quality_test_views.xml",
         "views/quality_assurance_menus.xml",
     ],
     "installable": True,

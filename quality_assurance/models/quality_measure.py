@@ -4,7 +4,7 @@ from odoo import api, fields, models
 
 class QualityMeasure(models.Model):
     """
-    Model for Quality Assurance module.
+    Model for Quality Measure.
     """
     _name = "quality.measure"
     _description = "Quality Measure"

@@ -16,10 +16,11 @@
                         <group>
                             <field name="product_id"/>
                             <field name="test_type" />
+                            <field name="active" invisible="1"/>
                         </group>
                     </group>
                     <group>
-                        <field name="trigger_ids"/>
+                        <field name="trigger_ids" widget="many2many_tags"/>
                     </group>
                 </sheet>
             </form>
@@ -35,6 +36,16 @@
                 <field name="product_id" />
                 <field name="trigger_ids" widget="many2many_tags" />
             </tree>
+        </field>
+    </record>
+    <!-- Search view for quality measure page -->
+    <record id="quality_measure_view_search" model="ir.ui.view">
+        <field name="name">quality.measure.search</field>
+        <field name="model">quality.measure</field>
+        <field name="arch" type="xml">
+            <search>
+                <filter string="Archived" name="active" domain="[('active', '=', False)]"/>
+            </search>
         </field>
     </record>
     <!-- Action for quality measure page -->
