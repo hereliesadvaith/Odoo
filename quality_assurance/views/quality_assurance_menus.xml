@@ -3,7 +3,6 @@
     <!--  Menu for Quality Assurance application    -->
     <menuitem id="quality_assurance_root_menu" name="Quality" sequence="10"/>
     <menuitem id="quality_assurance_menu" name="Quality Assurance" parent="quality_assurance_root_menu" sequence="1"/>
-    <menuitem id="quality_configuration_menu" name="Configuration" parent="quality_assurance_root_menu" sequence="1"/>
     <menuitem id="quality_measure" action="quality_measure_action" parent="quality_assurance_menu" sequence="1"/>
     <menuitem id="quality_alert" action="quality_alert_action" parent="quality_assurance_menu" sequence="2"/>
     <menuitem id="quality_test" action="quality_test_action" parent="quality_assurance_menu" sequence="3"/>

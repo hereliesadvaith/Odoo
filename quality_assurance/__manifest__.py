@@ -10,6 +10,7 @@
     """,
     "depends": ["base", "stock"],
     "data": [
+        "security/quality_assurance_security.xml",
         "security/ir.model.access.csv",
         "data/quality_alert_sequence.xml",
         "views/quality_measure_views.xml",

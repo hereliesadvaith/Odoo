@@ -36,7 +36,7 @@ class QualityTest(models.Model):
     ], string="Status", default="ongoing")
     quantitative_result = fields.Integer("Quantitative Result",
                                          help="Result",
-                                         track_visibiltiy="onchange")
+                                         tracking=True)
     qualitative_result = fields.Selection(selection=[
         ("satisfied", "Satisfied"),
         ("unsatisfied", "Unsatisfied")

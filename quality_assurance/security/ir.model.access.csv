@@ -1,4 +1,7 @@
 id,name,model_id/id,group_id/id,perm_read,perm_write,perm_create,perm_unlink
-access_quality_measure,access.quality.measure,model_quality_measure,,1,1,1,1
-access_quality_alert,access.quality.alert,model_quality_alert,,1,1,1,1
-access_quality_test,access.quality.test,model_quality_test,,1,1,1,1
+access_quality_measure_all,access.quality.measure,model_quality_measure,base.group_user,1,0,0,0
+access_quality_measure_user,access.quality.measure,model_quality_measure,quality_assurance.group_quality_user,1,1,1,1
+access_quality_alert_all,access.quality.alert,model_quality_alert,base.group_user,1,0,1,0
+access_quality_alert_user,access.quality.alert,model_quality_alert,quality_assurance.group_quality_user,1,1,1,1
+access_quality_test_all,access.quality.test,model_quality_test,base.group_user,1,0,1,0
+access_quality_test_user,access.quality.test,model_quality_test,quality_assurance.group_quality_user,1,1,1,1
