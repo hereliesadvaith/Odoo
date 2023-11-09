@@ -16,11 +16,6 @@ class ResPartner(models.Model):
     frequent_product_ids = fields.One2many("frequent.product", "res_partner_id",
                                            compute="_compute_frequent_product_ids",help="Frequent products")
 
-    def new_print(*args):
-        print("\033[33m")
-        print(args[-1])
-        print("\033[0m")
-
     # Compute Methods
 
     def _compute_frequent_product_ids(self):
@@ -63,5 +58,4 @@ class ResPartner(models.Model):
                 frequent_product_data["sale_orders"] = len(sale_orders)
                 frequent_product_data["last_sale_date"] = last_sale_date
                 frequent_product_data["last_invoiced_amount"] = last_invoiced_amount
-                self.new_print(frequent_product_data)
                 self.env["frequent.product"].create(frequent_product_data)
