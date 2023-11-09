@@ -8,6 +8,7 @@ class QualityAlert(models.Model):
     Model for Quality Alert.
     """
     _name = "quality.alert"
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = "Quality Alert"
 
     name = fields.Char(
@@ -30,11 +31,13 @@ class QualityAlert(models.Model):
         ("ongoing", "Ongoing"),
         ("pass", "Pass"),
         ("fail", "Fail")
-    ], string="Status", default="ongoing", compute="_compute_state")
+    ], string="Status", default="ongoing", compute="_compute_state",
+        tracking=True)
     quality_test_ids = fields.One2many("quality.test", "quality_alert_id",
-                                       help="Quality Tests")
+                                       help="Quality Tests",
+                                       tracking=True)
     is_test_generated = fields.Boolean("is_test_generated", default=False)
-    
+
     # Action Methods
 
     def action_generate_test(self):
@@ -57,7 +60,7 @@ class QualityAlert(models.Model):
                 }))]
             })
         self.is_test_generated = True
-    
+
     @api.depends("quality_test_ids")
     def _compute_state(self):
         """
@@ -72,9 +75,8 @@ class QualityAlert(models.Model):
                 else:
                     self.state = "ongoing"
             else:
-                self.state ="ongoing"
+                self.state = "ongoing"
 
-    
     # CRUD Methods
 
     @api.model_create_multi
@@ -89,4 +91,3 @@ class QualityAlert(models.Model):
                 ) or _("New")
         result = super(QualityAlert, self).create(vals_list)
         return result
-    

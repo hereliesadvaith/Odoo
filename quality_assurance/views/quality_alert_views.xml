@@ -7,8 +7,9 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <button name="action_generate_test" type="object" string="Generate Test" class="oe_highlight"
-                    attrs="{'invisible': [('is_test_generated', '=', True)]}"/>
+                    <button name="action_generate_test" type="object" string="Generate Test"
+                        class="oe_highlight"
+                        attrs="{'invisible': [('is_test_generated', '=', True)]}" />
                     <field name="state" widget="statusbar"
                         statusbar_visible="ongoing,pass" />
                 </header>
@@ -20,12 +21,12 @@
                     </div>
                     <group>
                         <group>
-                            <field name="product_id"/>
+                            <field name="product_id" />
                             <field name="user_id" />
-                            <field name="is_test_generated" invisible="1"/> 
+                            <field name="is_test_generated" invisible="1" />
                         </group>
                         <group>
-                            <field name="date"/>
+                            <field name="date" />
                             <field name="stock_picking_id" />
                         </group>
                     </group>
@@ -33,19 +34,23 @@
                         <page string="Tests">
                             <field name="quality_test_ids">
                                 <tree editable="bottom">
-                                    <field name="name"/>
-                                    <field name="user_id"/>
-                                    <field name="test_type" invisible="1"/> 
+                                    <field name="name" />
+                                    <field name="user_id" />
+                                    <field name="test_type" invisible="1" />
                                     <field name="qualitative_result"
-                                    attrs="{'readonly': [('test_type', '=', 'quantity')]}"/>
+                                        attrs="{'readonly': [('test_type', '=', 'quantity')]}" />
                                     <field name="quantitative_result"
-                                    attrs="{'readonly': [('test_type', '=', 'quality')]}"/>
+                                        attrs="{'readonly': [('test_type', '=', 'quality')]}" />
                                     <field name="status" />
                                 </tree>
                             </field>
                         </page>
                     </notebook>
                 </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" />
+                    <field name="message_ids" widget="mail_thread" />
+                </div>
             </form>
         </field>
     </record>
@@ -57,10 +62,10 @@
             <tree>
                 <field name="name" />
                 <field name="product_id" />
-                <field name="user_id"/>
-                <field name="date"/> 
-                <field name="stock_picking_id"/>
-                <field name="state"/>  
+                <field name="user_id" />
+                <field name="date" />
+                <field name="stock_picking_id" />
+                <field name="state" />
             </tree>
         </field>
     </record>

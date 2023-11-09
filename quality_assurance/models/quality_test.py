@@ -7,6 +7,7 @@ class QualityTest(models.Model):
     Model for Quality Tests.
     """
     _name = "quality.test"
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = "Quality Test"
 
     name = fields.Char(readonly=True, help="Name of quality test")
@@ -26,19 +27,21 @@ class QualityTest(models.Model):
     product_id = fields.Many2one("product.product", string="Product",
                                  help="Product")
     user_id = fields.Many2one("res.users", string="Assigned To",
-                              help="Assigned to")
+                              help="Assigned to",
+                              tracking=True)
     status = fields.Selection(selection=[
         ("ongoing", "Ongoing"),
         ("pass", "Pass"),
         ("fail", "Fail")
     ], string="Status", default="ongoing")
     quantitative_result = fields.Integer("Quantitative Result",
-                                         help="Result")
+                                         help="Result",
+                                         track_visibiltiy="onchange")
     qualitative_result = fields.Selection(selection=[
         ("satisfied", "Satisfied"),
         ("unsatisfied", "Unsatisfied")
-    ], string="Qualitative Result", help="Result")
-    
+    ], string="Qualitative Result", help="Result",
+        tracking=True)
 
     # Onchange Methods
 
@@ -58,10 +61,9 @@ class QualityTest(models.Model):
         else:
             demand_qty = self.quality_alert_id.stock_picking_id.move_ids.filtered(
                 lambda r: r.product_id == self.quality_alert_id.product_id
-                )[0].product_uom_qty
+            )[0].product_uom_qty
             print(demand_qty)
             if self.quantitative_result >= demand_qty:
                 self.status = "pass"
             else:
                 self.status = "ongoing"
-            

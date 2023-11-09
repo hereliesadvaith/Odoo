@@ -19,4 +19,3 @@ class QualityMeasure(models.Model):
     active = fields.Boolean("Active", default=True)
     trigger_ids = fields.Many2many("stock.picking.type", string="Trigger On",
                                    help="Trigger on")
-    

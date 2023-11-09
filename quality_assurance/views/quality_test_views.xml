@@ -14,21 +14,25 @@
                     </div>
                     <group>
                         <group>
-                            <field name="test_type"/>
+                            <field name="test_type" />
                             <field name="quality_measure_id" />
                             <field name="quality_alert_id" />
                             <field name="quantitative_result"
-                            attrs="{'invisible':[('test_type', '=', 'quality')]}"/>
+                                attrs="{'invisible':[('test_type', '=', 'quality')]}" />
                             <field name="qualitative_result"
-                            attrs="{'invisible':[('test_type', '=', 'quantity')]}"/>
+                                attrs="{'invisible':[('test_type', '=', 'quantity')]}" />
                         </group>
                         <group>
-                            <field name="product_id"/>
+                            <field name="product_id" />
                             <field name="user_id" />
                             <field name="status" />
                         </group>
                     </group>
                 </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" />
+                    <field name="message_ids" widget="mail_thread" />
+                </div>
             </form>
         </field>
     </record>
@@ -40,8 +44,8 @@
             <tree>
                 <field name="name" />
                 <field name="product_id" />
-                <field name="user_id"/>
-                <field name="status"/>  
+                <field name="user_id" />
+                <field name="status" />
             </tree>
         </field>
     </record>
