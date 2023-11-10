@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--  Menu for To-Do application    -->
+    <menuitem id="project_todo_root_menu" name="To Do" sequence="10"/>
+    <menuitem id="todo_task_menu" name=" " action="todo_task_action" parent="project_todo_root_menu" sequence="1"/>
+</odoo>
