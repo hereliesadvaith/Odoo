@@ -6,9 +6,6 @@
         <field name="model">res.partner</field>
         <field name="inherit_id" ref="base.view_partner_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='category_id']" position="after">
-                <field name="associated_product_ids" widget="many2many_tags"/>
-            </xpath>
             <xpath expr="//page[@name='sales_purchases']" position="before" >
                 <page string="Frequenct Products">
                     <field name="frequent_product_ids">

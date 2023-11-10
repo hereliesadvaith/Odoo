@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
-from odoo import api, fields, models
-import datetime
-from dateutil.relativedelta import relativedelta
+from odoo import fields, models
+from odoo.tools.date_utils import relativedelta
 
 
 class ResPartner(models.Model):
@@ -10,10 +9,7 @@ class ResPartner(models.Model):
     """
     _inherit = "res.partner"
 
-    associated_product_ids = fields.Many2many(
-        "product.product", help="Associated products")
-    
-    frequent_product_ids = fields.One2many("frequent.product", "res_partner_id",
+    frequent_product_ids = fields.One2many("frequent.product", "partner_id",
                                            compute="_compute_frequent_product_ids",help="Frequent products")
 
     # Compute Methods
@@ -26,13 +22,13 @@ class ResPartner(models.Model):
             record.frequent_product_ids = False
             domain = [("partner_id", "=", record.id), ("invoice_status", "=", "invoiced")]
             no_of_months = self.env['ir.config_parameter'].sudo().get_param(
-            'no_of_months'
+            'frequent_products.no_of_months'
             )
             limit = self.env['ir.config_parameter'].sudo().get_param(
-            'select_limit'
+            'frequent_products.select_limit'
             )
             if int(no_of_months) > 0:
-                end_date = datetime.date.today() - relativedelta(months=int(no_of_months))
+                end_date = fields.date.today() - relativedelta(months=int(no_of_months))
                 domain.append(("date_order", ">", end_date))
             sale_order_ids = self.env['sale.order'].search(
                 domain, order="date_order DESC"
@@ -40,9 +36,12 @@ class ResPartner(models.Model):
             order_lines = self.env["sale.order.line"].search([
                 ("order_id", "in", sale_order_ids.ids)
             ])
-            for product in order_lines.mapped("product_id"):
-                frequent_product_data = {"res_partner_id": record.id}
-                frequent_product_data["product_id"] = product.id
+            product_limit = int(limit) if int(limit) > 0 else len(order_lines.mapped("product_id"))
+            for product in order_lines.mapped("product_id")[:product_limit]:
+                frequent_product_data = {
+                    "partner_id": record.id,
+                    "product_id": product.id
+                }
                 sale_orders = []
                 last_sale_date = False
                 last_invoiced_amount = False
@@ -55,7 +54,9 @@ class ResPartner(models.Model):
                         last_sale_date = order_line.order_id.date_order
                     if not last_invoiced_amount:
                         last_invoiced_amount = order_line.price_subtotal
-                frequent_product_data["sale_orders"] = len(sale_orders)
-                frequent_product_data["last_sale_date"] = last_sale_date
-                frequent_product_data["last_invoiced_amount"] = last_invoiced_amount
+                frequent_product_data.update({
+                    "sale_orders": len(sale_orders),
+                    "last_sale_date": last_sale_date,
+                    "last_invoiced_amount": last_invoiced_amount
+                })
                 self.env["frequent.product"].create(frequent_product_data)
