@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <!--  Menu for To-Do application    -->
-    <menuitem id="project_todo_root_menu" name="To Do" sequence="10"/>
-    <menuitem id="todo_task_menu" name=" " action="todo_task_action" parent="project_todo_root_menu" sequence="1"/>
+    <menuitem id="project_todo_root_menu" name="To Do" sequence="10" 
+    action="todo_task_action" />
+    <menuitem id="todo_config_menu" name="Configuration" parent="project_todo_root_menu" sequence="10"/>
+    <menuitem id="todo_tag_menu" action="todo_tag_action"
+    parent="todo_config_menu" sequence="1" />
+    <menuitem id="todo_stage_menu" action="todo_stage_action"
+    parent="todo_config_menu" sequence="10" />
 </odoo>

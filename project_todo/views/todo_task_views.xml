@@ -26,6 +26,36 @@
             </kanban>
         </field>
     </record>
+    <!-- To do Form view -->
+     <record id="todo_task_view_form" model="ir.ui.view">
+        <field name="name">todo.task.view.form</field>
+        <field name="model">todo.task</field>
+        <field name="arch" type="xml">
+            <form>
+                <field name="name" invisible="1"/>
+                <header>
+                    <div class="py-1 px-2 border rounded bg-view">
+                        <field name="tag_ids"
+                               widget="many2many_tags"
+                               options="{'color_field': 'color', 'no_create_edit': True}"
+                               class="me-2"
+                               placeholder="Tags"/>
+                    </div>
+                    <field name="state"
+                           widget="statusbar"
+                           options="{'clickable': '1'}"/>
+                </header>
+                <sheet class="o_todo_form_sheet_bg">
+                    <field name="description" type="html" class="oe_memo" default_focus="1" options="{'resizable': false, 'collaborative': true}"/>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
     <!-- Action for to do task page -->
     <record id="todo_task_action" model="ir.actions.act_window">
         <field name="name">To-Do List</field>

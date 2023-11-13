@@ -12,7 +12,10 @@
     "depends": ["base", "project"],
     "data": [
         "security/ir.model.access.csv",
+        "security/project_todo_security.xml",
         "views/todo_task_views.xml",
+        "views/todo_stage_views.xml",
+        "views/todo_tag_views.xml",
         "views/project_todo_menus.xml",
     ],
     "license": "LGPL-3",
