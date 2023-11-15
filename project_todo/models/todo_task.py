@@ -26,8 +26,10 @@ class TodoTask(models.Model):
         ("planned", "Planned"),
         ("expired", "Expired"),
         ("done", "Done")
-    ], string="Status", help="Status", tracking=True, default="today")
-    description = fields.Html(string="Description", help="Description")
+    ], string="Status", help="Status", tracking=True, default="today",
+    group_expand="_expand_stages")
+    description = fields.Html(string="Description", help="Description",
+                              required=True)
     priority = fields.Selection([
         ("0", "None"),
         ("1", "Low"),
@@ -51,7 +53,8 @@ class TodoTask(models.Model):
                                    ))
     activity_type_id = fields.Many2one("mail.activity.type",
                                        string="Activity Type",
-                                       help="Activity Type", store=True)
+                                       help="Activity Type", store=True,
+                                       required=True)
     summary = fields.Char("Summary", help="Summary", compute="_compute_summary")
 
 
@@ -67,24 +70,22 @@ class TodoTask(models.Model):
             text = html2plaintext(todo.description) if todo.description else "New"
             todo.summary = text.strip().replace('*', '').split("\n")[0]
     
-    @api.depends("activity_ids")
     def _compute_state(self):
         """
         To compute the stage of the todo task
         """
         for record in self:
-            if record.activity_ids:
-                record.stage = "today"
-                record.state = "today"
-            else:
-                record.stage = "done"
-                record.state = "done"
-            if record.due_date > fields.Date.today():
+            record.state = "today"
+            if record.due_date > fields.Date.today() and record.stage != "done":
                 record.stage = "planned"
-                record.stage = "planned"
-            if record.due_date < fields.Date.today():
+                record.state = "planned"
+            if record.due_date < fields.Date.today() and record.stage != "done":
                 record.stage = "expired"
                 record.state = "expired"
+
+    
+    def _expand_stages(self, states, domain, order):
+        return [key for key, dummy in type(self).stage.selection]
 
     # Onchange & Constrains 
 
@@ -114,4 +115,3 @@ class TodoTask(models.Model):
                         "res_id": self.id,
                     })]
                 })
-            

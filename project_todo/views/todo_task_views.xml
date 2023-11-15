@@ -29,11 +29,14 @@
         <field name="name">todo.task.view.kanban</field>
         <field name="model">todo.task</field>
         <field name="arch" type="xml">
-            <kanban default_group_by="stage" class="oe_notes oe_kanban_quickcreate_textarea o_kanban_small_column">
+            <kanban default_group_by="stage" class="oe_notes oe_kanban_quickcreate_textarea o_kanban_small_column"
+            disable_drag_drop_record="true"
+            group_create="false">
                 <field name="summary"/>
                 <field name="activity_type_id"/>
                 <field name="priority" />
                 <field name="stage" />
+                <field name="state" />
                 <field name="user_id" />
                 <field name="activity_ids" />
                 <field name="activity_state" />
@@ -92,8 +95,7 @@
                 <field name="res_model" invisible="1" /> 
                 <header>
                     <field name="stage"
-                           widget="statusbar"
-                           options="{'clickable': '1'}"/>
+                           widget="statusbar"/>
                 </header>
                 <sheet>
                     <group style="padding-top: 20px;">

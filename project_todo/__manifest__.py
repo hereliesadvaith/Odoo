@@ -9,7 +9,7 @@
     """,
     "author": "Advaith",
     "website": "https://hereliesadvaith.github.io",
-    "depends": ["base", "project"],
+    "depends": ["base", "note"],
     "data": [
         "security/ir.model.access.csv",
         "views/todo_task_views.xml",
