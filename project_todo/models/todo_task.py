@@ -53,8 +53,7 @@ class TodoTask(models.Model):
                                    ))
     activity_type_id = fields.Many2one("mail.activity.type",
                                        string="Activity Type",
-                                       help="Activity Type", store=True,
-                                       required=True)
+                                       help="Activity Type", store=True)
     summary = fields.Char("Summary", help="Summary", compute="_compute_summary")
 
 
