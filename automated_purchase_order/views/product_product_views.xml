@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Inherit product form view to add button-->
+    <record id="product_normal_form_view" model="ir.ui.view">
+            <field name="name">product.template.view.form.inherit.automated.purchase.order</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_form_view"/>
+            <field name="arch" type="xml">
+                <data>
+                    <header position="inside" >
+                        <button string="Purchase" type="object"
+                            name="action_automate_po"
+                            invisible="type == 'service'"/>
+                    </header>
+                </data>
+            </field>
+    </record>
+</odoo>
