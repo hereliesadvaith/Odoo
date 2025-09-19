@@ -8,6 +8,9 @@
     "author": "Advaith B G",
     "website": "https://hereliesadvaith.github.io",
     "depends": ["base", "mail", "contacts", "im_livechat"],
+    "external_dependencies": {
+        "python": ["google-generativeai"]
+    },
     "data": [
         "views/res_partner_views.xml"
     ],
