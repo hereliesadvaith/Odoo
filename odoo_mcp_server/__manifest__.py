@@ -7,8 +7,10 @@
     "description": "MCP server for odoo.",
     "author": "Advaith B G",
     "website": "https://hereliesadvaith.github.io",
-    "depends": ["base", "mail", "im_livechat"],
-    "data": [],
+    "depends": ["base", "mail", "contacts", "im_livechat"],
+    "data": [
+        "views/res_partner_views.xml"
+    ],
     "license": "LGPL-3",
     "installable": True,
 }
