@@ -26,10 +26,13 @@ class MailChannel(models.Model):
         Super message_post to add AI reply.
         """
         res = super().message_post(**kwargs)
+        self.env.cr.commit()
         agents = self.channel_partner_ids.filtered(
-            lambda x: x.is_agent
+            lambda x: any(bot.is_agent for bot in x.chatbot_script_ids)
         )
-        if agents and not res.author_id.is_agent:
+        if agents and not any(
+                bot.is_agent for bot in res.author_id.chatbot_script_ids
+        ):
             try:
                 chat = model.start_chat(history=self._deserialize_history(
                     self.ai_chat_history or []) or [])

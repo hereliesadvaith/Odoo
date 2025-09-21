@@ -1,3 +1,3 @@
 # -*- coding: utf-8 -*-
+from . import chatbot_script
 from . import mail_channel
-from . import res_partner

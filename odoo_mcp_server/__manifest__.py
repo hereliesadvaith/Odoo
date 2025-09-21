@@ -12,7 +12,8 @@
         "python": ["google-generativeai"]
     },
     "data": [
-        "views/res_partner_views.xml"
+        "data/ir_action_server.xml",
+        "views/chatbot_script_views.xml"
     ],
     "license": "LGPL-3",
     "installable": True,
