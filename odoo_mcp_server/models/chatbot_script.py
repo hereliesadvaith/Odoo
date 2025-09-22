@@ -9,6 +9,12 @@ class ChatbotScript(models.Model):
     _inherit = "chatbot.script"
 
     is_agent = fields.Boolean("AI Agent", help="Is AI Agent ?")
+    chatbot_access_ids = fields.One2many(
+        "chatbot.access",
+        "chatbot_script_id",
+        "Chatbot Access",
+        help="Models and functions chatbot have access to."
+    )
 
     def action_generate_agent_user(self):
         """

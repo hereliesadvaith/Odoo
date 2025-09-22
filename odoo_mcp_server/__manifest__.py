@@ -13,6 +13,7 @@
     },
     "data": [
         "data/ir_action_server.xml",
+        "security/ir.model.access.csv",
         "views/chatbot_script_views.xml"
     ],
     "license": "LGPL-3",
