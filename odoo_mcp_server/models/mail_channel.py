@@ -11,6 +11,41 @@ _logger = logging.getLogger(__name__)
 genai.configure(api_key=config["google_api_key"])
 model = genai.GenerativeModel("gemini-2.5-flash")
 
+tools = [
+    {
+        "function_declarations": [
+            {
+                "name": "rpc_for_llm",
+                "description": "Call an Odoo model method with given arguments.",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "model": {
+                            "type": "string",
+                            "description": "Odoo model name (e.g. res.partner, sale.order)"
+                        },
+                        "method": {
+                            "type": "string",
+                            "description": "Method to call (e.g. search_read, create)"
+                        },
+                        "args": {
+                            "type": "array",
+                            "description": "Positional arguments list",
+                            "items": {}  # no constraints
+                        },
+                        "kwargs": {
+                            "type": "object",
+                            "description": "Keyword arguments dictionary",
+                            "properties": {}  # no constraints
+                        }
+                    },
+                    "required": ["model", "method"]
+                }
+            }
+        ]
+    }
+]
+
 
 class MailChannel(models.Model):
     """
@@ -36,13 +71,18 @@ class MailChannel(models.Model):
             try:
                 chat = model.start_chat(history=self._deserialize_history(
                     self.ai_chat_history or []) or [])
-                response = chat.send_message(str(kwargs.get("body")))
-                self.sudo().message_post(
-                    body=Markup(response.text),
-                    message_type="comment",
-                    subtype_xmlid="mail.mt_comment",
-                    author_id=agents[0].id,
+                response = chat.send_message(
+                    str(kwargs.get("body")),
+                    tools=tools,
                 )
+                print(response)
+                # response = self._process_function_calls(chat, response)
+                # self.sudo().message_post(
+                #     body=Markup(response.text or "Done"),
+                #     message_type="comment",
+                #     subtype_xmlid="mail.mt_comment",
+                #     author_id=agents[0].id,
+                # )
                 self.sudo().write({
                     "ai_chat_history": self._serialize_history(chat.history)
                 })

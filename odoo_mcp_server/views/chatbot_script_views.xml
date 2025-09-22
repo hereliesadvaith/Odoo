@@ -9,6 +9,16 @@
             <xpath expr="//widget[@name='web_ribbon']" position="after">
                 <widget name="web_ribbon" title="AI Agent" bg_color="text-bg-info" invisible="not is_agent"/>
             </xpath>
+            <notebook>
+                <page string="Bot Access" name="page_bot_access" invisible="not is_agent">
+                    <field name="chatbot_access_ids" widget="one2many" nolabel="1">
+                        <list editable="bottom">
+                            <field name="ir_model_id"/>
+                            <field name="ir_model_fields_ids" widget="many2many_tags"/>
+                        </list>
+                    </field>
+                </page>
+            </notebook>
         </field>
     </record>
 </odoo>
