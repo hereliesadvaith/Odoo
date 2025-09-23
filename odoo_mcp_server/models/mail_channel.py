@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import json
 from odoo import api, fields, models
 from odoo.tools import config
 from markupsafe import Markup
@@ -75,17 +76,19 @@ class MailChannel(models.Model):
                     str(kwargs.get("body")),
                     tools=tools,
                 )
-                print(response)
-                # response = self._process_function_calls(chat, response)
-                # self.sudo().message_post(
-                #     body=Markup(response.text or "Done"),
-                #     message_type="comment",
-                #     subtype_xmlid="mail.mt_comment",
-                #     author_id=agents[0].id,
-                # )
-                self.sudo().write({
-                    "ai_chat_history": self._serialize_history(chat.history)
-                })
+                if response.candidates[0].content.parts[0].function_call:
+                    function_call = response.candidates[0].content.parts[
+                        0].function_call
+                    data = self.rpc_for_llm(**function_call.args)
+                    response = chat.send_message(
+                        json.dumps(data)
+                    )
+                    self.sudo().message_post(
+                        body=Markup(response.text),
+                        message_type="comment",
+                        subtype_xmlid="mail.mt_comment",
+                        author_id=agents[0].id,
+                    )
             except Exception as e:
                 _logger.warning(f"AI Agent Error: {e}")
                 self.sudo().message_post(
@@ -117,3 +120,14 @@ class MailChannel(models.Model):
              "parts": [{"text": p} for p in h.get("parts", [])]}
             for h in history_json
         ]
+
+    def rpc_for_llm(self, **payload):
+        odoo_model = payload.get("model")
+        method = payload.get("method")
+        args = payload.get("args") or []
+        kwargs = {k: v for k, v in payload.get(
+            "kwargs").items()} if payload.get("kwargs") else {}
+        if hasattr(self.env[odoo_model], method):
+            return getattr(self.env[odoo_model], method)(*args, **kwargs)
+        else:
+            raise ValueError(f"Method {method} not found on model {model}")
