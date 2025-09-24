@@ -89,6 +89,19 @@ class MailChannel(models.Model):
                         subtype_xmlid="mail.mt_comment",
                         author_id=agents[0].id,
                     )
+                    self.sudo().write({
+                        "ai_chat_history": self._serialize_history(chat.history)
+                    })
+                elif response.text:
+                    self.sudo().message_post(
+                        body=Markup(response.text),
+                        message_type="comment",
+                        subtype_xmlid="mail.mt_comment",
+                        author_id=agents[0].id,
+                    )
+                    self.sudo().write({
+                        "ai_chat_history": self._serialize_history(chat.history)
+                    })
             except Exception as e:
                 _logger.warning(f"AI Agent Error: {e}")
                 self.sudo().message_post(
@@ -99,7 +112,8 @@ class MailChannel(models.Model):
                 )
         return res
 
-    def _serialize_history(self, history):
+    @staticmethod
+    def _serialize_history(history):
         """
         Convert history (Content objects) into JSON-serializable.
         """
@@ -111,7 +125,8 @@ class MailChannel(models.Model):
             })
         return serialized
 
-    def _deserialize_history(self, history_json):
+    @staticmethod
+    def _deserialize_history(history_json):
         """
         Convert stored JSON back into compatible history.
         """
