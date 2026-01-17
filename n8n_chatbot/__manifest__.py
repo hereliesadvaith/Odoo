@@ -10,6 +10,7 @@
     "depends": ["base", "mail", "contacts", "im_livechat"],
     "data": [
         "data/ir_action_server.xml",
+        "views/chatbot_script_views.xml"
     ],
     "license": "LGPL-3",
     "installable": True,
