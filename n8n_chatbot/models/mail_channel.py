@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 from odoo import api, models
 from markupsafe import Markup
+import requests
 import logging
 
 
 _logger = logging.getLogger(__name__)
+n8n_endpoint = "http://localhost:5678/webhook/ollama"
 
 
 class MailChannel(models.Model):
@@ -27,8 +29,16 @@ class MailChannel(models.Model):
                 bot.is_agent for bot in res.author_id.chatbot_script_ids
         ):
             try:
+                response = requests.post(
+                    n8n_endpoint,
+                    json={
+                        "chatInput": kwargs.get('body'),
+                        "sessionId": self.uuid
+                    }
+                )
+                data = response.json()
                 self.sudo().message_post(
-                    body=Markup("hey there"),
+                    body=Markup(data[0].get('output')),
                     message_type="comment",
                     subtype_xmlid="mail.mt_comment",
                     author_id=agents[0].id,
