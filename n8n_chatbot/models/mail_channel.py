@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
-from odoo import api, models
 from markupsafe import Markup
+from odoo import api, models
 import requests
 import logging
 
 
 _logger = logging.getLogger(__name__)
-n8n_endpoint = "http://localhost:5678/webhook/ollama"
+n8n_endpoint = "http://localhost:5678/webhook/ai_agent"
 
 
 class MailChannel(models.Model):
